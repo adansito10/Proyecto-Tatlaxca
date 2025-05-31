@@ -13,12 +13,17 @@ import { DashboardComponent } from './dashboard/dashboard.component';
 import { MatGridListModule } from '@angular/material/grid-list';
 import { MatCardModule } from '@angular/material/card';
 import { MatMenuModule } from '@angular/material/menu';
+import { ProductosComponent } from './components/productos/productos.component';
 
 @NgModule({
   declarations: [
     AppComponent,
     NavigationComponent,
-    DashboardComponent
+    DashboardComponent,
+    ProductosComponent
+   
+    
+  
   ],
   imports: [
     BrowserModule,
@@ -31,6 +36,7 @@ import { MatMenuModule } from '@angular/material/menu';
     MatGridListModule,
     MatCardModule,
     MatMenuModule
+    
   ],
   providers: [
     provideClientHydration(withEventReplay())
