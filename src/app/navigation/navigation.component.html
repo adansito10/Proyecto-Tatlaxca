@@ -6,12 +6,24 @@
       [opened]="sidenavOpened"
       (openedChange)="onSidenavToggle($event)">
 
-    <mat-toolbar>Menu</mat-toolbar>
+   <mat-toolbar>
+     <div class="perfil-container">
+    <img src="data:image/jpeg;base64,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" alt="Foto de perfil" class="perfil-foto">
+    <div class="perfil-info">
+     <div class="perfil-nombre">Adán Hernández</div>
+      <div class="perfil-cargo">Administrador</div>
+    </div>
+  </div>
+       </mat-toolbar>
 
     <mat-nav-list>
-      <a mat-list-item href="#" (click)="drawer.close()">Inicio</a>
+      <a mat-list-item routerLink="/inicio" (click)="drawer.close()">Inicio</a>
       <a mat-list-item routerLink="/productos" (click)="drawer.close()">Productos</a>
-      <a mat-list-item href="#" (click)="drawer.close()">Ingredientes</a>
+      <a mat-list-item routerLink="/ingredientes" (click)="drawer.close()">Ingredientes</a>
+      <a mat-list-item routerLink="/usuarios" (click)="drawer.close()">Usuarios</a>
+      <a mat-list-item routerLink="/reportes" (click)="drawer.close()">Reportes</a>
+      <a mat-list-item routerLink="/inventario" (click)="drawer.close()">Inventario</a>
+      <a mat-list-item routerLink="/configuracion" (click)="drawer.close()">Configuracion</a>
     </mat-nav-list>
 
   </mat-sidenav>
@@ -19,10 +31,8 @@
   <mat-sidenav-content 
     [class.content-margin]="isSideMode && sidenavOpened">
 
-    <!-- Toolbar superior -->
     <mat-toolbar color="primary">
 
-      <!-- Botón de toggle para abrir/cerrar sidenav -->
       <button
         type="button"
         mat-icon-button

@@ -14,13 +14,25 @@ import { MatGridListModule } from '@angular/material/grid-list';
 import { MatCardModule } from '@angular/material/card';
 import { MatMenuModule } from '@angular/material/menu';
 import { ProductosComponent } from './components/productos/productos.component';
+import { InicioComponent } from './components/inicio/inicio.component';
+import { IngredientesComponent } from './components/ingredientes/ingredientes.component';
+import { UsuariosComponent } from './components/usuarios/usuarios.component';
+import { ReportesComponent } from './components/reportes/reportes.component';
+import { InventarioComponent } from './components/inventario/inventario.component';
+import { ConfiguracionComponent } from './components/configuracion/configuracion.component';
 
 @NgModule({
   declarations: [
     AppComponent,
     NavigationComponent,
     DashboardComponent,
-    ProductosComponent
+    ProductosComponent,
+    InicioComponent,
+    IngredientesComponent,
+    UsuariosComponent,
+    ReportesComponent,
+    InventarioComponent,
+    ConfiguracionComponent
    
     
   
