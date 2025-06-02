@@ -17,4 +17,18 @@ export class NavigationComponent {
       map(result => result.matches),
       shareReplay()
     );
+
+  isSideMode = false;  // Si estamos en desktop (side mode)
+  sidenavOpened = true; // Controla si el sidenav está abierto
+
+  constructor() {
+    this.isHandset$.subscribe(isHandset => {
+      this.isSideMode = !isHandset;
+      this.sidenavOpened = this.isSideMode; // En desktop iniciar abierto, en móvil cerrado
+    });
+  }
+
+  onSidenavToggle(opened: boolean) {
+    this.sidenavOpened = opened;
+  }
 }

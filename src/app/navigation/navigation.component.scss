@@ -1,24 +1,28 @@
-.sidenav-container {
-  background-color: rgb(0, 255, 255);
-  height: 0%;
-}
-
 .sidenav {
-  background-color: rgb(90, 55, 55);
   width: 200px;
+  height: 100%;
+  padding-top: 1rem;
 }
 
 .sidenav .mat-toolbar {
- background-color: rgb(90, 55, 55);}
-
-
-
-
-.mat-nav-list a {
+  background-color: #5a3737;
   color: white;
+  font-weight: bold;
+  text-align: center;
 }
 
-.mat-toolbar {
-  color: white;
+.mat-nav-list a.mat-list-item {
+  color: white !important;
+  font-weight: 500;
+  transition: background-color 0.3s ease;
 }
 
+.mat-nav-list a.mat-list-item:hover {
+  background-color: #6e4646;
+  color: white !important;
+}
+
+.content-margin {
+  margin-left: 200px;
+  transition: margin 0.3s ease;
+}
