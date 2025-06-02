@@ -32,7 +32,8 @@ import { ConfiguracionComponent } from './components/configuracion/configuracion
     UsuariosComponent,
     ReportesComponent,
     InventarioComponent,
-    ConfiguracionComponent
+    ConfiguracionComponent,
+    
    
     
   

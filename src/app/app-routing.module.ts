@@ -10,7 +10,7 @@ import { InventarioComponent } from './components/inventario/inventario.componen
 import { ConfiguracionComponent } from './components/configuracion/configuracion.component';
 const routes: Routes = [
   
-  { path: '', redirectTo: 'dashboard', pathMatch: 'full' },
+  { path: '', redirectTo: 'inicio', pathMatch: 'full' },
   { path: 'dashboard', component: DashboardComponent },
   { path: 'productos', component: ProductosComponent },
   { path: 'inicio',    component: InicioComponent },
@@ -20,6 +20,10 @@ const routes: Routes = [
   { path: 'inventario', component: InventarioComponent },
   { path: 'configuracion', component: ConfiguracionComponent },
 
+  {
+    path: 'auth',
+    loadChildren: () => import('./auth/auth.module').then((m) => m.AuthModule),
+  },
 
 ];
 
