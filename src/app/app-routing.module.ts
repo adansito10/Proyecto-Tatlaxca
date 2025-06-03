@@ -1,13 +1,13 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
-import { ProductosComponent } from './components/productos/productos.component';
+import { ProductosComponent } from './modulos/productos/productos.component';
 import { DashboardComponent } from './dashboard/dashboard.component';
-import { InicioComponent } from './components/inicio/inicio.component';
-import { IngredientesComponent } from './components/ingredientes/ingredientes.component';
-import { UsuariosComponent } from './components/usuarios/usuarios.component';
-import { ReportesComponent } from './components/reportes/reportes.component'; 
-import { InventarioComponent } from './components/inventario/inventario.component';
-import { ConfiguracionComponent } from './components/configuracion/configuracion.component';
+import { InicioComponent } from './modulos/inicio/inicio.component';
+import { IngredientesComponent } from './modulos/ingredientes/ingredientes.component';
+import { UsuariosComponent } from './modulos/usuarios/usuarios.component';
+import { ReportesComponent } from './modulos/reportes/reportes.component'; 
+import { InventarioComponent } from './modulos/inventario/inventario.component';
+import { ConfiguracionComponent } from './modulos/configuracion/configuracion.component';
 const routes: Routes = [
   
   { path: '', redirectTo: 'inicio', pathMatch: 'full' },

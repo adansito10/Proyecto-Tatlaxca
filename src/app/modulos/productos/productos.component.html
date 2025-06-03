@@ -13,7 +13,7 @@
       </button>
     </div>
 
-    <button class="btn btn-warning fw-bold mb-2">+ Agregar</button>
+<button class="btn btn-warning fw-bold mb-2" (click)="abrirModalAgregar()">+ Agregar</button>
   </div>
 
   <div class="table-responsive">
@@ -37,12 +37,14 @@
           </td>
           <td>00123</td>
           <td>Bebida</td>
-          <td><a href="#" class="text-success text-decoration-none">Ver</a></td>
+          <td><a  class="text-success text-decoration-none" (click)="abrirModalVer(productos)">Ver</a></td>
           <td>$25.00</td>
           <td>Café con agua caliente</td>
           <td>
-            <button class="btn btn-sm btn-success me-1"><i class="bi bi-pencil"></i> Edit</button>
-            <button class="btn btn-sm btn-danger"><i class="bi bi-trash"></i> Delete</button>
+          
+          
+            <button class="btn btn-sm btn-success me-1" (click)="abrirModalEditar(productos)"><i class="bi bi-pencil"></i> Editar</button>
+         <button class="btn btn-sm btn-danger"><i class="bi bi-trash"></i> Eliminar</button>
           </td>
         </tr>
       </tbody>

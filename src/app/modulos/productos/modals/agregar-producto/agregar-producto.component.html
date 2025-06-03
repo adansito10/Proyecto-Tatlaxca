@@ -1,0 +1,27 @@
+<h2 mat-dialog-title>Agregar Producto</h2>
+<mat-dialog-content class="mat-typography">
+  <mat-form-field appearance="outline" class="w-100 mb-3">
+    <mat-label>Nombre</mat-label>
+    <input matInput [(ngModel)]="producto.nombre">
+  </mat-form-field>
+
+  <mat-form-field appearance="outline" class="w-100 mb-3">
+    <mat-label>Categoría</mat-label>
+    <input matInput [(ngModel)]="producto.categoria">
+  </mat-form-field>
+
+  <mat-form-field appearance="outline" class="w-100 mb-3">
+    <mat-label>Precio</mat-label>
+    <input matInput type="number" [(ngModel)]="producto.precio">
+  </mat-form-field>
+
+  <mat-form-field appearance="outline" class="w-100 mb-3">
+    <mat-label>Descripción</mat-label>
+    <textarea matInput rows="3" [(ngModel)]="producto.descripcion"></textarea>
+  </mat-form-field>
+</mat-dialog-content>
+
+<mat-dialog-actions align="end">
+  <button mat-button (click)="cancelar()">Cancelar</button>
+  <button mat-raised-button color="primary" (click)="guardar()">Guardar</button>
+</mat-dialog-actions>
