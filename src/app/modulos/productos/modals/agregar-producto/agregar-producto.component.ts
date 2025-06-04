@@ -17,6 +17,7 @@ export class AgregarProductoComponent {
 
   constructor(public dialogRef: MatDialogRef<AgregarProductoComponent>) {}
 
+  
   guardar() {
     this.dialogRef.close(this.producto);
   }
@@ -24,6 +25,8 @@ export class AgregarProductoComponent {
   cancelar() {
     this.dialogRef.close();
   }
+
+  
 }
 
 

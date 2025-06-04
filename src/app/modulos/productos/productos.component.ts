@@ -3,6 +3,9 @@ import { MatDialog } from '@angular/material/dialog';
 import { AgregarProductoComponent } from './modals/agregar-producto/agregar-producto.component';
 import { EditarProductoComponent } from './modals/editar-producto/editar-producto.component';
 import { VerIngredientesComponent } from './modals/ver-ingredientes/ver-ingredientes.component';
+import { EliminarProductoComponent } from './modals/eliminar-producto/eliminar-producto.component';
+
+
 
 @Component({
   selector: 'app-productos',
@@ -11,7 +14,7 @@ import { VerIngredientesComponent } from './modals/ver-ingredientes/ver-ingredie
   standalone: false
 })
 export class ProductosComponent {
-  productos = [
+ productos = [
     { id: 1, nombre: 'Manzana', precio: 10 },
     { id: 2, nombre: 'Pan', precio: 15 }
   ];
@@ -25,7 +28,6 @@ export class ProductosComponent {
 
     dialogRef.afterClosed().subscribe(result => {
       if (result) {
-        console.log('Producto agregado:', result);
         this.productos.push(result);
       }
     });
@@ -42,10 +44,17 @@ export class ProductosComponent {
         const index = this.productos.findIndex(p => p.id === result.id);
         if (index !== -1) {
           this.productos[index] = result;
-          console.log('Producto editado:', result);
         }
       }
     });
+  }
+
+ abrirModalEliminar(producto: any) {
+    this.dialog.open(EliminarProductoComponent, {
+      width: '400px',
+      data: { ...producto }
+    });
+  
   }
 
   abrirModalVer(producto: any) {

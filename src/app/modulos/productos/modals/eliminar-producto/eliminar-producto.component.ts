@@ -1,4 +1,5 @@
-import { Component } from '@angular/core';
+import { Component, Inject } from '@angular/core';
+import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 
 @Component({
   selector: 'app-eliminar-producto',
@@ -8,4 +9,16 @@ import { Component } from '@angular/core';
 })
 export class EliminarProductoComponent {
 
+constructor(
+    public dialogRef: MatDialogRef<EliminarProductoComponent>,
+    @Inject(MAT_DIALOG_DATA) public data: any
+  ) {}
+
+  cancelar(): void {
+    this.dialogRef.close(false);
+  }
+
+  confirmar(): void {
+    this.dialogRef.close(true);
+  }
 }

@@ -7,12 +7,7 @@
     border-right: 1px solid #dee2e6;
     padding: 1rem;
   }
-  .main-content {
-    background-color: #ffffff;
-    border-radius: 1rem;
-    padding: 2rem;
-    box-shadow: 0 0 10px rgba(0,0,0,0.05);
-  }
+
   .table td img {
     object-fit: cover;
   }
@@ -20,4 +15,27 @@
 
 
 
+.custom-agregar-btn {
+  background-color: #fe8f26; /* color café */
+  border-color: #8B4513;
+  color: white;
+  padding: 10px 20px;
+  font-size: 1rem;
+  border-radius: 8px;
 
+}
+
+
+
+
+.buscador-custom {
+  background-color: #f9f9f9; /* Ejemplo: color claro tipo café */
+  color: #3e2c1c;             /* Texto en marrón oscuro */
+  border: 1px solid #000000;  /* Borde café */
+  font-weight: 500;
+}
+
+.buscador-custom::placeholder {
+  color: #5b5b5b; /* Color del texto de placeholder */
+  opacity: 1;
+}
