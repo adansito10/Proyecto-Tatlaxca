@@ -1,59 +1,61 @@
+/* Estilos generales del sidenav */
+.sidenav-container {
+  height: 100vh;
+}
+
 .sidenav {
-  width: 200px;
-  height: 100%;
-  padding-top: 1rem;
+  width: 180px;
+  color: rgb(152, 152, 152);
 }
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-.perfil-container {
-  display: flex;
-  align-items: center;
-  gap: 10px;
+/* Lista de navegación */
+mat-nav-list a {
+  color: rgb(184, 184, 184);
+  font-weight: 500;
+  padding: 5px;
+  margin-top: 3px;
 }
 
-.perfil-foto {
-  width: 50px;
-  height: 50px;
-  object-fit: cover;
-  border-radius: 50%; /* Hace la imagen redonda */
-  border: 2px solid rgb(255, 230, 9);
+mat-nav-list {
 }
 
-.perfil-info {
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
+
+mat-nav-list a:hover {
+  background-color: #d0d0d0;
 }
 
-.perfil-nombre {
+mat-nav-list a.mat-list-item {
+  border-radius: 4px;
+}
+
+mat-icon {
+  margin-right: 20px;
+}
+
+/* Botón cerrar/abrir */
+mat-toolbar {
+  background-color: #ffffff;
+  color: #2e1c0e;
   font-weight: bold;
-  color: rgb(0, 0, 0);
-  font-size: 14px;
 }
 
-.perfil-cargo {
-  font-size: 12px;
-  color: #000000;
-  margin-top: 2px;
+/* Contenido principal */
+mat-sidenav-content {
+  background-color: #f9f9f9;
+  padding: 0px;
 }
+
+.titulo-app {
+  font-family: 'Segoe UI', sans-serif;
+  font-size: 18px;
+  margin-left: 10px;
+}
+
+
+
+
+
+
+
+

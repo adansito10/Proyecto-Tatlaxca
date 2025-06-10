@@ -1,2 +1,67 @@
+<mat-card class="perfil-card">
+  <div class="perfil-container">
+    <div class="perfil-lateral">
+      <div class="perfil-imagen">
+        <img mat-card-avatar src="https://placekitten.com/150/150" alt="Foto de perfil">
+        <button mat-mini-fab color="accent" class="editar-foto">
+          <mat-icon>edit</mat-icon>
+        </button>
+      </div>
+      <h3>Adan Morales</h3>
+      <span class="rol">Administrador</span>
+      <mat-nav-list>
+        <mat-list-item>
+          <button mat-button>Informacion personal</button>
+        </mat-list-item>
+        <mat-list-item>
+          <button mat-button>Cambiar contraseña</button>
+        </mat-list-item>
+      </mat-nav-list>
+    </div>
 
-<p>configuracion works!</p>
+    <div class="perfil-formulario">
+      <button mat-icon-button color="primary">
+        <mat-icon>arrow_back</mat-icon>
+      </button>
+      <h2>Información personal</h2>
+
+      <form class="form-grid">
+        <mat-form-field appearance="outline" class="campo-blanco">
+          <mat-label>Nombre</mat-label>
+          <input matInput [(ngModel)]="usuario.nombre" name="nombre">
+        </mat-form-field>
+
+        <mat-form-field appearance="outline" class="campo-blanco">
+          <mat-label>Apellido Paterno</mat-label>
+          <input matInput [(ngModel)]="usuario.apellidoPaterno" name="apellidoPaterno">
+        </mat-form-field>
+
+        <mat-form-field appearance="outline" class="campo-blanco">
+          <mat-label>Apellido Materno</mat-label>
+          <input matInput [(ngModel)]="usuario.apellidoMaterno" name="apellidoMaterno">
+        </mat-form-field>
+
+        <mat-form-field appearance="outline" class="campo-blanco">
+          <mat-label>Teléfono</mat-label>
+          <input matInput [(ngModel)]="usuario.telefono" name="telefono">
+        </mat-form-field>
+
+        <mat-form-field appearance="outline" class="campo-blanco">
+          <mat-label>Rol</mat-label>
+          <input matInput [(ngModel)]="usuario.rol" name="rol" disabled>
+        </mat-form-field>
+
+        <mat-form-field appearance="outline" class="campo-blanco">
+          <mat-label>Correo electrónico</mat-label>
+          <input matInput [(ngModel)]="usuario.correo" name="correo">
+        </mat-form-field>
+
+        <div class="boton-contenedor">
+          <button mat-raised-button color="primary" class="boton-editar" (click)="guardarCambios()">
+            Editar información
+          </button>
+        </div>
+      </form>
+    </div>
+  </div>
+</mat-card>

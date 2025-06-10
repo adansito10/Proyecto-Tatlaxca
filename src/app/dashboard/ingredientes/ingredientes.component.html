@@ -1,2 +1,61 @@
+<div class="container-fluid py-4">
+  <div class="d-flex justify-content-between align-items-center mb-3 flex-wrap">
+    <h2 class="fw-bold mb-2 ms-2">Gestión de Ingredientes</h2>
 
-<p>ingredientes works!</p>
+    <div class="d-flex align-items-center mb-2">
+      <input type="text" class="form-control me-2 buscador-custom" placeholder="Buscar..." style="width: 300px">
+
+    
+
+    </div>
+  <button class="btn custom-agregar-btn mb-2" (click)="abrirModalAgregar()">
+      <mat-icon>add</mat-icon> Agregar
+    </button>  </div>
+
+  
+  <div class="table-responsive">
+    <table class="table table-hover text-center align-middle w-100">
+      <thead class="table-light">
+   <tr>
+    <th>ID</th>
+    <th>Imagen</th>
+    <th>Nombre</th>
+    <th>Unidad</th>
+    <th>Stock</th>
+    <th>Acciones</th>
+  </tr>
+      </thead>
+
+
+<tbody>
+  <tr *ngFor="let ingrediente of ingredientes">
+    <!-- ID -->
+    <td class="align-middle">{{ ingrediente.id }}</td>
+
+    <!-- Imagen -->
+    <td class="align-middle text-center">
+      <img [src]="ingrediente.imagen" width="40" height="40" class="rounded-circle object-fit-cover" />
+    </td>
+
+    <!-- Nombre -->
+    <td class="align-middle">{{ ingrediente.nombre }}</td>
+
+    <!-- Unidad -->
+    <td class="align-middle">{{ ingrediente.unidad }}</td>
+
+    <!-- Stock -->
+    <td class="align-middle">{{ ingrediente.stock }}</td>
+
+    <!-- Botones -->
+    <td class="align-middle">
+      <div class="d-flex justify-content-center gap-2">
+        <button class="btn btn-sm btn-success" (click)="editarIngrediente(ingrediente)">
+          <i class="bi bi-pencil"></i> Editar
+        </button>
+        <button class="btn btn-sm btn-danger" (click)="eliminarIngrediente(ingrediente)">
+          <i class="bi bi-trash"></i> Eliminar
+        </button>
+      </div>
+    </td>
+  </tr>
+</tbody>

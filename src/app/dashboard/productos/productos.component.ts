@@ -1,66 +1,95 @@
 import { Component } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
-import { AgregarProductoComponent } from './modals/agregar-producto/agregar-producto.component';
-import { EditarProductoComponent } from './modals/editar-producto/editar-producto.component';
-import { VerIngredientesComponent } from './modals/ver-ingredientes/ver-ingredientes.component';
-import { EliminarProductoComponent } from './modals/eliminar-producto/eliminar-producto.component';
-
-
+import { ProductoModalComponent } from '../../shared/modals/producto-modal/producto-modal.component';
 
 @Component({
   selector: 'app-productos',
   templateUrl: './productos.component.html',
-  styleUrl: './productos.component.scss',
+  styleUrls: ['./productos.component.scss'],
   standalone: false
 })
 export class ProductosComponent {
- productos = [
-    { id: 1, nombre: 'Manzana', precio: 10 },
-    { id: 2, nombre: 'Pan', precio: 15 }
+  filtroTexto: string = '';
+  filtroCategoria: string = '';
+  categorias: string[] = ['Bebida', 'Comida', 'Postre'];
+
+  productos = [
+    {
+      id: '00123',
+      nombre: 'Café negro',
+      categoria: 'Bebida',
+      precio: 25.00,
+      descripcion: '',
+      imagen: 'data:image/jpeg;base64,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',
+      ingredientes: ['Café', 'Agua']
+    },
   ];
 
   constructor(private dialog: MatDialog) {}
 
-  abrirModalAgregar() {
-    const dialogRef = this.dialog.open(AgregarProductoComponent, {
-      width: '400px'
-    });
+  get productosFiltrados() {
+    return this.productos.filter(p =>
+      (!this.filtroCategoria || p.categoria === this.filtroCategoria)
+      && (!this.filtroTexto || p.nombre.toLowerCase().includes(this.filtroTexto.toLowerCase()))
+    );
+  }
 
-    dialogRef.afterClosed().subscribe(result => {
-      if (result) {
-        this.productos.push(result);
-      }
+  abrirModalAgregar() {
+    this.abrirModal('agregar', {
+      nombre: '',
+      categoria: '',
+      precio: 0,
+      descripcion: '',
+      imagen: '',
+      ingredientes: []
     });
   }
 
   abrirModalEditar(producto: any) {
-    const dialogRef = this.dialog.open(EditarProductoComponent, {
-      width: '400px',
-      data: { ...producto }
-    });
-
-    dialogRef.afterClosed().subscribe(result => {
-      if (result) {
-        const index = this.productos.findIndex(p => p.id === result.id);
-        if (index !== -1) {
-          this.productos[index] = result;
-        }
-      }
-    });
+    this.abrirModal('editar', { ...producto });
   }
 
- abrirModalEliminar(producto: any) {
-    this.dialog.open(EliminarProductoComponent, {
-      width: '400px',
-      data: { ...producto }
-    });
-  
+  abrirModalEliminar(producto: any) {
+    this.abrirModal('eliminar', { ...producto });
   }
 
   abrirModalVer(producto: any) {
-    this.dialog.open(VerIngredientesComponent, {
-      width: '400px',
-      data: { ...producto }
+    this.abrirModal('ver', { ...producto });
+  }
+
+  private abrirModal(
+    modo: 'agregar' | 'editar' | 'eliminar' | 'ver',
+    producto: any
+  ) {
+    const dialogRef = this.dialog.open(ProductoModalComponent, {
+      width: modo === 'ver' ? '500px' : '600px',
+      data: {
+        modo,
+        entidad: producto,
+        opcionesIngredientes: ['Café', 'Agua', 'Leche', 'Azúcar', 'Canela']
+      }
+    });
+
+    dialogRef.afterClosed().subscribe(resultado => {
+      if (!resultado) return;
+
+      switch (modo) {
+        case 'agregar':
+          resultado.id = '00' + (this.productos.length + 123);
+          this.productos.push(resultado);
+          break;
+        case 'editar':
+          {
+            const idx = this.productos.findIndex(p => p.id === producto.id);
+            if (idx !== -1) this.productos[idx] = resultado;
+          }
+          break;
+        case 'eliminar':
+          if (resultado.eliminar) {
+            this.productos = this.productos.filter(p => p.id !== resultado.id);
+          }
+          break;
+      }
     });
   }
 }

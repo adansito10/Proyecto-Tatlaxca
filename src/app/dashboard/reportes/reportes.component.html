@@ -1,3 +1,91 @@
+<div class="container-fluid py-4">
+  <div class="d-flex justify-content-between align-items-center mb-4 flex-wrap">
+    <h2 class="fw-bold mb-2 ms-2">Gestión de Reportes</h2>
 
+    <div class="d-flex align-items-center mb-2 flex-wrap">
+      <mat-form-field appearance="outline" style="width: 200px; margin-right: 10px;">
+        <mat-label>Mes</mat-label>
+        <mat-select [(ngModel)]="mesSeleccionado">
+          <mat-option *ngFor="let mes of meses" [value]="mes">{{ mes }}</mat-option>
+        </mat-select>
+      </mat-form-field>
 
-<p>reportes works!</p>
+      <mat-form-field appearance="outline" style="width: 220px; margin-right: 10px;">
+        <mat-label>Tipo de Reporte</mat-label>
+        <mat-select [(ngModel)]="tipoReporteSeleccionado">
+          <mat-option value="masVendidos">Comidas más vendidas</mat-option>
+          <mat-option value="ventasMesero">Ventas por mesero</mat-option>
+          <mat-option value="ventasDiarias">Ventas diarias</mat-option>
+        </mat-select>
+      </mat-form-field>
+
+      <button
+        class="btn custom-descargar-btn"
+        style="background-color: #fe8f26; color: white;"
+        (click)="descargarReporte()"
+      >
+        <mat-icon>download</mat-icon> Descargar
+      </button>
+    </div>
+  </div>
+
+  <div class="table-responsive">
+    <table class="table table-hover text-center align-middle w-100">
+      <thead class="table-light">
+        <!-- Encabezado para Ventas Diarias -->
+        <tr *ngIf="tipoReporteSeleccionado === 'ventasDiarias'">
+          <th>Fecha</th>
+          <th>ID</th>
+          <th>Mesa</th>
+          <th>Total</th>
+          <th>Método Pago</th>
+          <th>Mesero</th>
+          <th>Hora</th>
+        </tr>
+
+        <!-- Encabezado para Comidas Más Vendidas -->
+        <tr *ngIf="tipoReporteSeleccionado === 'masVendidos'">
+          <th>Comida</th>
+          <th>Cantidad Vendida</th>
+        </tr>
+
+        <!-- Encabezado para Ventas por Mesero -->
+        <tr *ngIf="tipoReporteSeleccionado === 'ventasMesero'">
+          <th>Mesero</th>
+          <th>Cantidad Ventas</th>
+          <th>Total</th>
+        </tr>
+      </thead>
+
+      <!-- Cuerpo para Ventas Diarias -->
+      <tbody *ngIf="tipoReporteSeleccionado === 'ventasDiarias'">
+        <tr *ngFor="let venta of ventasDiarias">
+          <td>{{ venta.fecha }}</td>
+          <td>{{ venta.numeroOrden }}</td>
+          <td>{{ venta.mesa }}</td>
+          <td>{{ venta.totalPagado | currency }}</td>
+          <td>{{ venta.metodoPago }}</td>
+          <td>{{ venta.mesero }}</td>
+          <td>{{ venta.hora }}</td>
+        </tr>
+      </tbody>
+
+      <!-- Cuerpo para Comidas Más Vendidas -->
+      <tbody *ngIf="tipoReporteSeleccionado === 'masVendidos'">
+        <tr *ngFor="let comida of comidasMasVendidas">
+          <td>{{ comida.nombre }}</td>
+          <td>{{ comida.cantidad }}</td>
+        </tr>
+      </tbody>
+
+      <!-- Cuerpo para Ventas por Mesero -->
+      <tbody *ngIf="tipoReporteSeleccionado === 'ventasMesero'">
+        <tr *ngFor="let m of ventasMeseros">
+          <td>{{ m.mesero }}</td>
+          <td>{{ m.ventas }}</td>
+          <td>{{ m.total | currency }}</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</div>

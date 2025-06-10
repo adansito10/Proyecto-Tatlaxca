@@ -7,6 +7,7 @@ import { UsuariosComponent } from './usuarios/usuarios.component';
 import { ReportesComponent } from './reportes/reportes.component';
 import { InventarioComponent } from './inventario/inventario.component';
 import { ConfiguracionComponent } from './configuracion/configuracion.component';
+import { OrdenesComponent } from './ordenes/ordenes.component';
 
 const routes: Routes = [
   { path: '', redirectTo: 'inicio', pathMatch: 'full' },
@@ -15,6 +16,7 @@ const routes: Routes = [
   { path: 'ingredientes', component: IngredientesComponent },
   { path: 'usuarios', component: UsuariosComponent },
   { path: 'reportes', component: ReportesComponent },
+  { path: 'ordenes', component: OrdenesComponent },
   { path: 'inventario', component: InventarioComponent },
   { path: 'configuracion', component: ConfiguracionComponent }
 ];

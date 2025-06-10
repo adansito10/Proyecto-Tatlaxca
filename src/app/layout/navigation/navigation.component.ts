@@ -31,4 +31,11 @@ export class NavigationComponent {
   onSidenavToggle(opened: boolean) {
     this.sidenavOpened = opened;
   }
+  onLinkClick(drawer: any) {
+  this.isHandset$.subscribe(isHandset => {
+    if (isHandset) {
+      drawer.close();
+    }
+  }).unsubscribe(); // Cerramos la subscripción inmediatamente
+}
 }

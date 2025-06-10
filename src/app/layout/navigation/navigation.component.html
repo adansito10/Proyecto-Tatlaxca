@@ -6,24 +6,41 @@
       [opened]="sidenavOpened"
       (openedChange)="onSidenavToggle($event)">
 
-   <mat-toolbar>
-     <div class="perfil-container">
-    <img src="data:image/jpeg;base64,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" alt="Foto de perfil" class="perfil-foto">
-    <div class="perfil-info">
-     <div class="perfil-nombre">Adán Capistran</div>
-      <div class="perfil-cargo">Administrador</div>
-    </div>
-  </div>
-       </mat-toolbar>
+    
 
     <mat-nav-list>
-      <a mat-list-item routerLink="/dashboard/inicio" (click)="drawer.close()">Inicio</a>
-      <a mat-list-item routerLink="/dashboard/productos" (click)="drawer.close()">Productos</a>
-      <a mat-list-item routerLink="/dashboard/ingredientes" (click)="drawer.close()">Ingredientes</a>
-      <a mat-list-item routerLink="/dashboard/usuarios" (click)="drawer.close()">Usuarios</a>
-      <a mat-list-item routerLink="/dashboard/reportes" (click)="drawer.close()">Reportes</a>
-      <a mat-list-item routerLink="/dashboard/inventario" (click)="drawer.close()">Inventario</a>
-      <a mat-list-item routerLink="/dashboard/configuracion" (click)="drawer.close()">Configuracion</a>
+      <a mat-list-item routerLink="/dashboard/inicio">
+        <mat-icon>home</mat-icon>
+        <span>Inicio</span>
+      </a>
+      <a mat-list-item routerLink="/dashboard/productos">
+        <mat-icon>restaurant_menu</mat-icon>
+        <span>Menu</span>
+      </a>
+      <a mat-list-item routerLink="/dashboard/ingredientes">
+        <mat-icon>kitchen</mat-icon>
+        <span>Ingredientes</span>
+      </a>
+        <a mat-list-item routerLink="/dashboard/inventario">
+        <mat-icon>inventory</mat-icon>
+        <span>Inventario</span>
+      </a>
+      <a mat-list-item routerLink="/dashboard/usuarios">
+        <mat-icon>people</mat-icon>
+        <span>Usuarios</span>
+      </a>
+      <a mat-list-item routerLink="/dashboard/reportes">
+        <mat-icon>assessment</mat-icon>
+        <span>Reportes</span>
+      </a>
+      <a mat-list-item routerLink="/dashboard/ordenes">
+        <mat-icon>receipt</mat-icon>
+        <span>Ordenes</span>
+      </a>
+      <a mat-list-item routerLink="/dashboard/configuracion">
+        <mat-icon>settings</mat-icon>
+        <span>Configuración</span>
+      </a>
     </mat-nav-list>
 
   </mat-sidenav>
@@ -32,7 +49,6 @@
     [class.content-margin]="isSideMode && sidenavOpened">
 
     <mat-toolbar color="primary">
-
       <button
         type="button"
         mat-icon-button
@@ -41,12 +57,10 @@
       >
         <mat-icon>{{ sidenavOpened ? 'close' : 'menu' }}</mat-icon>
       </button>
-
-      <span style="margin-left: 10px;">Cafeteria-Tatlaxca</span>
-
+  <span class="titulo-app">Cafeteria-Tatlaxca</span>
     </mat-toolbar>
 
-   <router-outlet></router-outlet>
+    <router-outlet></router-outlet>
 
   </mat-sidenav-content>
 </mat-sidenav-container>

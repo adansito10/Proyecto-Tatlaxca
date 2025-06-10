@@ -1,2 +1,79 @@
+<div class="container-fluid py-4">
+  <div class="d-flex justify-content-between align-items-center mb-3 flex-wrap">
+    <h2 class="fw-bold mb-2 ms-2">Gestión de Usuarios</h2>
 
-<p>usuarios works!</p>
+    <div class="d-flex align-items-center mb-2">
+      <input type="text" class="form-control me-1 buscador-custom" placeholder="Buscar..." style="width: 260px">
+
+   <!-- Botón con ícono que abre el menú de cargos -->
+<button mat-icon-button [matMenuTriggerFor]="menuCargos" aria-label="Filtrar por cargo">
+  <mat-icon>category</mat-icon>
+</button>
+
+<!-- Menú con las opciones de cargo -->
+<mat-menu #menuCargos="matMenu">
+  <button mat-menu-item (click)="filtroCargo = ''">
+    <mat-icon>all_inclusive</mat-icon>
+    <span>Todos</span>
+  </button>
+  <button mat-menu-item *ngFor="let cargo of cargos" (click)="filtroCargo = cargo">
+    <mat-icon>badge</mat-icon>
+    <span>{{ cargo }}</span>
+  </button>
+</mat-menu>
+
+    </div>
+
+    <button class="btn custom-agregar-btn mb-2" (click)="abrirModalAgregar()">
+      <mat-icon>add</mat-icon> Agregar
+    </button>
+  </div>
+
+  <div class="table-responsive">
+    <table class="table table-hover align-middle w-100">
+      <thead class="table-light">
+        <tr>
+          <th>ID</th>
+          <th>Foto</th>
+          <th>Nombre</th>
+          <th>Apellido Paterno</th>
+          <th>Apellido Materno</th>
+          <th>Cargo</th>
+          <th>Teléfono</th>
+          <th>Acciones</th>
+        </tr>
+      </thead>
+
+      <tbody>
+        <tr *ngFor="let usuario of usuariosFiltrados">
+          <td class="align-middle">{{ usuario.id }}</td>
+
+          <td class="align-middle">
+            <div class="avatar-container">
+              <img [src]="usuario.foto || 'assets/images/default-avatar.png'"
+                   class="avatar-img rounded-circle object-fit-cover"
+                   alt="Foto de perfil" width="40" height="40">
+            </div>
+          </td>
+
+          <td class="align-middle">{{ usuario.nombre }}</td>
+          <td class="align-middle">{{ usuario.apellidoPaterno }}</td>
+          <td class="align-middle">{{ usuario.apellidoMaterno }}</td>
+          <td class="align-middle">{{ usuario.cargo }}</td>
+          <td class="align-middle">{{ usuario.telefono }}</td>
+
+          <td class="align-middle">
+            <div class="d-flex justify-content-center gap-1">
+              <button class="btn btn-sm btn-success" (click)="abrirModalEditar(usuario)">
+                <i class="bi bi-pencil"></i> Editar
+              </button>
+              <button class="btn btn-sm btn-danger" (click)="abrirModalEliminar(usuario)">
+                <i class="bi bi-trash"></i> Eliminar
+              </button>
+            </div>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</div>

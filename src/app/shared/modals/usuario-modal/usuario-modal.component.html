@@ -1,0 +1,89 @@
+<h2 mat-dialog-title class="modal-title">
+  {{ 
+    data.modo === 'agregar' ? 'Nuevo Usuario' : 
+    data.modo === 'editar' ? 'Editar Usuario' : 
+    'Eliminar Usuario'
+  }}
+</h2>
+
+<mat-dialog-content *ngIf="data.modo !== 'eliminar'">
+  <form (submit)="guardar()">
+    <div class="row">
+      <div class="col-md-6">
+        <mat-form-field appearance="outline" class="w-100">
+          <mat-label>Nombre</mat-label>
+          <input matInput [(ngModel)]="data.usuario.nombre" name="nombre" required>
+        </mat-form-field>
+      </div>
+      
+      <div class="col-md-6">
+        <mat-form-field appearance="outline" class="w-100">
+          <mat-label>Apellido Paterno</mat-label>
+          <input matInput [(ngModel)]="data.usuario.apellidoPaterno" name="apellidoPaterno" required>
+        </mat-form-field>
+      </div>
+    </div>
+
+    <div class="row">
+      <div class="col-md-6">
+        <mat-form-field appearance="outline" class="w-100">
+          <mat-label>Apellido Materno</mat-label>
+          <input matInput [(ngModel)]="data.usuario.apellidoMaterno" name="apellidoMaterno">
+        </mat-form-field>
+      </div>
+      
+      <div class="col-md-6">
+        <mat-form-field appearance="outline" class="w-100">
+          <mat-label>Teléfono</mat-label>
+          <input matInput type="tel" [(ngModel)]="data.usuario.telefono" name="telefono">
+        </mat-form-field>
+      </div>
+    </div>
+
+    <div class="row">
+      <div class="col-md-6">
+        <mat-form-field appearance="outline" class="w-100">
+          <mat-label>Cargo</mat-label>
+          <mat-select [(ngModel)]="data.usuario.cargo" name="cargo" required>
+            <mat-option *ngFor="let cargo of data.cargosDisponibles" [value]="cargo">
+              {{ cargo }}
+            </mat-option>
+          </mat-select>
+        </mat-form-field>
+      </div>
+      
+      <div class="col-md-6">
+        <div class="image-upload-container">
+          <label for="usuarioFotoInput" class="image-upload-button">
+            <mat-icon>photo_camera</mat-icon>
+            <span>{{ data.usuario.foto ? 'Cambiar foto' : 'Subir foto' }}</span>
+          </label>
+          <input id="usuarioFotoInput" type="file" accept="image/*" 
+                 (change)="onFileSelected($event)" style="display: none;">
+        </div>
+      </div>
+    </div>
+
+    <div class="image-preview text-center mt-3" *ngIf="data.usuario.foto">
+      <img [src]="data.usuario.foto" class="img-thumbnail" style="max-height: 150px;">
+    </div>
+  </form>
+</mat-dialog-content>
+
+<mat-dialog-content *ngIf="data.modo === 'eliminar'">
+  <div class="alert alert-warning">
+    <h5 class="alert-heading">Confirmar eliminación</h5>
+    <p>¿Estás seguro de eliminar al usuario <strong>{{data.usuario.nombre}} {{data.usuario.apellidoPaterno}}</strong>?</p>
+    <p class="mb-0">Esta acción no puede deshacerse.</p>
+  </div>
+</mat-dialog-content>
+
+<mat-dialog-actions align="end" class="modal-actions">
+  <button mat-button (click)="cancelar()">Cancelar</button>
+  <button mat-button color="warn" *ngIf="data.modo === 'eliminar'" 
+          (click)="eliminar()">Confirmar Eliminación</button>
+  <button mat-raised-button color="primary" *ngIf="data.modo !== 'eliminar'" 
+          (click)="guardar()" [disabled]="!data.usuario.nombre || !data.usuario.cargo">
+    {{ data.modo === 'agregar' ? 'Crear Usuario' : 'Guardar Cambios' }}
+  </button>
+</mat-dialog-actions>

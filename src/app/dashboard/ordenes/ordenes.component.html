@@ -1,1 +1,40 @@
-<p>ordenes works!</p>
+<div class="container-fluid py-4">
+  <div class="d-flex justify-content-between align-items-center mb-4 flex-wrap">
+    <h2 class="fw-bold mb-2 ms-2">Gestión de Ordenes</h2>
+
+    <button class="btn custom-agregar-btn" (click)="descargarReporte()">
+      <mat-icon>download</mat-icon> Descargar
+    </button>
+  </div>
+
+  <div class="table-responsive">
+    <table class="table table-hover text-center align-middle w-100">
+      <thead class="table-light">
+        <tr>
+          <th>Número de Orden</th>
+          <th>Fecha</th>
+          <th>Hora</th>
+          <th>Mesa</th>
+          <th>Mesero</th>
+          <th>Productos</th>
+          <th>Descripción</th>
+          <th>Total</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let orden of Ordenes">
+          <td>{{ orden.numeroOrden }}</td>
+          <td>{{ orden.fecha }}</td>
+          <td>{{ orden.hora }}</td>
+          <td>{{ orden.mesa }}</td>
+          <td>{{ orden.mesero }}</td>
+          <td>
+            <button class="btn btn-sm btn-outline-primary">Ver</button>
+          </td>
+          <td>{{ orden.descripcion }}</td>
+          <td>{{ orden.total }}</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</div>

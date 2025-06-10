@@ -1,0 +1,88 @@
+ :host {
+    background-color: white;
+    display: block;
+    width: 92vw;
+    height: 80vh;
+    margin: 0;
+    padding: 0;
+  }
+
+  .perfil-card {
+    width: 100%;
+    height: 100%;
+    padding: 2rem;
+    box-sizing: border-box;
+  }
+
+  .perfil-container {
+    display: flex;
+    height: 100%;
+    gap: 2rem;
+  }
+
+  .perfil-lateral {
+    width: 100px;
+    text-align: center;
+  }
+
+  .perfil-imagen {
+    position: relative;
+    width: 100px;
+    height: 100px;
+    margin: 0 auto;
+  }
+
+  .perfil-imagen img {
+    width: 100%;
+    height: 100%;
+    border-radius: 50%;
+  }
+
+  .editar-foto {
+    position: absolute;
+    bottom: 0;
+    right: 0;
+  }
+
+  .rol {
+    display: block;
+    margin-bottom: 1rem;
+  }
+
+  .perfil-formulario {
+    flex: 1;
+    overflow-y: auto;
+  }
+
+  .form-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 1rem;
+    margin-top: 1rem;
+  }
+
+  .boton-editar {
+    grid-column: span 2;
+    justify-self: start;
+  }
+
+  .campo-blanco .mat-form-field-flex {
+    background-color: white !important;
+  }
+
+
+  .form-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 10px;
+}
+
+.campo-blanco {
+  width: 80%;
+}
+
+.boton-contenedor {
+  grid-column: span 1;
+  display: flex;
+  justify-content: flex-end;
+}
