@@ -14,8 +14,8 @@ import { ConfiguracionComponent } from './configuracion/configuracion.component'
 
 
 import { OrdenesComponent } from './ordenes/ordenes.component';
-import { ModalModule } from '../shared/modals/modal.module';
 import { MatSelectModule } from '@angular/material/select';
+import { ModalModule } from '../shared/modales/modal.module';
 
 
 @NgModule({
@@ -37,6 +37,7 @@ import { MatSelectModule } from '@angular/material/select';
     DashboardRoutingModule,
     SharedModule,
     ModalModule
+    
   ]
 })
 export class DashboardModule { }

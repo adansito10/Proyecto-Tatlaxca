@@ -1,0 +1,65 @@
+<h2 mat-dialog-title>Editar producto</h2>
+
+<mat-dialog-content>
+  <form [formGroup]="productoForm">
+    <mat-form-field appearance="fill" class="full-width">
+      <mat-label>Nombre</mat-label>
+      <input matInput formControlName="nombre">
+    </mat-form-field>
+
+    <mat-form-field appearance="fill" class="full-width">
+      <mat-label>Categoría</mat-label>
+      <mat-select formControlName="categoria">
+        <mat-option value="Comida">Comida</mat-option>
+        <mat-option value="Bebida">Bebida</mat-option>
+      </mat-select>
+    </mat-form-field>
+
+    <mat-form-field appearance="fill" class="full-width">
+      <mat-label>Precio</mat-label>
+      <input matInput type="number" formControlName="precio">
+    </mat-form-field>
+
+    <mat-form-field appearance="fill" class="full-width">
+      <mat-label>Descripción</mat-label>
+      <textarea matInput formControlName="descripcion"></textarea>
+    </mat-form-field>
+
+    <div class="ingredientes-section">
+      <h4>Ingredientes</h4>
+      <div *ngIf="ingredientesSeleccionados.length; else sinIngredientes">
+        <ul>
+          <li *ngFor="let ing of ingredientesSeleccionados">{{ ing }}</li>
+        </ul>
+      </div>
+      <ng-template #sinIngredientes>
+        <p>No se han seleccionado ingredientes.</p>
+      </ng-template>
+
+      <button mat-stroked-button color="primary" (click)="abrirModalIngredientes()">
+        Seleccionar Ingredientes
+      </button>
+    </div>
+
+    <!-- Botón para subir foto -->
+    <div style="margin: 16px 0; text-align: center;">
+      <button mat-stroked-button color="accent" (click)="fileInput.click()" style="width: 100%;">
+        <mat-icon>add_a_photo</mat-icon>
+        Subir Foto del Producto
+      </button>
+      <input #fileInput type="file" accept="image/*" style="display: none" (change)="onFileSelected($event)">
+      
+      <!-- Vista previa de la imagen -->
+      <div *ngIf="imagenProducto" style="margin-top: 16px;">
+        <img [src]="imagenProducto" alt="Vista previa" style="max-width: 200px; max-height: 150px; border-radius: 4px;">
+      </div>
+    </div>
+  </form>
+</mat-dialog-content>
+
+<mat-dialog-actions align="end">
+  <button mat-button mat-dialog-close>Cancelar</button>
+  <button mat-flat-button color="primary" (click)="guardarProducto()" [disabled]="productoForm.invalid">
+    Guardar
+  </button>
+</mat-dialog-actions>

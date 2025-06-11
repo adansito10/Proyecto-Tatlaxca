@@ -1,0 +1,96 @@
+<h2 mat-dialog-title>
+  {{ data.modo === 'agregar' ? 'Agregar Usuario' : (data.modo === 'editar' ? 'Editar Usuario' : 'Eliminar Usuario') }}
+</h2>
+
+<mat-dialog-content *ngIf="data.modo !== 'eliminar'">
+  <form [formGroup]="usuarioForm" class="usuario-form">
+
+    <mat-form-field appearance="fill" class="full-width">
+      <mat-label>Nombre</mat-label>
+      <input matInput formControlName="nombre" />
+      <mat-error *ngIf="usuarioForm.controls['nombre'].hasError('required')">
+        El nombre es requerido
+      </mat-error>
+      <mat-error *ngIf="usuarioForm.controls['nombre'].hasError('pattern')">
+        Solo letras permitidas
+      </mat-error>
+    </mat-form-field>
+
+    <mat-form-field appearance="fill" class="full-width">
+      <mat-label>Apellido Paterno</mat-label>
+      <input matInput formControlName="apellidoPaterno" />
+      <mat-error *ngIf="usuarioForm.controls['apellidoPaterno'].hasError('required')">
+        El apellido paterno es requerido
+      </mat-error>
+    </mat-form-field>
+
+    <mat-form-field appearance="fill" class="full-width">
+      <mat-label>Apellido Materno</mat-label>
+      <input matInput formControlName="apellidoMaterno" />
+      <mat-error *ngIf="usuarioForm.controls['apellidoMaterno'].hasError('required')">
+        El apellido materno es requerido
+      </mat-error>
+    </mat-form-field>
+
+    <mat-form-field appearance="fill" class="full-width">
+      <mat-label>Cargo</mat-label>
+      <mat-select formControlName="cargo">
+        <mat-option *ngFor="let c of data.cargos" [value]="c">{{ c }}</mat-option>
+      </mat-select>
+      <mat-error *ngIf="usuarioForm.controls['cargo'].hasError('required')">
+        El cargo es requerido
+      </mat-error>
+    </mat-form-field>
+
+    <mat-form-field appearance="fill" class="full-width">
+      <mat-label>Teléfono</mat-label>
+      <input matInput formControlName="telefono" maxlength="10" />
+      <mat-error *ngIf="usuarioForm.controls['telefono'].hasError('required')">
+        El teléfono es requerido
+      </mat-error>
+      <mat-error *ngIf="usuarioForm.controls['telefono'].hasError('pattern')">
+        Solo números permitidos
+      </mat-error>
+    </mat-form-field>
+
+    <!-- Botón para subir foto -->
+    <div style="margin: 16px 0; text-align: center;">
+      <button mat-stroked-button color="accent" (click)="fileInput.click()" style="width: 100%;">
+        <mat-icon>add_a_photo</mat-icon>
+        Subir Foto del Usuario
+      </button>
+      <input #fileInput type="file" accept="image/*" style="display: none" (change)="onFileSelected($event)" />
+
+      <!-- Vista previa de la imagen -->
+      <div *ngIf="imagenPreview" style="margin-top: 16px;">
+        <img [src]="imagenPreview" alt="Vista previa" style="max-width: 200px; max-height: 150px; border-radius: 4px;" />
+      </div>
+    </div>
+  </form>
+</mat-dialog-content>
+
+<!-- Confirmación para eliminar -->
+<mat-dialog-content *ngIf="data.modo === 'eliminar'">
+  <p>¿Seguro que quieres eliminar al usuario <strong>{{ data.usuario.nombre }} {{ data.usuario.apellidoPaterno }}</strong>?</p>
+</mat-dialog-content>
+
+<mat-dialog-actions align="end">
+  <button mat-button mat-dialog-close>Cancelar</button>
+  <button
+    mat-flat-button
+    color="primary"
+    *ngIf="data.modo !== 'eliminar'"
+    [disabled]="usuarioForm.invalid"
+    (click)="guardar()"
+  >
+    Guardar
+  </button>
+  <button
+    mat-flat-button
+    color="warn"
+    *ngIf="data.modo === 'eliminar'"
+    (click)="eliminar()"
+  >
+    Eliminar
+  </button>
+</mat-dialog-actions>

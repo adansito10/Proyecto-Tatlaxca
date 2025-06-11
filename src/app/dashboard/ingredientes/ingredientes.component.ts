@@ -1,76 +1,64 @@
 import { Component } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
-import { IngredienteModalComponent } from '../../shared/modals/ingrediente-modal/ingrediente-modal.component';
+import { AgregarIngredienteComponent } from '../../shared/modales/Ingredientes/agregar-ingrediente/agregar-ingrediente.component';
+import { EliminarProductoComponent } from '../../shared/modales/Productos/eliminar-producto/eliminar-producto/eliminar-producto.component';
+import { EditarIngredienteComponent } from '../../shared/modales/Ingredientes/editar-ingrediente/editar-ingrediente.component';
+import { EliminarIngredienteComponent } from '../../shared/modales/Ingredientes/eliminar-ingrediente/eliminar-ingrediente.component';
+
 
 @Component({
   selector: 'app-ingredientes',
+  standalone: false,
   templateUrl: './ingredientes.component.html',
-  styleUrls: ['./ingredientes.component.scss'],
-  standalone: false
+  styleUrls: ['./ingredientes.component.scss']
 })
 export class IngredientesComponent {
   ingredientes = [
-    { 
-      id: '001', 
-      nombre: 'Harina', 
-      unidad: 'kg', 
-      stock: 50,
-      imagen: 'assets/images/harina.jpg' 
-    },
-    { 
-      id: '002', 
-      nombre: 'Azúcar', 
-      unidad: 'kg', 
-      stock: 30,
-      imagen: 'assets/images/azucar.jpg' 
-    },
+    { id: '001', nombre: 'Harina', unidad: 'kg', stock: 50, imagen: 'assets/images/harina.jpg' },
+    { id: '002', nombre: 'Azúcar', unidad: 'kg', stock: 30, imagen: 'assets/images/azucar.jpg' }
   ];
 
   constructor(private dialog: MatDialog) {}
 
   abrirModalAgregar() {
-    this.abrirModal('agregar', { 
-      nombre: '',
-      unidad: '',
-      stock: 0,
-      imagen: ''
-    });
-  }
-
-  editarIngrediente(ingrediente: any) {
-    this.abrirModal('editar', { ...ingrediente });
-  }
-
-  eliminarIngrediente(ingrediente: any) {
-    this.abrirModal('eliminar', { ...ingrediente });
-  }
-
-  private abrirModal(modo: 'agregar' | 'editar' | 'eliminar', ingrediente: any) {
-    const dialogRef = this.dialog.open(IngredienteModalComponent, {
-      width: modo === 'eliminar' ? '400px' : '500px',
-      data: { 
-        modo: modo,
-        entidad: ingrediente
-      }
+    const dialogRef = this.dialog.open(AgregarIngredienteComponent, {
+      width: '500px',
+      data: { modo: 'agregar' }
     });
 
     dialogRef.afterClosed().subscribe(resultado => {
-      if (!resultado) return;
+      if (resultado) {
+        resultado.id = '00' + (this.ingredientes.length + 1);
+        this.ingredientes.push(resultado);
+      }
+    });
+  }
 
-      switch(modo) {
-        case 'agregar':
-          resultado.id = '00' + (this.ingredientes.length + 1);
-          this.ingredientes.push(resultado);
-          break;
-        case 'editar':
-          const index = this.ingredientes.findIndex(i => i.id === ingrediente.id);
-          if (index !== -1) this.ingredientes[index] = resultado;
-          break;
-        case 'eliminar':
-          if (resultado.eliminar) {
-            this.ingredientes = this.ingredientes.filter(i => i.id !== resultado.id);
-          }
-          break;
+  abrirModalEditar(ingrediente: any) {
+    const dialogRef = this.dialog.open(EditarIngredienteComponent, {
+      width: '500px',
+      data: { modo: 'editar', entidad: ingrediente }
+    });
+
+    dialogRef.afterClosed().subscribe(resultado => {
+      if (resultado) {
+        const index = this.ingredientes.findIndex(i => i.id === ingrediente.id);
+        if (index !== -1) {
+          this.ingredientes[index] = resultado;
+        }
+      }
+    });
+  }
+
+  abrirModalEliminar(ingrediente: any) {
+    const dialogRef = this.dialog.open(EliminarIngredienteComponent, {
+      width: '400px',
+      data: { entidad: ingrediente }
+    });
+
+    dialogRef.afterClosed().subscribe(resultado => {
+      if (resultado && resultado.eliminar) {
+        this.ingredientes = this.ingredientes.filter(i => i.id !== ingrediente.id);
       }
     });
   }

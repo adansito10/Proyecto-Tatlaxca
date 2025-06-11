@@ -1,0 +1,59 @@
+<h2 mat-dialog-title>Agregar Suministro</h2>
+
+<mat-dialog-content>
+  <form [formGroup]="suministroForm">
+    <mat-form-field appearance="fill" class="full-width">
+      <mat-label>Nombre del Suministro</mat-label>
+      <input matInput formControlName="nombre" required>
+      <mat-error *ngIf="suministroForm.get('nombre')?.hasError('required')">Este campo es obligatorio</mat-error>
+    </mat-form-field>
+
+    <mat-form-field appearance="fill" class="full-width">
+      <mat-label>Categoría</mat-label>
+      <mat-select formControlName="categoria" required>
+        <mat-option value="Alimentos">Alimentos</mat-option>
+        <mat-option value="Bebidas">Bebidas</mat-option>
+        <mat-option value="Limpieza">Limpieza</mat-option>
+        <mat-option value="Otros">Otros</mat-option>
+      </mat-select>
+      <mat-error *ngIf="suministroForm.get('categoria')?.hasError('required')">Seleccione una categoría</mat-error>
+    </mat-form-field>
+
+    <mat-form-field appearance="fill" class="full-width">
+      <mat-label>Unidad de Medida</mat-label>
+      <mat-select formControlName="unidad" required>
+        <mat-option value="Kg">Kilogramos</mat-option>
+        <mat-option value="L">Litros</mat-option>
+        <mat-option value="Unidad">Unidades</mat-option>
+        <mat-option value="Paquete">Paquetes</mat-option>
+      </mat-select>
+      <mat-error *ngIf="suministroForm.get('unidad')?.hasError('required')">Seleccione una unidad</mat-error>
+    </mat-form-field>
+
+    <mat-form-field appearance="fill" class="full-width">
+      <mat-label>Stock Disponible</mat-label>
+      <input matInput type="number" formControlName="stock" min="0" required>
+      <mat-error *ngIf="suministroForm.get('stock')?.hasError('required') || suministroForm.get('stock')?.hasError('min')">Ingrese un valor válido</mat-error>
+    </mat-form-field>
+
+    <mat-form-field appearance="fill" class="full-width">
+      <mat-label>Fecha Última Compra</mat-label>
+      <input matInput [matDatepicker]="picker" formControlName="fechaUltimaCompra">
+      <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+      <mat-datepicker #picker></mat-datepicker>
+    </mat-form-field>
+
+    <mat-form-field appearance="fill" class="full-width">
+      <mat-label>Stock Mínimo</mat-label>
+      <input matInput type="number" formControlName="stockMinimo" min="0">
+      <mat-error *ngIf="suministroForm.get('stockMinimo')?.hasError('min')">Ingrese un valor válido</mat-error>
+    </mat-form-field>
+  </form>
+</mat-dialog-content>
+
+<mat-dialog-actions align="end">
+  <button mat-button mat-dialog-close>Cancelar</button>
+  <button mat-flat-button color="primary" (click)="guardar()" [disabled]="suministroForm.invalid">
+    Guardar
+  </button>
+</mat-dialog-actions>

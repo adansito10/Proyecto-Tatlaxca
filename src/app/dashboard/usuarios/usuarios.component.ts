@@ -1,6 +1,8 @@
 import { Component } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
-import { UsuarioModalComponent } from '../../shared/modals/usuario-modal/usuario-modal.component';
+import { AgregarUsuarioComponent } from '../../shared/modales/Usuarios/agregar-usuario/agregar-usuario.component';
+import { EditarUsuarioComponent } from '../../shared/modales/Usuarios/editar-usuario/editar-usuario.component';
+import { EliminarUsuarioComponent } from '../../shared/modales/Usuarios/eliminar-usuario/eliminar-usuario.component';
 
 @Component({
   selector: 'app-usuarios',
@@ -9,10 +11,7 @@ import { UsuarioModalComponent } from '../../shared/modals/usuario-modal/usuario
   styleUrls: ['./usuarios.component.scss']
 })
 export class UsuariosComponent {
-
   filtroCargo: string = '';
-  mostrarFiltroCargo: boolean = false;
-
   cargos: string[] = ['Administrador', 'Gerente', 'Supervisor', 'Empleado', 'Cocinero', 'Mesero'];
 
   usuarios = [
@@ -38,7 +37,6 @@ export class UsuariosComponent {
 
   constructor(private dialog: MatDialog) {}
 
-  
   get usuariosFiltrados() {
     return this.usuarios.filter(usuario =>
       this.filtroCargo === '' || usuario.cargo === this.filtroCargo
@@ -46,51 +44,51 @@ export class UsuariosComponent {
   }
 
   abrirModalAgregar() {
-    this.abrirModal('agregar', {
-      nombre: '',
-      apellidoPaterno: '',
-      apellidoMaterno: '',
-      cargo: '',
-      telefono: '',
-      foto: ''
-    });
-  }
-
-  abrirModalEditar(usuario: any) {
-    this.abrirModal('editar', { ...usuario });
-  }
-
-  abrirModalEliminar(usuario: any) {
-    this.abrirModal('eliminar', { ...usuario });
-  }
-
-  private abrirModal(modo: 'agregar' | 'editar' | 'eliminar', usuario: any) {
-    const dialogRef = this.dialog.open(UsuarioModalComponent, {
+    const dialogRef = this.dialog.open(AgregarUsuarioComponent, {
       width: '600px',
       data: {
-        modo: modo,
-        usuario: usuario,
+        modo: 'agregar',
+        usuario: {},
         cargos: this.cargos
       }
     });
 
     dialogRef.afterClosed().subscribe(resultado => {
       if (!resultado) return;
+      resultado.id = '00' + (this.usuarios.length + 123);
+      this.usuarios.push(resultado);
+    });
+  }
 
-      switch (modo) {
-        case 'agregar':
-          resultado.id = '00' + (this.usuarios.length + 1);
-          this.usuarios.push(resultado);
-          break;
-        case 'editar':
-          const index = this.usuarios.findIndex(u => u.id === usuario.id);
-          if (index !== -1) this.usuarios[index] = resultado;
-          break;
-        case 'eliminar':
-          if (resultado.eliminar) {
-            this.usuarios = this.usuarios.filter(u => u.id !== resultado.id);
-          }
-          break;
+  abrirModalEditar(usuario: any) {
+    const dialogRef = this.dialog.open(EditarUsuarioComponent, {
+      width: '800px',
+      data: {
+        modo: 'editar',
+        usuario: { ...usuario },
+        cargos: this.cargos
+      }
+    });
+
+    dialogRef.afterClosed().subscribe(resultado => {
+      if (!resultado) return;
+      const idx = this.usuarios.findIndex(p => p.id === usuario.id);
+      if (idx !== -1) this.usuarios[idx] = resultado;
+    });
+  }
+
+  abrirModalEliminar(usuario: any) {
+    const dialogRef = this.dialog.open(EliminarUsuarioComponent, {
+      width: '400px',
+      data: {
+        modo: 'eliminar',
+        usuario
+      }
+    });
+
+    dialogRef.afterClosed().subscribe(resultado => {
+      if (resultado && resultado.eliminar) {
+        this.usuarios = this.usuarios.filter(p => p.id !== usuario.id);
       }
     });
   }

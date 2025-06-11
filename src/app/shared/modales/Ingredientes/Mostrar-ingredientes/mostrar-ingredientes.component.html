@@ -1,0 +1,20 @@
+<h2 mat-dialog-title>Seleccionar Ingredientes</h2>
+<mat-dialog-content>
+  <form [formGroup]="ingredientesForm">
+    <div *ngFor="let controlName of controlNombres; let i = index">
+      <mat-form-field appearance="fill" class="full-width">
+        <mat-label>Ingrediente {{ i + 1 }}</mat-label>
+        <mat-select [formControlName]="controlName">
+          <mat-option *ngFor="let ing of ingredientesDisponibles" [value]="ing">
+            {{ ing }}
+          </mat-option>
+        </mat-select>
+      </mat-form-field>
+    </div>
+  </form>
+</mat-dialog-content>
+
+<mat-dialog-actions align="end">
+  <button mat-button mat-dialog-close>Cancelar</button>
+  <button mat-flat-button color="primary" (click)="guardarIngredientes()">Guardar</button>
+</mat-dialog-actions>

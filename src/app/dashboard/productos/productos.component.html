@@ -34,7 +34,6 @@
     <th>Categoría</th>
     <th>Ingredientes</th>
     <th>Precio</th>
-    <th>Descripción</th>
     <th>Acciones</th>
   </tr>
       </thead>
@@ -56,19 +55,12 @@
     </td>
 
     <td class="align-middle">${{ producto.precio | number:'1.2-2' }}</td>
-
-    <td class="align-middle">
-      <button class="btn btn-sm btn-outline-info" (click)="abrirModalVer(producto)">
-        Ver
-      </button>
-    </td>
-
     <td class="align-middle">
       <div class="d-flex justify-content-center gap-2">
-        <button class="btn btn-sm btn-success" (click)="abrirModalEditar(producto)">
+        <button class="btn btn-sm btn-success" (click)="abrirModalEditar(productos)">
           <i class="bi bi-pencil"></i> Editar
         </button>
-        <button class="btn btn-sm btn-danger" (click)="abrirModalEliminar(producto)">
+        <button class="btn btn-sm btn-danger" (click)="abrirModalEliminar(productos)">
           <i class="bi bi-trash"></i> Eliminar
         </button>
       </div>

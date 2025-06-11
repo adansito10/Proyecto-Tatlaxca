@@ -1,6 +1,9 @@
 import { Component } from '@angular/core';
-import { UsuarioModalComponent } from '../../shared/modals/usuario-modal/usuario-modal.component';
 import { MatDialog } from '@angular/material/dialog';
+import { AgregarIngredienteComponent } from '../../shared/modales/Ingredientes/agregar-ingrediente/agregar-ingrediente.component';
+import { AgregarSuministroComponent } from '../../shared/modales/Inventario/agregar-suministro/agregar-suministro.component';
+import { EditarSuministroComponent } from '../../shared/modales/Inventario/editar-suministro/editar-suministro.component';
+import { EliminarSuministroComponent } from '../../shared/modales/Inventario/eliminar-suministro/eliminar-suministro.component';
 @Component({
   selector: 'app-inventario',
   standalone: false,
@@ -58,7 +61,7 @@ export class InventarioComponent {
   }
 
   abrirModalAgregar() {
-    const dialogRef = this.dialog.open(UsuarioModalComponent, {
+    const dialogRef = this.dialog.open(AgregarSuministroComponent, {
       width: '600px',
       data: { 
         modo: 'agregar',
@@ -83,7 +86,7 @@ export class InventarioComponent {
   }
 
   abrirModalEditar(item: any) {
-    const dialogRef = this.dialog.open(UsuarioModalComponent, {
+    const dialogRef = this.dialog.open(EditarSuministroComponent, {
       width: '600px',
       data: { 
         modo: 'editar',
@@ -101,7 +104,7 @@ export class InventarioComponent {
   }
 
   abrirModalEliminar(item: any) {
-    const dialogRef = this.dialog.open(UsuarioModalComponent, {
+    const dialogRef = this.dialog.open(EliminarSuministroComponent, {
       width: '400px',
       data: {
         titulo: 'Confirmar eliminación',
