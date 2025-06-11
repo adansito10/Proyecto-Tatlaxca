@@ -9,16 +9,6 @@
 }
 
 
-/* Lista de navegación */
-mat-nav-list a {
-  color: rgb(184, 184, 184);
-  font-weight: 500;
-  padding: 5px;
-  margin-top: 3px;
-}
-
-mat-nav-list {
-}
 
 
 mat-nav-list a:hover {
@@ -56,6 +46,30 @@ mat-sidenav-content {
 
 
 
+.profile-section {
+  display: flex;
+  align-items: center;
+  padding: 20px;
+  background-color: #ffffff; /* ajusta el fondo según tu mockup */
+  border-bottom: 1px solid #ddd;
+}
 
+.profile-image {
+  width: 45px;
+  height: 45px;
+  border-radius: 30%;
+  object-fit: cover;
+  margin-right: 12px;
+}
 
+.profile-info h3 {
+  margin: 0;
+  font-size: 16px;
+  font-weight: 600;
+}
 
+.profile-info p {
+  margin: 0;
+  font-size: 12px;
+  color: #666;
+}

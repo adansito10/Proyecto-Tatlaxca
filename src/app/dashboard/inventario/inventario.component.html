@@ -1,6 +1,6 @@
 <div class="container-fluid py-4">
   <div class="d-flex justify-content-between align-items-center mb-3 flex-wrap">
-    <h2 class="fw-bold mb-2 ms-2">Inventario de Suministros</h2>
+    <h1 class="fw-bold mb-2 ms-2">Inventario de Suministros</h1>
 
     <div class="d-flex align-items-center mb-2">
       <input type="text" class="form-control me-2 buscador-custom" placeholder="Buscar..." style="width: 300px" [(ngModel)]="filtroTexto">
@@ -33,8 +33,9 @@
     <table class="table table-hover text-center align-middle w-100">
       <thead class="table-light">
         <tr>
-          <th>Nombre del artículo</th>
+
           <th>ID</th>
+          <th>Nombre del artículo</th>
           <th>Categoría</th>
           <th>Stock</th>
           <th>Unidad</th>
@@ -44,8 +45,8 @@
       </thead>
       <tbody>
         <tr *ngFor="let item of inventarioFiltrado">
-          <td class="align-middle">{{ item.nombre }}</td>
-          <td class="align-middle">{{ item.id }}</td>
+         <td class="align-middle">{{ item.id }}</td>
+         <td class="align-middle">{{ item.nombre }}</td>
           <td class="align-middle">{{ item.categoria }}</td>
           <td class="align-middle" [ngClass]="{'text-danger': item.stock < item.stockMinimo}">
             {{ item.stock }}

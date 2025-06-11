@@ -1,6 +1,6 @@
 <div class="container-fluid py-4">
   <div class="d-flex justify-content-between align-items-center mb-3 flex-wrap">
-    <h2 class="fw-bold mb-2 ms-2">Gestión de Usuarios</h2>
+    <h1 class="fw-bold mb-2 ms-2">Gestión de Usuarios</h1>
 
     <div class="d-flex align-items-center mb-2">
       <input type="text" class="form-control me-1 buscador-custom" placeholder="Buscar..." style="width: 260px">
@@ -13,11 +13,9 @@
 <!-- Menú con las opciones de cargo -->
 <mat-menu #menuCargos="matMenu">
   <button mat-menu-item (click)="filtroCargo = ''">
-    <mat-icon>all_inclusive</mat-icon>
     <span>Todos</span>
   </button>
   <button mat-menu-item *ngFor="let cargo of cargos" (click)="filtroCargo = cargo">
-    <mat-icon>badge</mat-icon>
     <span>{{ cargo }}</span>
   </button>
 </mat-menu>
