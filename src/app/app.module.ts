@@ -9,6 +9,8 @@ import { provideClientHydration, withEventReplay } from '@angular/platform-brows
 @NgModule({
   declarations: [
     AppComponent,
+    
+    
   ],
   imports: [
     BrowserModule,
