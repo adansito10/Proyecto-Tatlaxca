@@ -16,6 +16,7 @@ import { ConfiguracionComponent } from './configuracion/configuracion.component'
 import { OrdenesComponent } from './ordenes/ordenes.component';
 import { MatSelectModule } from '@angular/material/select';
 import { ModalModule } from '../shared/modales/modal.module';
+import { HttpClientJsonpModule } from '@angular/common/http';
 
 
 @NgModule({
@@ -36,7 +37,8 @@ import { ModalModule } from '../shared/modales/modal.module';
     MatOptionModule,
     DashboardRoutingModule,
     SharedModule,
-    ModalModule
+    ModalModule,
+    HttpClientJsonpModule
     
   ]
 })

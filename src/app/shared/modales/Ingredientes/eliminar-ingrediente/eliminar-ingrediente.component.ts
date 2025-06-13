@@ -5,12 +5,12 @@ import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
   selector: 'app-eliminar-ingrediente',
   standalone: false,
   templateUrl: './eliminar-ingrediente.component.html',
-  styleUrl: './eliminar-ingrediente.component.scss'
+  styleUrls: ['./eliminar-ingrediente.component.scss']
 })
 export class EliminarIngredienteComponent {
-constructor(
+  constructor(
     public dialogRef: MatDialogRef<EliminarIngredienteComponent>,
-    @Inject(MAT_DIALOG_DATA) public data: { nombreProducto: string }
+    @Inject(MAT_DIALOG_DATA) public data: { nombre: string }
   ) {}
 
   cancelar(): void {
