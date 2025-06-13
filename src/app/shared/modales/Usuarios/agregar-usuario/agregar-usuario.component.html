@@ -53,15 +53,35 @@
       </mat-error>
     </mat-form-field>
 
-    <!-- Botón para subir foto -->
+    <mat-form-field appearance="fill" class="full-width">
+      <mat-label>Correo electrónico</mat-label>
+      <input matInput formControlName="correo" />
+      <mat-error *ngIf="usuarioForm.controls['correo'].hasError('required')">
+        El correo es requerido
+      </mat-error>
+      <mat-error *ngIf="usuarioForm.controls['correo'].hasError('email')">
+        Debe ser un correo válido
+      </mat-error>
+    </mat-form-field>
+
+    <mat-form-field appearance="fill" class="full-width">
+      <mat-label>Contraseña</mat-label>
+      <input matInput type="password" formControlName="password" />
+      <mat-error *ngIf="usuarioForm.controls['password'].hasError('required')">
+        La contraseña es requerida
+      </mat-error>
+      <mat-error *ngIf="usuarioForm.controls['password'].hasError('minlength')">
+        Mínimo 6 caracteres
+      </mat-error>
+    </mat-form-field>
+
+    <!-- Subir foto -->
     <div style="margin: 16px 0; text-align: center;">
       <button mat-stroked-button color="accent" (click)="fileInput.click()" style="width: 100%;">
         <mat-icon>add_a_photo</mat-icon>
         Subir Foto del Usuario
       </button>
       <input #fileInput type="file" accept="image/*" style="display: none" (change)="onFileSelected($event)" />
-
-      <!-- Vista previa de la imagen -->
       <div *ngIf="imagenPreview" style="margin-top: 16px;">
         <img [src]="imagenPreview" alt="Vista previa" style="max-width: 200px; max-height: 150px; border-radius: 4px;" />
       </div>
@@ -69,7 +89,7 @@
   </form>
 </mat-dialog-content>
 
-<!-- Confirmación para eliminar -->
+<!-- Confirmación de eliminación -->
 <mat-dialog-content *ngIf="data.modo === 'eliminar'">
   <p>¿Seguro que quieres eliminar al usuario <strong>{{ data.usuario.nombre }} {{ data.usuario.apellidoPaterno }}</strong>?</p>
 </mat-dialog-content>

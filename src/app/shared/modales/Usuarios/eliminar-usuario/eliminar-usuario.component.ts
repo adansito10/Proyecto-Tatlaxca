@@ -10,7 +10,7 @@ import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 export class EliminarUsuarioComponent {
  constructor(
     public dialogRef: MatDialogRef<EliminarUsuarioComponent>,
-    @Inject(MAT_DIALOG_DATA) public data: { nombreProducto: string }
+    @Inject(MAT_DIALOG_DATA) public data: { usuario: string }
   ) {}
 
   cancelar(): void {

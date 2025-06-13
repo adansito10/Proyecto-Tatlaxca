@@ -1,4 +1,4 @@
-import { Component, Inject } from '@angular/core';
+import { Component, Inject, ViewChild, ElementRef } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 
@@ -9,8 +9,9 @@ import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
   styleUrl: './editar-usuario.component.scss'
 })
 export class EditarUsuarioComponent {
-usuarioForm: FormGroup;
+  usuarioForm: FormGroup;
   imagenPreview: string | ArrayBuffer | null = null;
+  @ViewChild('fileInput') fileInput!: ElementRef<HTMLInputElement>;
 
   constructor(
     private fb: FormBuilder,
@@ -23,10 +24,11 @@ usuarioForm: FormGroup;
       apellidoMaterno: [data.usuario?.apellidoMaterno || '', Validators.required],
       cargo: [data.usuario?.cargo || '', Validators.required],
       telefono: [data.usuario?.telefono || '', [Validators.required, Validators.pattern('^[0-9]{10}$')]],
+      correo: [data.usuario?.correo || '', [Validators.required, Validators.email]],
+      password: [data.usuario?.password || '', [Validators.required, Validators.minLength(6)]],
       foto: [data.usuario?.foto || null]
     });
 
-    // Si ya hay imagen, mostrarla
     if (data.usuario?.foto) {
       this.imagenPreview = data.usuario.foto;
     }

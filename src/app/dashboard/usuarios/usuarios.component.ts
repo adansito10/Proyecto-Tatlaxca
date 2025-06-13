@@ -12,16 +12,19 @@ import { EliminarUsuarioComponent } from '../../shared/modales/Usuarios/eliminar
 })
 export class UsuariosComponent {
   filtroCargo: string = '';
-  cargos: string[] = ['Administrador', 'Gerente', 'Supervisor', 'Empleado', 'Cocinero', 'Mesero'];
+  cargos: string[] = ['Administrador', 'Empleado', 'Cocinero', 'Mesero'];
 
   usuarios = [
     {
       id: '001',
-      nombre: 'Juan',
-      apellidoPaterno: 'Pérez',
+      nombre: 'Benito',
+      apellidoPaterno: 'perez',
       apellidoMaterno: 'Gómez',
       cargo: 'Administrador',
+      correo:'juan@gmail.com',
+      password:'Benito@',
       telefono: '5551234567',
+      
       foto: 'assets/images/users/user1.jpg'
     },
     {
@@ -31,6 +34,8 @@ export class UsuariosComponent {
       apellidoMaterno: 'Hernández',
       cargo: 'Cocinero',
       telefono: '5557654321',
+      correo:'maria@gmail.com',
+      password:'mariaxddx',
       foto: 'assets/images/users/user2.jpg'
     }
   ];

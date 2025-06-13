@@ -27,7 +27,7 @@ export class IngredientesService {
     // URL correcta: http://localhost:3010/api/ingredients/7
     return this.http.put(`${this.apiUrl}/${id}`, {
       stock: -1,
-      deletedAt: new Date().toISOString() // Opcional: marca de tiempo de eliminación
+      deletedAt: new Date().toISOString() 
     });
  }
 }
