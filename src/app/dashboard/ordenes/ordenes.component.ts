@@ -16,7 +16,7 @@ export class OrdenesComponent {
       productos: ['Pizza', 'Refresco', 'Postre'],
       total: '$150.00',
       mesero: 'Adan M',
-      descripcion: 'Entregado',
+      descripcion: 'Finalizado',
     },
     {
       fecha: '13/05/2025',
