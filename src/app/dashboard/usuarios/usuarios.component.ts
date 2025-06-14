@@ -1,5 +1,6 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
+import { UsuarioServiceService } from '../../services/usuario-service/usuario-service.service';
 import { AgregarUsuarioComponent } from '../../shared/modales/Usuarios/agregar-usuario/agregar-usuario.component';
 import { EditarUsuarioComponent } from '../../shared/modales/Usuarios/editar-usuario/editar-usuario.component';
 import { EliminarUsuarioComponent } from '../../shared/modales/Usuarios/eliminar-usuario/eliminar-usuario.component';
@@ -10,37 +11,19 @@ import { EliminarUsuarioComponent } from '../../shared/modales/Usuarios/eliminar
   templateUrl: './usuarios.component.html',
   styleUrls: ['./usuarios.component.scss']
 })
-export class UsuariosComponent {
+export class UsuariosComponent implements OnInit {
+  usuarios: any[] = [];
   filtroCargo: string = '';
   cargos: string[] = ['Administrador', 'Empleado', 'Cocinero', 'Mesero'];
 
-  usuarios = [
-    {
-      id: '001',
-      nombre: 'Benito',
-      apellidoPaterno: 'perez',
-      apellidoMaterno: 'Gómez',
-      cargo: 'Administrador',
-      correo:'juan@gmail.com',
-      password:'Benito@',
-      telefono: '5551234567',
-      
-      foto: 'assets/images/users/user1.jpg'
-    },
-    {
-      id: '002',
-      nombre: 'María',
-      apellidoPaterno: 'López',
-      apellidoMaterno: 'Hernández',
-      cargo: 'Cocinero',
-      telefono: '5557654321',
-      correo:'maria@gmail.com',
-      password:'mariaxddx',
-      foto: 'assets/images/users/user2.jpg'
-    }
-  ];
+  constructor(
+    private dialog: MatDialog,
+    private usuarioService: UsuarioServiceService
+  ) {}
 
-  constructor(private dialog: MatDialog) {}
+  ngOnInit(): void {
+    this.cargarUsuarios();
+  }
 
   get usuariosFiltrados() {
     return this.usuarios.filter(usuario =>
@@ -48,24 +31,53 @@ export class UsuariosComponent {
     );
   }
 
-  abrirModalAgregar() {
-    const dialogRef = this.dialog.open(AgregarUsuarioComponent, {
-      width: '600px',
-      data: {
-        modo: 'agregar',
-        usuario: {},
-        cargos: this.cargos
-      }
-    });
-
-    dialogRef.afterClosed().subscribe(resultado => {
-      if (!resultado) return;
-      resultado.id = '00' + (this.usuarios.length + 123);
-      this.usuarios.push(resultado);
+  cargarUsuarios(): void {
+    this.usuarioService.getUsuarios().subscribe({
+      next: data => this.usuarios = data,
+      error: err => console.error('Error al obtener usuarios:', err)
     });
   }
 
-  abrirModalEditar(usuario: any) {
+  abrirModalAgregar(): void {
+  const dialogRef = this.dialog.open(AgregarUsuarioComponent, {
+    width: '600px',
+    data: {
+      modo: 'agregar',
+      usuario: {},
+      cargos: this.cargos
+    }
+  });
+
+  dialogRef.afterClosed().subscribe(resultado => {
+    if (!resultado) return;
+
+    const datosAPI = {
+      correo: resultado.correo,
+      password: resultado.password
+    };
+
+    this.usuarioService.crearUsuario(datosAPI).subscribe({
+      next: (apiResponse) => {
+        const usuarioLocal = {
+          id: apiResponse?.id || '00' + (this.usuarios.length + 1),  // usa el ID si lo devuelve la API
+          correo: resultado.correo,
+          nombre: resultado.nombre || '',
+          apellidoPaterno: resultado.apellidoPaterno || '',
+          apellidoMaterno: resultado.apellidoMaterno || '',
+          telefono: resultado.telefono || '',
+          foto: resultado.foto || '',
+          cargo: resultado.cargo || ''
+        };
+
+        this.usuarios.push(usuarioLocal);
+      },
+      error: err => console.error('Error al crear usuario:', err)
+    });
+  });
+}
+
+
+  abrirModalEditar(usuario: any): void {
     const dialogRef = this.dialog.open(EditarUsuarioComponent, {
       width: '800px',
       data: {
@@ -76,13 +88,16 @@ export class UsuariosComponent {
     });
 
     dialogRef.afterClosed().subscribe(resultado => {
-      if (!resultado) return;
-      const idx = this.usuarios.findIndex(p => p.id === usuario.id);
-      if (idx !== -1) this.usuarios[idx] = resultado;
+      if (resultado) {
+        this.usuarioService.editarUsuario(usuario.id, resultado).subscribe({
+          next: () => this.cargarUsuarios(),
+          error: err => console.error('Error al editar usuario:', err)
+        });
+      }
     });
   }
 
-  abrirModalEliminar(usuario: any) {
+  abrirModalEliminar(usuario: any): void {
     const dialogRef = this.dialog.open(EliminarUsuarioComponent, {
       width: '400px',
       data: {
@@ -92,8 +107,11 @@ export class UsuariosComponent {
     });
 
     dialogRef.afterClosed().subscribe(resultado => {
-      if (resultado && resultado.eliminar) {
-        this.usuarios = this.usuarios.filter(p => p.id !== usuario.id);
+      if (resultado?.eliminar) {
+        this.usuarioService.eliminarUsuario(usuario.id).subscribe({
+          next: () => this.cargarUsuarios(),
+          error: err => console.error('Error al eliminar usuario:', err)
+        });
       }
     });
   }
