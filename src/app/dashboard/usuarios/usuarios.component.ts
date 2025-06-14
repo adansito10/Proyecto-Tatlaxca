@@ -14,7 +14,7 @@ import { EliminarUsuarioComponent } from '../../shared/modales/Usuarios/eliminar
 export class UsuariosComponent implements OnInit {
   usuarios: any[] = [];
   filtroCargo: string = '';
-  cargos: string[] = ['Administrador', 'Empleado', 'Cocinero', 'Mesero'];
+  cargos: string[] = [ 'Empleado', 'Cocinero', 'Mesero'];
 
   constructor(
     private dialog: MatDialog,

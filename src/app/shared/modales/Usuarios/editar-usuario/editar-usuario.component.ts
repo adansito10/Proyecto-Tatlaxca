@@ -25,7 +25,7 @@ export class EditarUsuarioComponent {
       cargo: [data.usuario?.cargo || '', Validators.required],
       telefono: [data.usuario?.telefono || '', [Validators.required, Validators.pattern('^[0-9]{10}$')]],
       correo: [data.usuario?.correo || '', [Validators.required, Validators.email]],
-      password: [data.usuario?.password || '', [Validators.required, Validators.minLength(6)]],
+      password: ['', [Validators.minLength(6)]],  // campo vacío y opcional
       foto: [data.usuario?.foto || null]
     });
 
@@ -49,7 +49,14 @@ export class EditarUsuarioComponent {
 
   guardar(): void {
     if (this.usuarioForm.valid) {
-      this.dialogRef.close(this.usuarioForm.value);
+      const formValue = this.usuarioForm.value;
+
+      // Eliminar el campo password si está vacío
+      if (!formValue.password || formValue.password.trim() === '') {
+        delete formValue.password;
+      }
+
+      this.dialogRef.close(formValue);
     }
   }
 

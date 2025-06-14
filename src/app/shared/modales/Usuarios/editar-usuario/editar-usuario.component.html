@@ -53,11 +53,14 @@
 
     <!-- Contraseña visible solo en modo editar -->
  <mat-form-field appearance="fill" class="full-width" *ngIf="data.modo === 'editar'">
-  <mat-label>Contraseña</mat-label>
-  <input matInput type="text" formControlName="password" />
-  <mat-error *ngIf="usuarioForm.controls['password'].hasError('required')">Requerida</mat-error>
-  <mat-error *ngIf="usuarioForm.controls['password'].hasError('minlength')">Mínimo 6 caracteres</mat-error>
+  <mat-label>Nueva contraseña (opcional)</mat-label>
+  <input matInput type="password" formControlName="password" placeholder="Escríbela solo si deseas cambiarla" />
+  
+  <mat-error *ngIf="usuarioForm.controls['password'].hasError('minlength') && usuarioForm.controls['password'].touched">
+    Mínimo 6 caracteres
+  </mat-error>
 </mat-form-field>
+
 
     <!-- Subir Foto -->
     <div style="margin: 16px 0; text-align: center;">
