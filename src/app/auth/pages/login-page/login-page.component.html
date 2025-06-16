@@ -1,11 +1,19 @@
-<h2>Iniciar Sesión</h2>
+<div class="login-container">
+  <img src="assets/logo.png" alt="Logo Cafetería" class="logo" />
 
-<form (ngSubmit)="onLogin()">
-  <label>Correo electrónico:</label>
-  <input type="email"  name="email" required />
+  <h2>Iniciar sesión</h2>
 
-  <label>Contraseña:</label>
-  <input type="password" name="password" required />
+  <form>
+    <div class="input-group">
+      <span class="icon"></span>
+      <input type="email" placeholder="Email Address" required />
+    </div>
 
-  <button type="submit">Entrar</button>
-</form>
+    <div class="input-group">
+      <span class="icon"></span>
+      <input type="password" placeholder="Password" required />
+    </div>
+
+    <button type="submit">Iniciar sesión</button>
+  </form>
+</div>
