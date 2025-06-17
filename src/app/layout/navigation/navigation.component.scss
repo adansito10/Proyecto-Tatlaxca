@@ -1,4 +1,3 @@
-/* Estilos generales del sidenav */
 .sidenav-container {
   height: 100vh;
 }
@@ -30,7 +29,6 @@ mat-toolbar {
   font-weight: bold;
 }
 
-/* Contenido principal */
 mat-sidenav-content {
   background-color: #f9f9f9;
   padding: 0px;
@@ -93,4 +91,44 @@ mat-sidenav-content {
 .btn-config mat-icon {
   vertical-align: middle;
   margin-right: -40px;
+}
+
+
+
+
+
+
+
+
+
+
+
+
+.overlay {
+  position: fixed;       /* Fijo en la pantalla */
+  top: 0;
+  left: 0;
+  width: 100vw;         /* Toda la pantalla ancho */
+  height: 100vh;        /* Toda la pantalla alto */
+  background-color: rgba(0, 0, 0, 0.6); /* Fondo semi-transparente oscuro */
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 10000;       /* Que esté arriba de todo */
+}
+
+.spinner-container {
+  display: flex;
+  align-items: center;
+  background-color: #333;
+  padding: 1rem 2rem;
+  border-radius: 8px;
+  box-shadow: 0 0 10px #555555;
+}
+
+
+
+.logout-button {
+  padding: 1rem;
+  margin-top: auto;
 }

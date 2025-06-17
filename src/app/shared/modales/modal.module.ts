@@ -30,6 +30,8 @@ import { MatNativeDateModule } from '@angular/material/core';
 import { AgregarUsuarioComponent } from './Usuarios/agregar-usuario/agregar-usuario.component';
 import { EditarUsuarioComponent } from './Usuarios/editar-usuario/editar-usuario.component';
 import { EliminarUsuarioComponent } from './Usuarios/eliminar-usuario/eliminar-usuario.component';
+import { ConfirmLogoutDialogComponent } from './confirm-logout-login/confirmLogoutDialogComponent';
+import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 // Componentes
 
 @NgModule({
@@ -48,6 +50,7 @@ import { EliminarUsuarioComponent } from './Usuarios/eliminar-usuario/eliminar-u
   AgregarUsuarioComponent,
   EditarUsuarioComponent,
   EliminarUsuarioComponent,
+  ConfirmLogoutDialogComponent
   
   ],
   imports: [

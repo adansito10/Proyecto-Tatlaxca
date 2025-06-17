@@ -17,6 +17,7 @@ import { MatInputModule } from '@angular/material/input';
 import { LayoutModule } from '@angular/cdk/layout';
 
 import { NavigationComponent } from '../layout/navigation/navigation.component';
+import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 
 @NgModule({
   declarations: [NavigationComponent],
@@ -36,6 +37,7 @@ import { NavigationComponent } from '../layout/navigation/navigation.component';
     MatDialogModule,
     MatFormFieldModule,
     MatInputModule,
+    MatProgressSpinnerModule,
     LayoutModule
   ],
   exports: [
@@ -55,6 +57,7 @@ import { NavigationComponent } from '../layout/navigation/navigation.component';
     MatFormFieldModule,
     MatInputModule,
     LayoutModule,
+    MatProgressSpinnerModule,
     NavigationComponent
   ]
 })

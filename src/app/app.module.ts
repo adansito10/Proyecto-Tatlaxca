@@ -8,6 +8,8 @@ import { provideClientHydration, withEventReplay } from '@angular/platform-brows
 import { HttpClient, HttpClientModule } from '@angular/common/http';
 import { AuthRoutingModule } from './auth/auth-routing.module';
 import { RouterModule } from '@angular/router';
+import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
+
 
 @NgModule({
   declarations: [

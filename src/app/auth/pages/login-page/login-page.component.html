@@ -1,10 +1,8 @@
 <div class="login-container">
-<img src="/logocafeteria.jpg" alt="Logo Cafetería" class="logo" />
-
-
+  <img src="/logocafeteria.jpg" alt="Logo Cafetería" class="logo" />
   <h2>Iniciar sesión</h2>
 
-  <form>
+  <form (submit)="onLogin($event)">
     <div class="input-group">
       <span class="icon"></span>
       <input type="email" placeholder="Email Address" required />
@@ -15,6 +13,14 @@
       <input type="password" placeholder="Password" required />
     </div>
 
-    <button routerLink="/dashboard/inicio" type="submit">Iniciar sesión</button>
+    <button type="submit">Iniciar sesión</button>
   </form>
+
+  <!-- Mensaje de cargando -->
+  <div *ngIf="iniciandoSesion" class="overlay">
+    <div class="spinner-box">
+      <mat-spinner diameter="40"></mat-spinner>
+      <p>Iniciando sesión...</p>
+    </div>
+  </div>
 </div>

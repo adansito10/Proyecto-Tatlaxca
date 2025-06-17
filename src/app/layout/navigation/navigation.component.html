@@ -7,7 +7,7 @@
       (openedChange)="onSidenavToggle($event)">
 
     <div class="profile-section">
-      <img src="" alt="Foto de perfil" class="profile-image">
+      <img src="/images.jpeg" alt="Foto de perfil" class="profile-image">
       <div class="profile-info">
         <h3>Adansito</h3>
         <p>Administrador</p>
@@ -28,14 +28,30 @@
     </mat-nav-list>
 
 
-      <!-- Botón de Cerrar Sesión -->
-    <div style="margin-top: auto; padding: 1rem;">
+        <div class="logout-button">
       <button mat-button color="warn" (click)="logout()">
         <mat-icon>logout</mat-icon>
         Cerrar sesión
       </button>
     </div>
+  
+
+
+
+  <div *ngIf="cerrandoSesion" class="overlay">
+  <div class="spinner-container">
+    <mat-spinner diameter="50"></mat-spinner>
+    <span style="margin-left: 15px; color: white; font-size: 1.2rem;">Cerrando sesión...</span>
+  </div>
+</div>
+
+
+
   </mat-sidenav>
+
+
+
+
 
   <mat-sidenav-content [class.content-margin]="isSideMode && sidenavOpened">
     <mat-toolbar color="primary">
