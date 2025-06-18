@@ -17,18 +17,7 @@
       <input matInput type="number" formControlName="stock" min="0" />
     </mat-form-field>
 
-    <!-- Foto -->
-    <div style="margin: 16px 0; text-align: center;">
-      <button mat-stroked-button color="accent" (click)="fileInput.click()" style="width: 100%;">
-        <mat-icon>add_a_photo</mat-icon>
-        Subir Foto del Ingrediente
-      </button>
-      <input #fileInput type="file" accept="image/*" style="display: none" (change)="onFileSelected($event)" />
-
-      <div *ngIf="imagenPreview" style="margin-top: 16px;">
-        <img [src]="imagenPreview" alt="Vista previa" style="max-width: 200px; max-height: 150px; border-radius: 4px;" />
-      </div>
-    </div>
+ 
   </form>
 </mat-dialog-content>
 

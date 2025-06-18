@@ -35,20 +35,8 @@
       </mat-error>
     </mat-form-field>
 
-    <div style="margin: 16px 0; text-align: center;">
-      <button mat-stroked-button color="accent" (click)="fileInput.click()" style="width: 100%;">
-        <mat-icon>add_a_photo</mat-icon>
-        Subir Foto del Ingrediente
-      </button>
-      <input #fileInput type="file" accept="image/*" style="display: none" (change)="onFileSelected($event)">
-
-      <div *ngIf="imagenIngrediente" style="margin-top: 16px;">
-        <img [src]="imagenIngrediente" alt="Vista previa" style="max-width: 200px; max-height: 150px; border-radius: 4px;">
-        <button mat-icon-button color="warn" (click)="removeImage()" matTooltip="Eliminar imagen">
-          <mat-icon>delete</mat-icon>
-        </button>
-      </div>
-    </div>
+   
+    
   </form>
 </mat-dialog-content>
 

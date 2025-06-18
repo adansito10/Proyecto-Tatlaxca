@@ -18,7 +18,6 @@
       <thead class="table-light">
    <tr>
     <th>ID</th>
-    <th>Imagen</th>
     <th>Nombre</th>
     <th>Unidad</th>
     <th>Stock</th>
@@ -31,12 +30,7 @@
   <tr *ngFor="let ingrediente of ingredientes">
     <!-- ID -->
     <td class="align-middle">{{ ingrediente.id }}</td>
-
-    <!-- Imagen -->
-    <td class="align-middle text-center">
-      <img [src]="ingrediente.imagen" width="40" height="40" class="rounded-circle object-fit-cover" />
-    </td>
-
+ 
     <!-- Nombre -->
     <td class="align-middle">{{ ingrediente.nombre }}</td>
 

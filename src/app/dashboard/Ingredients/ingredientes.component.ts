@@ -72,13 +72,10 @@ export class IngredientesComponent implements OnInit {
     if (resultado) {
       this.ingredientesService.eliminarIngrediente(ingrediente.id).subscribe({
         next: () => {
-          // Actualizar la vista filtrando el ingrediente "eliminado"
           this.ingredientes = this.ingredientes.filter(i => i.id !== ingrediente.id);
-          // Alternativamente: this.obtenerIngredientes(); para recargar todo
         },
         error: (error) => {
           console.error('Error al eliminar ingrediente:', error);
-          // Mostrar mensaje de error al usuario si es necesario
         }
       });
     }
