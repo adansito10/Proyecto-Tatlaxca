@@ -47,10 +47,10 @@ mat-sidenav-content {
 .profile-section {
   display: flex;
   align-items: center;
-  margin-left: -5px;
-  padding: 15px;
+  margin-left: 3px;
+  padding: 8px;
   background-color: #ffffff; 
-  border-bottom: 1px solid #ffffff;
+  border-bottom: 1px solid #000000;
 }
 
 .profile-image {
@@ -65,10 +65,11 @@ mat-sidenav-content {
   margin: 0;
   font-size: 15px;
   font-weight: 500;
+  color: #000000;
 }
 
 .profile-info p {
-  margin: -1px;
+  margin: -2px;
   font-size: 11px;
   color: #000000;
 }
@@ -84,7 +85,7 @@ mat-sidenav-content {
 
 .btn-config mat-icon {
   vertical-align: middle;
-  margin-right: -50px;
+  margin-right: -60px;
 }
 
 
