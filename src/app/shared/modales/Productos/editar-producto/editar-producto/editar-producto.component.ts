@@ -5,7 +5,7 @@ import { MostrarIngredientesComponent } from '../../../Ingredientes/Mostrar-ingr
 
 @Component({
   selector: 'app-editar-producto',
- standalone: false,
+  standalone: false,
   templateUrl: './editar-producto.component.html',
   styleUrl: './editar-producto.component.scss'
 })
@@ -13,13 +13,16 @@ export class EditarProductoComponent {
   productoForm: FormGroup;
   ingredientesSeleccionados: string[] = [];
   imagenProducto: string | ArrayBuffer | null = null;
+  modo: 'agregar' | 'editar';
 
   constructor(
     private fb: FormBuilder,
     private dialog: MatDialog,
     private dialogRef: MatDialogRef<EditarProductoComponent>,
-    @Inject(MAT_DIALOG_DATA) public data: any
+    @Inject(MAT_DIALOG_DATA) public data: { modo: 'agregar' | 'editar', producto: any }
   ) {
+    this.modo = data.modo;
+
     this.productoForm = this.fb.group({
       nombre: ['', Validators.required],
       categoria: ['', Validators.required],
@@ -27,16 +30,16 @@ export class EditarProductoComponent {
       descripcion: ['']
     });
 
-    if (data) {
+    if (data.producto) {
       this.productoForm.patchValue({
-        nombre: data.nombre,
-        categoria: data.categoria,
-        precio: data.precio,
-        descripcion: data.descripcion
+        nombre: data.producto.nombre,
+        categoria: data.producto.categoria,
+        precio: data.producto.precio,
+        descripcion: data.producto.descripcion
       });
 
-      this.ingredientesSeleccionados = data.ingredientes || [];
-      this.imagenProducto = data.imagen || null;
+      this.ingredientesSeleccionados = data.producto.ingredientes || [];
+      this.imagenProducto = data.producto.imagen || null;
     }
   }
 
@@ -58,7 +61,7 @@ export class EditarProductoComponent {
     });
 
     dialogRef.afterClosed().subscribe((seleccionados: string[]) => {
-      if (seleccionados && seleccionados.length > 0) {
+      if (seleccionados?.length > 0) {
         this.ingredientesSeleccionados = seleccionados;
       }
     });
@@ -72,7 +75,6 @@ export class EditarProductoComponent {
         imagen: this.imagenProducto
       };
 
-      console.log('Producto actualizado:', productoActualizado);
       this.dialogRef.close(productoActualizado);
     }
   }

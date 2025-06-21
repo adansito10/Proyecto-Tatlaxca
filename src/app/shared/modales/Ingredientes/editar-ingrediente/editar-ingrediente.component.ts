@@ -6,7 +6,6 @@ interface Ingrediente {
   nombre: string;
   unidad: string;
   stock: number;
-  imagen?: string | null;
 }
 
 @Component({
@@ -27,35 +26,16 @@ export class EditarIngredienteComponent implements OnInit {
   ) {
     this.modo = data.modo;
 
-    // Inicializar formulario con valores según modo
     this.form = this.fb.group({
       nombre: [data.entidad?.nombre || '', Validators.required],
       unidad: [data.entidad?.unidad || '', Validators.required],
       stock: [data.entidad?.stock || 0, [Validators.required, Validators.min(0)]],
-      imagen: [data.entidad?.imagen || null]
     });
-
-    // Mostrar imagen previa si ya hay
-    if (data.entidad?.imagen) {
-      this.imagenPreview = data.entidad.imagen;
-    }
+   
   }
 
   ngOnInit(): void {}
 
-  onFileSelected(event: Event): void {
-    const input = event.target as HTMLInputElement;
-    if (!input.files?.length) return;
-
-    const file = input.files[0];
-    this.form.patchValue({ imagen: file });
-
-    const reader = new FileReader();
-    reader.onload = () => {
-      this.imagenPreview = reader.result;
-    };
-    reader.readAsDataURL(file);
-  }
 
   guardar(): void {
     if (this.form.invalid) return;

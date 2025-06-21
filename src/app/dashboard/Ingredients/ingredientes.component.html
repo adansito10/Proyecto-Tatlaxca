@@ -10,14 +10,13 @@
     </div>
   <button class="btn custom-agregar-btn mb-2" (click)="abrirModalAgregar()">
       <mat-icon>add</mat-icon> Agregar
-    </button>  </div>
+    </button></div>
 
   
   <div class="table-responsive">
     <table class="table table-hover text-center align-middle w-100">
       <thead class="table-light">
    <tr>
-    <th>ID</th>
     <th>Nombre</th>
     <th>Unidad</th>
     <th>Stock</th>
@@ -28,10 +27,7 @@
 
 <tbody>
   <tr *ngFor="let ingrediente of ingredientes">
-    <!-- ID -->
-    <td class="align-middle">{{ ingrediente.id }}</td>
- 
-    <!-- Nombre -->
+
     <td class="align-middle">{{ ingrediente.nombre }}</td>
 
     <!-- Unidad -->
@@ -40,11 +36,11 @@
     <!-- Stock -->
     <td class="align-middle">{{ ingrediente.stock }}</td>
 
-    <!-- Botones -->
     <td class="align-middle">
       <div class="d-flex justify-content-center gap-2">
         <button class="btn btn-sm btn-success" (click)="abrirModalEditar(ingrediente)">
           <i class="bi bi-pencil"></i>
+
         </button>
         <button class="btn btn-sm btn-danger" (click)="abrirModalEliminar(ingrediente)">
           <i class="bi bi-trash"></i>

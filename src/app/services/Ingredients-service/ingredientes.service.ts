@@ -7,7 +7,7 @@ import { environment } from '../../enviroments/environment';
   providedIn: 'root'
 })
 export class IngredientesService {
-  private apiUrl = `${environment.apiUrl}/ingredients`; // Asegúrate de que /ingredientes sea tu endpoint
+  private apiUrl = `${environment.apiUrl}/ingredients`; 
 
   constructor(private http: HttpClient) {}
 
@@ -24,7 +24,6 @@ export class IngredientesService {
   }
 
  eliminarIngrediente(id: number): Observable<any> {
-    // URL correcta: http://localhost:3010/api/ingredients/7
     return this.http.put(`${this.apiUrl}/${id}`, {
       stock: -1,
       deletedAt: new Date().toISOString() 

@@ -1,5 +1,6 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
+import { ProductosService } from '../../services/products-service/products.service';
 import { AgregarProductoComponent } from '../../shared/modales/Productos/agregar-productos/agregar-producto/agregar-producto.component';
 import { EditarProductoComponent } from '../../shared/modales/Productos/editar-producto/editar-producto/editar-producto.component';
 import { EliminarProductoComponent } from '../../shared/modales/Productos/eliminar-producto/eliminar-producto/eliminar-producto.component';
@@ -11,75 +12,90 @@ import { VerProductoComponent } from '../../shared/modales/Productos/ver-product
   styleUrls: ['./productos.component.scss'],
   standalone: false
 })
-export class ProductosComponent {
+export class ProductosComponent implements OnInit {
+  productos: any[] = [];
   filtroTexto: string = '';
   filtroCategoria: string = '';
   categorias: string[] = ['Bebida', 'Comida', 'Postre'];
 
-  productos = [
-    {
-      id: '00123',
-      nombre: 'Café negro',
-      categoria: 'Bebida',
-      precio: 25.00,
-      descripcion: '',
-      imagen: '',
-      ingredientes: ['Café', 'Agua']
-    },
-  ];
+  constructor(private dialog: MatDialog, private productosService: ProductosService) {}
 
-  constructor(private dialog: MatDialog) {}
+  ngOnInit(): void {
+    this.obtenerProductos();
+  }
+
+  obtenerProductos(): void {
+    this.productosService.obtenerProductos().subscribe({
+      next: data => {
+        this.productos = data.filter(p => !p.eliminado);
+      },
+      error: err => console.error('Error al obtener productos:', err)
+    });
+  }
 
   get productosFiltrados() {
     return this.productos.filter(p =>
-      (!this.filtroCategoria || p.categoria === this.filtroCategoria)
-      && (!this.filtroTexto || p.nombre.toLowerCase().includes(this.filtroTexto.toLowerCase()))
+      (!this.filtroCategoria || p.categoria === this.filtroCategoria) &&
+      (!this.filtroTexto || p.nombre.toLowerCase().includes(this.filtroTexto.toLowerCase()))
     );
   }
 
- 
-
-   abrirModalAgregar() {
+  abrirModalAgregar(): void {
     const dialogRef = this.dialog.open(AgregarProductoComponent, {
       width: '600px',
-      data: {
+      data: { modo: 'agregar' }
+    });
+
+    dialogRef.afterClosed().subscribe(resultado => {
+      if (resultado) {
+        this.productosService.crearProducto(resultado).subscribe({
+          next: () => this.obtenerProductos(),
+          error: err => console.error('Error al crear producto:', err)
+        });
       }
     });
-
-    dialogRef.afterClosed().subscribe(resultado => {
-      if (!resultado) return;
-      resultado.id = '00' + (this.productos.length + 123);
-      this.productos.push(resultado);
-    });
   }
 
-  abrirModalEditar(producto: any) {
-    const dialogRef = this.dialog.open(EditarProductoComponent, {
-      width: '600px',
-      data: { producto }
-    });
+  abrirModalEditar(producto: any): void {
+  const dialogRef = this.dialog.open(EditarProductoComponent, {
+    width: '600px',
+    data: { modo: 'editar', producto }
+  });
 
-    dialogRef.afterClosed().subscribe(resultado => {
-      if (!resultado) return;
-      const idx = this.productos.findIndex(p => p.id === producto.id);
-      if (idx !== -1) this.productos[idx] = resultado;
-    });
+  dialogRef.afterClosed().subscribe(resultado => {
+    if (resultado) {
+      this.productosService.actualizarProducto(producto.id, resultado).subscribe({
+        next: () => {
+          const index = this.productos.findIndex(p => p.id === producto.id);
+          if (index !== -1) {
+            this.productos[index] = { ...this.productos[index], ...resultado };
+          }
+        },
+        error: err => console.error('Error al actualizar producto:', err)
+      });
+    }
+  });
   }
 
-  abrirModalEliminar(producto: any) {
+  abrirModalEliminar(producto: any): void {
     const dialogRef = this.dialog.open(EliminarProductoComponent, {
       width: '400px',
-      data: { producto }
+      data: { nombre: producto.nombre, id: producto.id }
     });
 
     dialogRef.afterClosed().subscribe(resultado => {
-      if (resultado && resultado.eliminar) {
-        this.productos = this.productos.filter(p => p.id !== producto.id);
+      if (resultado) {
+        this.productosService.eliminarProducto(producto.id).subscribe({
+          next: () => {
+            this.productos = this.productos.filter(p => p.id !== producto.id);
+          },
+          error: err => console.error('Error al eliminar producto:', err)
+        });
       }
     });
   }
 
-  abrirModalVer(producto: any) {
+  abrirModalVer(producto: any): void {
     this.dialog.open(VerProductoComponent, {
       width: '500px',
       data: { producto }

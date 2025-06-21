@@ -59,7 +59,6 @@ export class UsuariosComponent implements OnInit {
     this.usuarioService.crearUsuario(datosAPI).subscribe({
       next: (apiResponse) => {
         const usuarioLocal = {
-          id: apiResponse?.id || '00' + (this.usuarios.length + 1),  // usa el ID si lo devuelve la API
           correo: resultado.correo,
           nombre: resultado.nombre || '',
           apellidoPaterno: resultado.apellidoPaterno || '',
@@ -71,7 +70,7 @@ export class UsuariosComponent implements OnInit {
 
         this.usuarios.push(usuarioLocal);
       },
-      error: err => console.error('Error al crear usuario:', err)
+      error: err => console.error('Error al crear usuario', err)
     });
   });
 }
@@ -91,7 +90,7 @@ export class UsuariosComponent implements OnInit {
       if (resultado) {
         this.usuarioService.editarUsuario(usuario.id, resultado).subscribe({
           next: () => this.cargarUsuarios(),
-          error: err => console.error('Error al editar usuario:', err)
+          error: err => console.error('Error al editar usuario', err)
         });
       }
     });

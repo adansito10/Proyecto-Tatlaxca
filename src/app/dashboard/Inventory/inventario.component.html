@@ -31,9 +31,7 @@
     <table class="table table-hover text-center align-middle w-100">
       <thead class="table-light">
         <tr>
-
-          <th>ID</th>
-          <th>Nombre del artículo</th>
+          <th>Nombre del Insumo</th>
           <th>Categoría</th>
           <th>Stock</th>
           <th>Unidad</th>
@@ -43,7 +41,6 @@
       </thead>
       <tbody>
         <tr *ngFor="let item of inventarioFiltrado">
-                      <td class="align-middle">{{ item.id }}</td>
          <td class="align-middle">{{ item.nombre }}</td>
           <td class="align-middle">{{ item.categoria }}</td>
           <td class="align-middle" [ngClass]="{'text-danger': item.stock < item.stockMinimo}">
