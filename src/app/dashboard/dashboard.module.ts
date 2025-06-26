@@ -1,34 +1,34 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { DashboardRoutingModule } from './dashboard-routing.module';
-import { SharedModule } from '../shared/shared.module';
+import { SharedModule } from '../shared-modals/shared.module';
 import { MatOptionModule } from '@angular/material/core';
 
 import { InicioComponent } from './inicio/inicio.component';
-import { ProductosComponent } from './Products/productos.component';
-import { IngredientesComponent } from './Ingredients/ingredientes.component';
-import { UsuariosComponent } from './Users/usuarios.component';
-import { ReportesComponent } from './Reports/reportes.component';
-import { InventarioComponent } from './Inventory/inventario.component';
-import { ConfiguracionComponent } from './Configuration/configuracion.component';
+import { ProductsComponent } from './Products/productos.component';
+import { IngredientsComponent } from './Ingredients/ingredients.component';
+import { UsersComponent } from './Users/users.component';
+import { ReportsComponent } from './Reports/reports.component';
+import { InventoryComponent } from './Inventory/inventory.component';
+import { ConfigurationComponent } from './Configuration/configuration.component';
 
 
-import { OrdenesComponent } from './Orders/ordenes.component';
+import { OrdersComponent } from './Orders/orders.component';
 import { MatSelectModule } from '@angular/material/select';
-import { ModalModule } from '../shared/modales/modal.module';
+import { ModalModule } from '../shared-modals/modals/modal.module';
 import { HttpClientJsonpModule } from '@angular/common/http';
 
 
 @NgModule({
   declarations: [
     InicioComponent,
-    ProductosComponent,
-    IngredientesComponent,
-    UsuariosComponent,
-    ReportesComponent,
-    InventarioComponent,
-    ConfiguracionComponent,
-    OrdenesComponent,
+    ProductsComponent,
+    IngredientsComponent,
+    UsersComponent,
+    ReportsComponent,
+    InventoryComponent,
+    ConfigurationComponent,
+    OrdersComponent,
  
   ],
   imports: [

@@ -35,7 +35,6 @@
   <div class="table-responsive">
     <table class="table table-hover text-center align-middle w-100">
       <thead class="table-light">
-        <!-- Encabezado para Ventas Diarias -->
         <tr *ngIf="tipoReporteSeleccionado === 'ventasDiarias'">
           <th>Fecha</th>
           <th>ID</th>
@@ -60,7 +59,6 @@
         </tr>
       </thead>
 
-      <!-- Cuerpo para Ventas Diarias -->
       <tbody *ngIf="tipoReporteSeleccionado === 'ventasDiarias'">
         <tr *ngFor="let venta of ventasDiarias">
           <td>{{ venta.fecha }}</td>
@@ -73,7 +71,6 @@
         </tr>
       </tbody>
 
-      <!-- Cuerpo para Comidas Más Vendidas -->
       <tbody *ngIf="tipoReporteSeleccionado === 'masVendidos'">
         <tr *ngFor="let comida of comidasMasVendidas">
           <td>{{ comida.nombre }}</td>
@@ -81,7 +78,6 @@
         </tr>
       </tbody>
 
-      <!-- Cuerpo para Ventas por Mesero -->
       <tbody *ngIf="tipoReporteSeleccionado === 'ventasMesero'">
         <tr *ngFor="let m of ventasMeseros">
           <td>{{ m.mesero }}</td>

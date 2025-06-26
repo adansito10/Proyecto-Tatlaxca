@@ -1,17 +1,17 @@
 import { Component, OnInit } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { UsuarioServiceService } from '../../services/Users/usuario-service.service';
-import { AgregarUsuarioComponent } from '../../shared/modales/Usuarios/agregar-usuario/agregar-usuario.component';
-import { EditarUsuarioComponent } from '../../shared/modales/Usuarios/editar-usuario/editar-usuario.component';
-import { EliminarUsuarioComponent } from '../../shared/modales/Usuarios/eliminar-usuario/eliminar-usuario.component';
+import { AgregarUsuarioComponent } from '../../shared-modals/modals/Usuarios/agregar-usuario/agregar-usuario.component';
+import { EditarUsuarioComponent } from '../../shared-modals/modals/Usuarios/editar-usuario/editar-usuario.component';
+import { EliminarUsuarioComponent } from '../../shared-modals/modals/Usuarios/eliminar-usuario/eliminar-usuario.component';
 
 @Component({
-  selector: 'app-usuarios',
+  selector: 'app-users',
   standalone: false,
-  templateUrl: './usuarios.component.html',
-  styleUrls: ['./usuarios.component.scss']
+  templateUrl: './users.component.html',
+  styleUrls: ['./users.component.scss']
 })
-export class UsuariosComponent implements OnInit {
+export class UsersComponent implements OnInit {
   usuarios: any[] = [];
   filtroCargo: string = '';
   cargos: string[] = [ 'Empleado', 'Cocinero', 'Mesero'];

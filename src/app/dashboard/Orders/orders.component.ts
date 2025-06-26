@@ -1,12 +1,12 @@
 import { Component } from '@angular/core';
 
 @Component({
-  selector: 'app-ordenes',
+  selector: 'app-orders',
   standalone: false,
-  templateUrl: './ordenes.component.html',
-  styleUrls: ['./ordenes.component.scss']
+  templateUrl: './orders.component.html',
+  styleUrls: ['./orders.component.scss']
 })
-export class OrdenesComponent {
+export class OrdersComponent {
   Ordenes = [
     {
       fecha: '12/05/2025',

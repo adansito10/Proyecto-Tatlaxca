@@ -9,12 +9,12 @@ const routes: Routes = [
   {
     path: 'auth/login',
     loadChildren: () => import('./auth/auth.module').then(m => m.AuthModule),
-    canActivate: [PublicGuard]  // Solo accesible si NO está autenticado
+    canActivate: [PublicGuard]  
   },
   {
     path: '',
     component: NavigationComponent,
-    canActivate: [AuthGuard],   // Se protege toda esta sección para usuarios autenticados
+    canActivate: [AuthGuard],   
     children: [
       {
         path: '',
@@ -24,7 +24,6 @@ const routes: Routes = [
       {
         path: 'dashboard',
         loadChildren: () => import('./dashboard/dashboard.module').then(m => m.DashboardModule)
-        // Puedes añadir aquí canActivate también si quieres más control
       }
     ]
   }

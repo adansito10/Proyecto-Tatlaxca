@@ -1,12 +1,12 @@
 import { Component } from '@angular/core';
 
 @Component({
-  selector: 'app-reportes',
+  selector: 'app-reports',
   standalone: false,
-  templateUrl: './reportes.component.html',
-  styleUrls: ['./reportes.component.scss']
+  templateUrl: './reports.component.html',
+  styleUrls: ['./reports.component.scss']
 })
-export class ReportesComponent {
+export class ReportsComponent {
   mesSeleccionado: string = 'Mayo 2025';
   tipoReporteSeleccionado: string = 'ventasDiarias';
 
@@ -15,7 +15,6 @@ export class ReportesComponent {
     'Abril 2025', 'Mayo 2025', 'Junio 2025'
   ];
 
-  // Reporte 1: Ventas diarias
   ventasDiarias = [
     {
       fecha: '12/05/2025',

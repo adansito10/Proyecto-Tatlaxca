@@ -1,24 +1,24 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 import { InicioComponent } from './inicio/inicio.component';
-import { ProductosComponent } from './Products/productos.component';
-import { IngredientesComponent } from './Ingredients/ingredientes.component';
-import { UsuariosComponent } from './Users/usuarios.component';
-import { ReportesComponent } from './Reports/reportes.component';
-import { InventarioComponent } from './Inventory/inventario.component';
-import { ConfiguracionComponent } from './Configuration/configuracion.component';
-import { OrdenesComponent } from './Orders/ordenes.component';
+import { ProductsComponent } from './Products/productos.component';
+import { IngredientsComponent } from './Ingredients/ingredients.component';
+import { UsersComponent } from './Users/users.component';
+import { ReportsComponent } from './Reports/reports.component';
+import { InventoryComponent } from './Inventory/inventory.component';
+import { ConfigurationComponent } from './Configuration/configuration.component';
+import { OrdersComponent } from './Orders/orders.component';
 
 const routes: Routes = [
   { path: '', redirectTo: 'inicio', pathMatch: 'full' },
   { path: 'inicio', component: InicioComponent },
-  { path: 'productos', component: ProductosComponent },
-  { path: 'ingredientes', component: IngredientesComponent },
-  { path: 'usuarios', component: UsuariosComponent },
-  { path: 'reportes', component: ReportesComponent },
-  { path: 'ordenes', component: OrdenesComponent },
-  { path: 'inventario', component: InventarioComponent },
-  { path: 'configuracion', component: ConfiguracionComponent }
+  { path: 'products', component: ProductsComponent },
+  { path: 'ingredients', component: IngredientsComponent },
+  { path: 'users', component: UsersComponent },
+  { path: 'reports', component: ReportsComponent },
+  { path: 'orders', component: OrdersComponent },
+  { path: 'inventory', component: InventoryComponent },
+  { path: 'configuration', component: ConfigurationComponent }
 ];
 
 @NgModule({

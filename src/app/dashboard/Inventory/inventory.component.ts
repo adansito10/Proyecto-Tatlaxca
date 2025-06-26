@@ -1,17 +1,17 @@
 import { Component, OnInit } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
-import { AgregarSuministroComponent } from '../../shared/modales/Inventario/agregar-suministro/agregar-suministro.component';
-import { EditarSuministroComponent } from '../../shared/modales/Inventario/editar-suministro/editar-suministro.component';
-import { EliminarSuministroComponent } from '../../shared/modales/Inventario/eliminar-suministro/eliminar-suministro.component';
-import { InsumosService } from '../../services/insumos/insumos.service';
+import { AgregarSuministroComponent } from '../../shared-modals/modals/Inventario/agregar-suministro/agregar-suministro.component';
+import { EditarSuministroComponent } from '../../shared-modals/modals/Inventario/editar-suministro/editar-suministro.component';
+import { EliminarSuministroComponent } from '../../shared-modals/modals/Inventario/eliminar-suministro/eliminar-suministro.component';
+import { InsumosService } from '../../services/supplies/supplies.service';
 
 @Component({
-  selector: 'app-inventario',
+  selector: 'app-inventory',
   standalone: false,
-  templateUrl: './inventario.component.html',
-  styleUrl: './inventario.component.scss'
+  templateUrl: './inventory.component.html',
+  styleUrl: './inventory.component.scss'
 })
-export class InventarioComponent implements OnInit {
+export class InventoryComponent implements OnInit {
   filtroTexto: string = '';
   filtroCategoria: string = '';
   categorias: string[] = ['Desechables', 'Limpieza', 'Bebidas', 'Alimentos', 'Equipo'];
@@ -29,7 +29,7 @@ export class InventarioComponent implements OnInit {
   obtenerInsumos(): void {
     this.insumosService.obtenerInsumos().subscribe({
       next: (data) => {
-        this.inventario = data.filter(i => i.stock !== -1); // evitar eliminados lógicamente
+        this.inventario = data.filter(i => i.stock !== -1); 
       },
       error: (err) => {
         console.error('Error al cargar insumos:', err);

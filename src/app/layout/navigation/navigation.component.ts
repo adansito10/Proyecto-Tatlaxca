@@ -4,7 +4,7 @@ import { Observable } from 'rxjs';
 import { map, shareReplay } from 'rxjs/operators';
 import { Router } from '@angular/router';
 import { MatDialog } from '@angular/material/dialog';
-import { ConfirmLogoutDialogComponent } from '../../shared/modales/confirm-logout-login/confirmLogoutDialogComponent';
+import { ConfirmLogoutDialogComponent } from '../../shared-modals/modals/confirm-logout-login/confirmLogoutDialogComponent';
 
 @Component({
   selector: 'app-navigation',

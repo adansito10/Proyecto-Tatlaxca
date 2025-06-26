@@ -1,7 +1,7 @@
 import { Component, Inject, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup } from '@angular/forms';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
-import { IngredientesService } from '../../../../services/Ingredients/ingredientes.service';
+import { IngredientsService } from '../../../../services/Ingredients/ingredients.service';
 
 @Component({
   selector: 'app-mostrar-ingredientes',
@@ -17,7 +17,7 @@ export class MostrarIngredientesComponent implements OnInit {
   constructor(
     private fb: FormBuilder,
     private dialogRef: MatDialogRef<MostrarIngredientesComponent>,
-    private ingredientesService: IngredientesService,
+    private ingredientsService: IngredientsService,
     @Inject(MAT_DIALOG_DATA) public data: any
   ) {
     const group: any = {};
@@ -29,7 +29,7 @@ export class MostrarIngredientesComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this.ingredientesService.obtenerIngredientes().subscribe({
+    this.ingredientsService.obtenerIngredientes().subscribe({
       next: (data) => {
         this.ingredientesDisponibles = data;
       },

@@ -1,22 +1,22 @@
 import { Component, OnInit } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
-import { AgregarIngredienteComponent } from '../../shared/modales/Ingredientes/agregar-ingrediente/agregar-ingrediente.component';
-import { EditarIngredienteComponent } from '../../shared/modales/Ingredientes/editar-ingrediente/editar-ingrediente.component';
-import { EliminarIngredienteComponent } from '../../shared/modales/Ingredientes/eliminar-ingrediente/eliminar-ingrediente.component';
-import { IngredientesService } from '../../services/Ingredients/ingredientes.service';
+import { AgregarIngredienteComponent } from '../../shared-modals/modals/Ingredientes/agregar-ingrediente/agregar-ingrediente.component';
+import { EditarIngredienteComponent } from '../../shared-modals/modals/Ingredientes/editar-ingrediente/editar-ingrediente.component';
+import { EliminarIngredienteComponent } from '../../shared-modals/modals/Ingredientes/eliminar-ingrediente/eliminar-ingrediente.component';
+import { IngredientsService } from '../../services/Ingredients/ingredients.service';
 
 @Component({
-  selector: 'app-ingredientes',
+  selector: 'app-ingredients',
   standalone: false,
-  templateUrl: './ingredientes.component.html',
-  styleUrls: ['./ingredientes.component.scss']
+  templateUrl: './ingredients.component.html',
+  styleUrls: ['./ingredients.component.scss']
 })
-export class IngredientesComponent implements OnInit {
+export class IngredientsComponent implements OnInit {
   ingredientes: any[] = [];
 
   constructor(
     private dialog: MatDialog,
-    private ingredientesService: IngredientesService
+    private ingredientsService: IngredientsService
   ) {}
 
   ngOnInit(): void {
@@ -24,7 +24,7 @@ export class IngredientesComponent implements OnInit {
   }
 
   obtenerIngredientes() {
-    this.ingredientesService.obtenerIngredientes().subscribe(data => {
+    this.ingredientsService.obtenerIngredientes().subscribe(data => {
       this.ingredientes = data.filter(i => i.stock !== -1);
     });
   }
@@ -37,7 +37,7 @@ export class IngredientesComponent implements OnInit {
 
     dialogRef.afterClosed().subscribe(resultado => {
       if (resultado) {
-        this.ingredientesService.crearIngrediente(resultado).subscribe(() => {
+        this.ingredientsService.crearIngrediente(resultado).subscribe(() => {
           this.obtenerIngredientes();
         });
       }
@@ -52,7 +52,7 @@ export class IngredientesComponent implements OnInit {
 
     dialogRef.afterClosed().subscribe(resultado => {
       if (resultado) {
-        this.ingredientesService.actualizarIngrediente(ingrediente.id, resultado).subscribe(() => {
+        this.ingredientsService.actualizarIngrediente(ingrediente.id, resultado).subscribe(() => {
           this.obtenerIngredientes();
         });
       }
@@ -70,7 +70,7 @@ export class IngredientesComponent implements OnInit {
 
   dialogRef.afterClosed().subscribe(resultado => {
     if (resultado) {
-      this.ingredientesService.eliminarIngrediente(ingrediente.id).subscribe({
+      this.ingredientsService.eliminarIngrediente(ingrediente.id).subscribe({
         next: () => {
           this.ingredientes = this.ingredientes.filter(i => i.id !== ingrediente.id);
         },

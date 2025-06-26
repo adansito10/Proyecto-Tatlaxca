@@ -1,23 +1,23 @@
 import { Component, OnInit } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { ProductosService } from '../../services/products/products.service';
-import { AgregarProductoComponent } from '../../shared/modales/Productos/agregar-productos/agregar-producto/agregar-producto.component';
-import { EditarProductoComponent } from '../../shared/modales/Productos/editar-producto/editar-producto/editar-producto.component';
-import { EliminarProductoComponent } from '../../shared/modales/Productos/eliminar-producto/eliminar-producto/eliminar-producto.component';
-import { VerProductoComponent } from '../../shared/modales/Productos/ver-producto/ver-producto/ver-producto.component';
+import { AgregarProductoComponent } from '../../shared-modals/modals/Productos/agregar-productos/agregar-producto/agregar-producto.component';
+import { EditarProductoComponent } from '../../shared-modals/modals/Productos/editar-producto/editar-producto/editar-producto.component';
+import { EliminarProductoComponent } from '../../shared-modals/modals/Productos/eliminar-producto/eliminar-producto/eliminar-producto.component';
+import { VerProductoComponent } from '../../shared-modals/modals/Productos/ver-producto/ver-producto/ver-producto.component';
 
 
 
 @Component({
-  selector: 'app-productos',
-  templateUrl: './productos.component.html',
-  styleUrls: ['./productos.component.scss'],
+  selector: 'app-products',
+  templateUrl: './products.component.html',
+  styleUrls: ['./products.component.scss'],
   standalone: false
 })
 
 
 
-export class ProductosComponent implements OnInit {
+export class ProductsComponent implements OnInit {
   productos: any[] = [];
   filtroTexto: string = '';
   filtroCategoria: string = '';

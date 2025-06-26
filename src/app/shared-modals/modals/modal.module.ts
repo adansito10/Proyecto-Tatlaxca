@@ -33,7 +33,6 @@ import { EliminarUsuarioComponent } from './Usuarios/eliminar-usuario/eliminar-u
 import { ConfirmLogoutDialogComponent } from './confirm-logout-login/confirmLogoutDialogComponent';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { MostrarInsumosComponent } from './Inventario/mostrar-insumos/mostrar.insumos.component';
-// Componentes
 
 @NgModule({
   declarations: [
