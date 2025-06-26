@@ -1,55 +1,74 @@
-import { Component, Inject } from '@angular/core';
+import { Component, Inject, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { MatDialog, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { MostrarIngredientesComponent } from '../../../Ingredientes/Mostrar-ingredientes/mostrar-ingredientes.component';
 import { MostrarInsumosComponent } from '../../../Inventario/mostrar-insumos/mostrar.insumos.component';
+import { ProductosService } from '../../../../../services/products/products.service';
 
 @Component({
   selector: 'app-editar-producto',
   standalone: false,
   templateUrl: './editar-producto.component.html',
-  styleUrls: ['./editar-producto.component.scss']  
+  styleUrls: ['./editar-producto.component.scss']
 })
-export class EditarProductoComponent {
+export class EditarProductoComponent implements OnInit {
   productoForm: FormGroup;
   categorias: { id: number, nombre: string }[] = [];
-  ingredientesSeleccionados: { id: number, nombre: string, cantidad: number }[] = [];
-  insumosSeleccionados: { id: number, nombre: string, cantidad: number }[] = [];
-
+  ingredientesSeleccionados: any[] = [];
+  insumosSeleccionados: any[] = [];
   imagenProducto: string | ArrayBuffer | null = null;
-  modo: 'agregar' | 'editar';
 
   constructor(
     private fb: FormBuilder,
     private dialog: MatDialog,
     private dialogRef: MatDialogRef<EditarProductoComponent>,
-    @Inject(MAT_DIALOG_DATA) public data: { modo: 'agregar' | 'editar', producto: any, categorias?: {id:number, nombre:string}[] }
+    @Inject(MAT_DIALOG_DATA) public data: { producto: any },
+    private productosService: ProductosService
   ) {
-    this.modo = data.modo;
-
     this.productoForm = this.fb.group({
       nombre: ['', Validators.required],
-      categoria: data.producto.id_categoria,
+      categoria: [null, Validators.required],
       precio: [null, [Validators.required, Validators.min(0)]],
-      descripcion: [''],
+      descripcion: ['']
     });
+  }
 
-    if (data.categorias) {
-      this.categorias = data.categorias;
-    }
+  ngOnInit(): void {
+    console.log('✅ Producto recibido:', this.data.producto);
 
-    if (data.producto) {
+    this.productosService.obtenerCategorias().subscribe((cats) => {
+      this.categorias = cats.map(c => ({
+        id: Number(c.id),
+        nombre: c.nombre
+      }));
+
+      console.log('📦 Categorías recibidas:', this.categorias);
+
+      let idCategoria: number | null = null;
+
+      if (this.data.producto.id_categoria) {
+        idCategoria = Number(this.data.producto.id_categoria);
+      } else if (this.data.producto.categoria?.id) {
+        idCategoria = Number(this.data.producto.categoria.id);
+      }
+
+      const categoriaExiste = this.categorias.some(c => c.id === idCategoria);
+
+      if (!categoriaExiste) {
+        console.warn('⚠️ La categoría del producto no se encuentra en la lista. ID recibido:', idCategoria);
+      }
+
       this.productoForm.patchValue({
-        nombre: data.producto.nombre,
-        categoria: data.producto.id_categoria || (data.producto.categoria ? data.producto.categoria.id : null),
-        precio: data.producto.precio,
-        descripcion: data.producto.descripcion
+        nombre: this.data.producto.nombre,
+        categoria: idCategoria,
+        precio: this.data.producto.precio,
+        descripcion: this.data.producto.descripcion
       });
 
-      this.ingredientesSeleccionados = data.producto.ingredientes || [];
-      this.insumosSeleccionados = data.producto.insumos || [];
-      this.imagenProducto = data.producto.imagen_url || data.producto.imagen || null;
-    }
+      this.ingredientesSeleccionados = this.data.producto.ingredientes || [];
+      this.insumosSeleccionados = this.data.producto.insumos || [];
+      this.imagenProducto = this.data.producto.imagen_url || this.data.producto.imagen || null;
+    });
   }
 
   onFileSelected(event: any): void {
@@ -69,8 +88,8 @@ export class EditarProductoComponent {
       data: { ingredientesActuales: this.ingredientesSeleccionados }
     });
 
-    dialogRef.afterClosed().subscribe((seleccionados: {id:number, nombre:string, cantidad:number}[]) => {
-      if (seleccionados && seleccionados.length > 0) {
+    dialogRef.afterClosed().subscribe((seleccionados) => {
+      if (Array.isArray(seleccionados)) {
         this.ingredientesSeleccionados = seleccionados;
       }
     });
@@ -82,8 +101,8 @@ export class EditarProductoComponent {
       data: { insumosActuales: this.insumosSeleccionados }
     });
 
-    dialogRef.afterClosed().subscribe((seleccionados: {id:number, nombre:string, cantidad:number}[]) => {
-      if (seleccionados && seleccionados.length > 0) {
+    dialogRef.afterClosed().subscribe((seleccionados) => {
+      if (Array.isArray(seleccionados)) {
         this.insumosSeleccionados = seleccionados;
       }
     });
@@ -93,7 +112,7 @@ export class EditarProductoComponent {
     if (this.productoForm.valid) {
       const productoActualizado = {
         nombre: this.productoForm.value.nombre,
-        id_categoria: this.productoForm.value.categoria,
+        id_categoria: Number(this.productoForm.value.categoria), // ✅ Garantiza que se mande como número
         precio: this.productoForm.value.precio,
         descripcion: this.productoForm.value.descripcion,
         ingredientes: this.ingredientesSeleccionados.map(i => ({
