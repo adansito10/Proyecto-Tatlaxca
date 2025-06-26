@@ -1,13 +1,13 @@
-<h2 mat-dialog-title>Seleccionar Ingredientes</h2>
+<h2 mat-dialog-title>Seleccionar Insumos</h2>
 
 <mat-dialog-content>
-  <form [formGroup]="ingredientesForm">
+  <form [formGroup]="insumosForm">
     <div *ngFor="let controlName of controlNombres; let i = index" style="display: flex; align-items: center; gap: 12px;">
       <mat-form-field appearance="fill" style="flex: 1;">
-        <mat-label>Ingrediente {{ i + 1 }}</mat-label>
+        <mat-label>Insumo {{ i + 1 }}</mat-label>
         <mat-select [formControlName]="controlName + '_nombre'">
-          <mat-option *ngFor="let ing of ingredientesDisponibles" [value]="ing">
-            {{ ing.nombre }}
+          <mat-option *ngFor="let ins of insumosDisponibles" [value]="ins">
+            {{ ins.nombre }}
           </mat-option>
         </mat-select>
       </mat-form-field>
@@ -20,7 +20,8 @@
   </form>
 </mat-dialog-content>
 
+
 <mat-dialog-actions align="end">
   <button mat-button mat-dialog-close>Cancelar</button>
-  <button mat-flat-button color="primary" (click)="guardarIngredientes()">Guardar</button>
+  <button mat-flat-button color="primary" (click)="guardarInsumos()">Guardar</button>
 </mat-dialog-actions>

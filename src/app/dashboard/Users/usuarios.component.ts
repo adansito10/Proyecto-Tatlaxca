@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
-import { UsuarioServiceService } from '../../services/Users-service/usuario-service.service';
+import { UsuarioServiceService } from '../../services/Users/usuario-service.service';
 import { AgregarUsuarioComponent } from '../../shared/modales/Usuarios/agregar-usuario/agregar-usuario.component';
 import { EditarUsuarioComponent } from '../../shared/modales/Usuarios/editar-usuario/editar-usuario.component';
 import { EliminarUsuarioComponent } from '../../shared/modales/Usuarios/eliminar-usuario/eliminar-usuario.component';

@@ -1,60 +1,46 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
-import { AgregarIngredienteComponent } from '../../shared/modales/Ingredientes/agregar-ingrediente/agregar-ingrediente.component';
 import { AgregarSuministroComponent } from '../../shared/modales/Inventario/agregar-suministro/agregar-suministro.component';
 import { EditarSuministroComponent } from '../../shared/modales/Inventario/editar-suministro/editar-suministro.component';
 import { EliminarSuministroComponent } from '../../shared/modales/Inventario/eliminar-suministro/eliminar-suministro.component';
+import { InsumosService } from '../../services/insumos/insumos.service';
+
 @Component({
   selector: 'app-inventario',
   standalone: false,
   templateUrl: './inventario.component.html',
   styleUrl: './inventario.component.scss'
 })
-export class InventarioComponent {
- filtroTexto: string = '';
+export class InventarioComponent implements OnInit {
+  filtroTexto: string = '';
   filtroCategoria: string = '';
-  
   categorias: string[] = ['Desechables', 'Limpieza', 'Bebidas', 'Alimentos', 'Equipo'];
-  
-  inventario = [
-    {
-      id: '00123',
-      nombre: 'Vasos de cartón',
-      categoria: 'Desechables',
-      stock: 10,
-      stockMinimo: 5,
-      unidad: 'pieza',
-      ultimaCompra: '14/05/2025',
-      imagen: 'assets/images/vasos.jpg'
-    },
-    {
-      id: '00124',
-      nombre: 'Cucharas de plástico',
-      categoria: 'Desechables',
-      stock: 8,
-      stockMinimo: 10,
-      unidad: 'pieza',
-      ultimaCompra: '14/05/2025',
-      imagen: 'assets/images/cucharas.jpg'
-    },
-    {
-      id: '00125',
-      nombre: 'Servilletas blancas',
-      categoria: 'Limpieza',
-      stock: 15,
-      stockMinimo: 8,
-      unidad: 'paquetes',
-      ultimaCompra: '14/05/2025',
-      imagen: 'assets/images/servilletas.jpg'
-    }
-  ];
+  inventario: any[] = [];
 
-  constructor(private dialog: MatDialog) {}
+  constructor(
+    private dialog: MatDialog,
+    private insumosService: InsumosService
+  ) {}
+
+  ngOnInit(): void {
+    this.obtenerInsumos();
+  }
+
+  obtenerInsumos(): void {
+    this.insumosService.obtenerInsumos().subscribe({
+      next: (data) => {
+        this.inventario = data.filter(i => i.stock !== -1); // evitar eliminados lógicamente
+      },
+      error: (err) => {
+        console.error('Error al cargar insumos:', err);
+      }
+    });
+  }
 
   get inventarioFiltrado() {
     return this.inventario.filter(item => {
-      const cumpleTexto = item.nombre.toLowerCase().includes(this.filtroTexto.toLowerCase()) || 
-                         item.id.toLowerCase().includes(this.filtroTexto.toLowerCase());
+      const texto = this.filtroTexto.toLowerCase();
+      const cumpleTexto = item.nombre.toLowerCase().includes(texto) || item.id.toString().includes(texto);
       const cumpleCategoria = !this.filtroCategoria || item.categoria === this.filtroCategoria;
       return cumpleTexto && cumpleCategoria;
     });
@@ -63,15 +49,14 @@ export class InventarioComponent {
   abrirModalAgregar() {
     const dialogRef = this.dialog.open(AgregarSuministroComponent, {
       width: '600px',
-      data: { 
+      data: {
         modo: 'agregar',
         item: {
           nombre: '',
-          categoria: '',
           stock: 0,
           stockMinimo: 0,
           unidad: 'pieza',
-          ultimaCompra: new Date().toLocaleDateString()
+          ultimaCompra: new Date().toISOString().split('T')[0]
         },
         categorias: this.categorias
       }
@@ -79,8 +64,10 @@ export class InventarioComponent {
 
     dialogRef.afterClosed().subscribe(resultado => {
       if (resultado) {
-        resultado.id = '00' + (this.inventario.length + 123);
-        this.inventario.push(resultado);
+        this.insumosService.crearInsumo(resultado).subscribe({
+          next: () => this.obtenerInsumos(),
+          error: err => console.error('Error al guardar insumo:', err)
+        });
       }
     });
   }
@@ -88,17 +75,19 @@ export class InventarioComponent {
   abrirModalEditar(item: any) {
     const dialogRef = this.dialog.open(EditarSuministroComponent, {
       width: '600px',
-      data: { 
+      data: {
         modo: 'editar',
-        item: {...item},
+        item: { ...item },
         categorias: this.categorias
       }
     });
 
     dialogRef.afterClosed().subscribe(resultado => {
       if (resultado) {
-        const index = this.inventario.findIndex(i => i.id === item.id);
-        if (index !== -1) this.inventario[index] = resultado;
+        this.insumosService.actualizarInsumo(item.id, resultado).subscribe({
+          next: () => this.obtenerInsumos(),
+          error: err => console.error('Error al actualizar insumo:', err)
+        });
       }
     });
   }
@@ -114,7 +103,10 @@ export class InventarioComponent {
 
     dialogRef.afterClosed().subscribe(confirmado => {
       if (confirmado) {
-        this.inventario = this.inventario.filter(i => i.id !== item.id);
+        this.insumosService.eliminarInsumo(item.id).subscribe({
+          next: () => this.obtenerInsumos(),
+          error: err => console.error('Error al eliminar insumo:', err)
+        });
       }
     });
   }

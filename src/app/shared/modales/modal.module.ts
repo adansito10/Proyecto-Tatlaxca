@@ -32,6 +32,7 @@ import { EditarUsuarioComponent } from './Usuarios/editar-usuario/editar-usuario
 import { EliminarUsuarioComponent } from './Usuarios/eliminar-usuario/eliminar-usuario.component';
 import { ConfirmLogoutDialogComponent } from './confirm-logout-login/confirmLogoutDialogComponent';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
+import { MostrarInsumosComponent } from './Inventario/mostrar-insumos/mostrar.insumos.component';
 // Componentes
 
 @NgModule({
@@ -50,7 +51,9 @@ import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
   AgregarUsuarioComponent,
   EditarUsuarioComponent,
   EliminarUsuarioComponent,
-  ConfirmLogoutDialogComponent
+  ConfirmLogoutDialogComponent,
+  MostrarInsumosComponent
+  
   
   ],
   imports: [

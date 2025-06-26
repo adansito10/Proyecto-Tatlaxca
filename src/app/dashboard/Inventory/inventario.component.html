@@ -32,22 +32,18 @@
       <thead class="table-light">
         <tr>
           <th>Nombre del Insumo</th>
-          <th>Categoría</th>
           <th>Stock</th>
           <th>Unidad</th>
-          <th>Última compra</th>
           <th>Acciones</th>
         </tr>
       </thead>
       <tbody>
         <tr *ngFor="let item of inventarioFiltrado">
          <td class="align-middle">{{ item.nombre }}</td>
-          <td class="align-middle">{{ item.categoria }}</td>
           <td class="align-middle" [ngClass]="{'text-danger': item.stock < item.stockMinimo}">
             {{ item.stock }}
           </td>
           <td class="align-middle">{{ item.unidad }}</td>
-          <td class="align-middle">{{ item.ultimaCompra }}</td>
           <td class="align-middle">
             <div class="d-flex justify-content-center gap-2">
               <button class="btn btn-sm btn-success" (click)="abrirModalEditar(item)">

@@ -1,9 +1,9 @@
 import { Component, OnInit } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
-import { IngredientesService } from '../../services/Ingredients-service/ingredientes.service';
 import { AgregarIngredienteComponent } from '../../shared/modales/Ingredientes/agregar-ingrediente/agregar-ingrediente.component';
 import { EditarIngredienteComponent } from '../../shared/modales/Ingredientes/editar-ingrediente/editar-ingrediente.component';
 import { EliminarIngredienteComponent } from '../../shared/modales/Ingredientes/eliminar-ingrediente/eliminar-ingrediente.component';
+import { IngredientesService } from '../../services/Ingredients/ingredientes.service';
 
 @Component({
   selector: 'app-ingredientes',

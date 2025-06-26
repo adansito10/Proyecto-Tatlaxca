@@ -7,13 +7,14 @@
       <input matInput formControlName="nombre">
     </mat-form-field>
 
+   
+   
     <mat-form-field appearance="fill" class="full-width">
-      <mat-label>Categoría</mat-label>
-      <mat-select formControlName="categoria">
-        <mat-option value="Comida">Comida</mat-option>
-        <mat-option value="Bebida">Bebida</mat-option>
-      </mat-select>
-    </mat-form-field>
+  <mat-label>Categoría</mat-label>
+  <mat-select formControlName="categoria">
+    <mat-option *ngFor="let cat of categorias" [value]="cat.id">{{ cat.nombre }}</mat-option>
+  </mat-select>
+</mat-form-field>
 
     <mat-form-field appearance="fill" class="full-width">
       <mat-label>Precio</mat-label>
@@ -25,23 +26,43 @@
       <textarea matInput formControlName="descripcion"></textarea>
     </mat-form-field>
 
-    <div class="ingredientes-section">
-      <h4>Ingredientes</h4>
-      <div *ngIf="ingredientesSeleccionados.length; else sinIngredientes">
-        <ul>
-          <li *ngFor="let ing of ingredientesSeleccionados">{{ ing }}</li>
-        </ul>
-      </div>
-      <ng-template #sinIngredientes>
-        <p>No se han seleccionado ingredientes.</p>
-      </ng-template>
+   <div class="ingredientes-section">
+  <h4>Ingredientes</h4>
+  <div *ngIf="ingredientesSeleccionados.length; else sinIngredientes">
+    <ul>
+      <li *ngFor="let ing of ingredientesSeleccionados">
+        {{ ing.nombre }} - {{ ing.cantidad }}
+      </li>
+    </ul>
+  </div>
+  <ng-template #sinIngredientes>
+    <p>No se han seleccionado ingredientes.</p>
+  </ng-template>
 
-      <button mat-stroked-button color="primary" (click)="abrirModalIngredientes()">
-        Seleccionar Ingredientes
-      </button>
-    </div>
+  <button mat-stroked-button color="primary" (click)="abrirModalIngredientes()">
+    Seleccionar Ingredientes
+  </button>
+</div>
 
-    <!-- Botón para subir foto -->
+<div class="insumos-section">
+  <h4>Insumos</h4>
+  <div *ngIf="insumosSeleccionados.length; else sinInsumos">
+    <ul>
+      <li *ngFor="let ins of insumosSeleccionados">
+        {{ ins.nombre }} - {{ ins.cantidad }}
+      </li>
+    </ul>
+  </div>
+  <ng-template #sinInsumos>
+    <p>No se han seleccionado insumos.</p>
+  </ng-template>
+
+  <button mat-stroked-button color="primary" (click)="abrirModalInsumos()">
+    Seleccionar Insumos
+  </button>
+</div>
+
+
     <div style="margin: 16px 0; text-align: center;">
       <button mat-stroked-button color="accent" (click)="fileInput.click()" style="width: 100%;">
         <mat-icon>add_a_photo</mat-icon>
@@ -49,7 +70,6 @@
       </button>
       <input #fileInput type="file" accept="image/*" style="display: none" (change)="onFileSelected($event)">
       
-      <!-- Vista previa de la imagen -->
       <div *ngIf="imagenProducto" style="margin-top: 16px;">
         <img [src]="imagenProducto" alt="Vista previa" style="max-width: 200px; max-height: 150px; border-radius: 4px;">
       </div>

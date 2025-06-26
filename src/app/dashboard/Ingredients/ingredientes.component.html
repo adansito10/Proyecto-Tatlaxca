@@ -5,7 +5,6 @@
     <div class="d-flex align-items-center mb-2">
       <input type="text" class="form-control me-2 buscador-custom" placeholder="Buscar..." style="width: 300px">
 
-    
 
     </div>
   <button class="btn custom-agregar-btn mb-2" (click)="abrirModalAgregar()">
@@ -23,17 +22,13 @@
     <th>Acciones</th>
   </tr>
       </thead>
-
-
 <tbody>
   <tr *ngFor="let ingrediente of ingredientes">
 
     <td class="align-middle">{{ ingrediente.nombre }}</td>
 
-    <!-- Unidad -->
     <td class="align-middle">{{ ingrediente.unidad }}</td>
 
-    <!-- Stock -->
     <td class="align-middle">{{ ingrediente.stock }}</td>
 
     <td class="align-middle">

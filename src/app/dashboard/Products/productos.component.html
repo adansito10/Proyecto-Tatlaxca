@@ -4,11 +4,10 @@
     <div class="d-flex align-items-center mb-2">
       <input type="text" class="form-control me-1 buscador-custom" placeholder="Buscar..." style="width: 260px">
 
-    <button mat-icon-button [matMenuTriggerFor]="menuCategorias" aria-label="Filtrar por categoría">
+   <button mat-icon-button [matMenuTriggerFor]="menuCategorias" aria-label="Filtrar por categoría">
   <mat-icon>category</mat-icon>
 </button>
 
-<!-- Menú con las opciones -->
 <mat-menu #menuCategorias="matMenu">
   <button mat-menu-item (click)="filtroCategoria = ''">
     <span>Todas</span>
@@ -16,7 +15,7 @@
   <button mat-menu-item *ngFor="let cat of categorias" (click)="filtroCategoria = cat">
     <span>{{ cat }}</span>
   </button>
-</mat-menu>
+  </mat-menu>
     </div>
 
     <button class="btn custom-agregar-btn mb-2" (click)="abrirModalAgregar()">
@@ -27,23 +26,20 @@
   <div class="table-responsive">
     <table class="table table-hover text-center align-middle w-100">
       <thead class="table-light">
-       <tr>
+    <tr>
     <th>Imagen</th>
     <th>Nombre</th>
     <th>Categoría</th>
     <th>Ingredientes</th>
     <th>Precio</th>
     <th>Acciones</th>
-  </tr>
+    </tr>
       </thead>
  <tbody>
   <tr *ngFor="let producto of productosFiltrados">
-
     <td class="align-middle text-center">
-      
-      <img [src]="producto.imagen" width="40" height="40" class="rounded-circle object-fit-cover">
+      <img [src]="producto.imagen" width="40" height="40" >
     </td>
-
     <td class="align-middle">{{ producto.nombre }}</td>    <td class="align-middle">{{ producto.categoria }}</td>
 
     <td class="align-middle">
@@ -51,13 +47,16 @@
         Ver
       </button>
     </td>
-
+    
     <td class="align-middle">${{ producto.precio | number:'1.2-2' }}</td>
+
+
     <td class="align-middle">
       <div class="d-flex justify-content-center gap-2">
         <button class="btn btn-sm btn-success" (click)="abrirModalEditar(producto)">
           <i class="bi bi-pencil"></i>
         </button>
+
         <button class="btn btn-sm btn-danger" (click)="abrirModalEliminar(producto)">
           <i class="bi bi-trash"></i>
         </button>

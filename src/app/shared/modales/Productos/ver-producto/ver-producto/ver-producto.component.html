@@ -1,16 +1,23 @@
-<h2 mat-dialog-title>Ingredientes</h2>
+<h2 mat-dialog-title>Detalles del Producto</h2>
 
 <mat-dialog-content>
-  <div *ngIf="data.ingredientes && data.ingredientes.length; else sinIngredientes">
-    <ul>
-      <li *ngFor="let ingrediente of data.ingredientes">
-        {{ ingrediente }}
-      </li>
-    </ul>
-  </div>
+
+  <h3>Ingredientes</h3>
+  <ul *ngIf="data.ingredientes?.length; else sinIngredientes">
+    <li *ngFor="let ing of data.ingredientes">{{ ing.nombre }}</li>
+  </ul>
   <ng-template #sinIngredientes>
-    <p>No hay ingredientes disponibles.</p>
+    <p>No hay ingredientes asignados.</p>
   </ng-template>
+
+  <h3>Insumos</h3>
+  <ul *ngIf="data.insumos?.length; else sinInsumos">
+    <li *ngFor="let ins of data.insumos">{{ ins.nombre }}</li>
+  </ul>
+  <ng-template #sinInsumos>
+    <p>No hay insumos asignados.</p>
+  </ng-template>
+
 </mat-dialog-content>
 
 <mat-dialog-actions align="end">

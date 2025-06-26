@@ -7,7 +7,7 @@ import { environment } from '../../enviroments/environment';
   providedIn: 'root'
 })
 export class ProductosService {
-  private apiUrl = `${environment.apiUrl}/products`; 
+  private apiUrl = `${environment.apiUrl}/menu`; 
 
   constructor(private http: HttpClient) {}
 
@@ -23,10 +23,16 @@ export class ProductosService {
     return this.http.put<any>(`${this.apiUrl}/${id}`, producto);
   }
 
-  eliminarProducto(id: number): Observable<any> {
-    return this.http.put(`${this.apiUrl}/${id}`, {
-      eliminado: true,
-      deletedAt: new Date().toISOString()
-    });
+eliminarProducto(id: number): Observable<any> {
+  return this.http.delete(`${this.apiUrl}/${id}`);
+
   }
+
+
+ obtenerCategorias(): Observable<any[]> {
+  return this.http.get<any[]>(`${environment.apiUrl}/categories`);
+}
+
+
+  
 }
