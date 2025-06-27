@@ -2,7 +2,7 @@
 
 <mat-dialog-content>
   <form [formGroup]="insumosForm">
-    <div *ngFor="let controlName of controlNombres; let i = index" style="display: flex; align-items: center; gap: 12px;">
+    <div *ngFor="let controlName of controlNombres; let i = index" class="d-flex align-items-center mb-2" style="gap: 12px;">
       <mat-form-field appearance="fill" style="flex: 1;">
         <mat-label>Insumo {{ i + 1 }}</mat-label>
         <mat-select [formControlName]="controlName + '_nombre'">
@@ -19,7 +19,6 @@
     </div>
   </form>
 </mat-dialog-content>
-
 
 <mat-dialog-actions align="end">
   <button mat-button mat-dialog-close>Cancelar</button>

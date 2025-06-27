@@ -17,7 +17,7 @@ export class MostrarInsumosComponent implements OnInit {
   constructor(
     private fb: FormBuilder,
     private dialogRef: MatDialogRef<MostrarInsumosComponent>,
-    @Inject(MAT_DIALOG_DATA) public data: any,
+    @Inject(MAT_DIALOG_DATA) public data: { insumosActuales: any[] },
     private insumosService: InsumosService
   ) {
     const group: any = {};
@@ -32,6 +32,20 @@ export class MostrarInsumosComponent implements OnInit {
     this.insumosService.obtenerInsumos().subscribe({
       next: (data) => {
         this.insumosDisponibles = data;
+
+        // Prellenar insumos ya seleccionados
+        if (Array.isArray(this.data.insumosActuales)) {
+          this.data.insumosActuales.forEach((insumo, index) => {
+            if (index < this.controlNombres.length) {
+              const control = this.controlNombres[index];
+              const insumoDisponible = this.insumosDisponibles.find(i => i.id === insumo.id);
+              if (insumoDisponible) {
+                this.insumosForm.get(control + '_nombre')?.setValue(insumoDisponible);
+                this.insumosForm.get(control + '_cantidad')?.setValue(insumo.cantidad);
+              }
+            }
+          });
+        }
       },
       error: err => console.error('Error al cargar insumos:', err)
     });
@@ -44,7 +58,7 @@ export class MostrarInsumosComponent implements OnInit {
       return {
         id: ins?.id,
         nombre: ins?.nombre,
-        cantidad: values[name + '_cantidad']
+        cantidad: Number(values[name + '_cantidad']) || 0
       };
     }).filter(item => item.id && item.cantidad > 0);
 

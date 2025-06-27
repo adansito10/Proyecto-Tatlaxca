@@ -21,7 +21,7 @@ export class ProductsComponent implements OnInit {
   productos: any[] = [];
   filtroTexto: string = '';
   filtroCategoria: string = '';
-  categorias: string[] = [];
+  categorias: { id: number, nombre: string }[] = [];
 
 
 
@@ -53,12 +53,20 @@ export class ProductsComponent implements OnInit {
     error: err => console.error('Error al obtener categorías', err)
   });
 }
-  get productosFiltrados() {
-    return this.productos.filter(p =>
-      (!this.filtroCategoria || p.categoria === this.filtroCategoria) &&
-      (!this.filtroTexto || p.nombre.toLowerCase().includes(this.filtroTexto.toLowerCase()))
-    );
-  }
+
+
+get productosFiltrados() {
+  return this.productos.filter(p => {
+    const categoriaNombre = typeof p.categoria === 'string' 
+      ? p.categoria 
+      : p.categoria?.nombre;
+
+    return (!this.filtroCategoria || categoriaNombre === this.filtroCategoria) &&
+           (!this.filtroTexto || p.nombre.toLowerCase().includes(this.filtroTexto.toLowerCase()));
+  });
+}
+
+
 
 
   abrirModalAgregar(): void {
@@ -78,7 +86,7 @@ export class ProductsComponent implements OnInit {
 abrirModalEditar(producto: any): void {
   const dialogRef = this.dialog.open(EditarProductoComponent, {
     width: '600px',
-    data: { modo: 'editar', producto, categorias: this.categorias } 
+    data: { modo: 'editar', producto, categorias: this.categorias }
   });
 
   dialogRef.afterClosed().subscribe(resultado => {
@@ -87,7 +95,14 @@ abrirModalEditar(producto: any): void {
         next: () => {
           const index = this.productos.findIndex(p => p.id === producto.id);
           if (index !== -1) {
-            this.productos[index] = { ...this.productos[index], ...resultado };
+            // Buscar la categoría completa en el array local de categorías
+            const categoriaCompleta = this.categorias.find(c => c.id === resultado.id_categoria);
+
+            this.productos[index] = {
+              ...this.productos[index],
+              ...resultado,
+              categoria: categoriaCompleta || this.productos[index].categoria
+            };
           }
         },
         error: err => console.error('Error al actualizar producto:', err)
@@ -95,6 +110,7 @@ abrirModalEditar(producto: any): void {
     }
   });
 }
+
 
 
 
@@ -120,7 +136,7 @@ abrirModalEditar(producto: any): void {
 
   abrirModalVer(producto: any) {
   this.dialog.open(VerProductoComponent, {
-    width: '500px',
+    width: '800px',
     data: {
       ingredientes: producto.ingredientes || [],
       insumos: producto.insumos || []

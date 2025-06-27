@@ -2,20 +2,28 @@
   <div class="d-flex justify-content-between align-items-center mb-3 flex-wrap">
     <h1 class="fw-bold mb-2 ms-2">Gestión de Productos</h1>
     <div class="d-flex align-items-center mb-2">
-      <input type="text" class="form-control me-1 buscador-custom" placeholder="Buscar..." style="width: 260px">
+<input
+  type="text"
+  placeholder="Buscar producto..."
+  [(ngModel)]="filtroTexto"
+  class="form-control"
+/>
 
-   <button mat-icon-button [matMenuTriggerFor]="menuCategorias" aria-label="Filtrar por categoría">
+ <button mat-icon-button [matMenuTriggerFor]="menuCategorias" aria-label="Filtrar por categoría">
   <mat-icon>category</mat-icon>
 </button>
 
 <mat-menu #menuCategorias="matMenu">
-  <button mat-menu-item (click)="filtroCategoria = ''">
-    <span>Todas</span>
-  </button>
-  <button mat-menu-item *ngFor="let cat of categorias" (click)="filtroCategoria = cat">
-    <span>{{ cat }}</span>
-  </button>
-  </mat-menu>
+<button mat-menu-item (click)="filtroCategoria = ''">
+  <span>Todas</span>
+</button>
+<button mat-menu-item *ngFor="let cat of categorias" (click)="filtroCategoria = cat.nombre">
+  <span>{{ cat.nombre }}</span>
+</button>
+
+</mat-menu>
+
+  
     </div>
 
     <button class="btn custom-agregar-btn mb-2" (click)="abrirModalAgregar()">
@@ -30,7 +38,7 @@
     <th>Imagen</th>
     <th>Nombre</th>
     <th>Categoría</th>
-    <th>Ingredientes</th>
+    <th>Ingredientes/insumos</th>
     <th>Precio</th>
     <th>Acciones</th>
     </tr>
@@ -40,7 +48,9 @@
     <td class="align-middle text-center">
       <img [src]="producto.imagen" width="40" height="40" >
     </td>
-    <td class="align-middle">{{ producto.nombre }}</td>    <td class="align-middle">{{ producto.categoria }}</td>
+    <td class="align-middle">{{ producto.nombre }}</td>    <td class="align-middle">  {{ 
+    producto.categoria?.nombre ? producto.categoria.nombre : producto.categoria 
+  }}</td>
 
     <td class="align-middle">
       <button class="btn btn-sm btn-outline-primary" (click)="abrirModalVer(producto)">

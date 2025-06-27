@@ -5,6 +5,23 @@ import { MostrarIngredientesComponent } from '../../../Ingredientes/Mostrar-ingr
 import { MostrarInsumosComponent } from '../../../Inventario/mostrar-insumos/mostrar.insumos.component';
 import { ProductosService } from '../../../../../services/products/products.service';
 
+interface Categoria {
+  id: number;
+  nombre: string;
+}
+
+interface Ingrediente {
+  id: number;
+  nombre: string;
+  cantidad: number;
+}
+
+interface Insumo {
+  id: number;
+  nombre: string;
+  cantidad: number;
+}
+
 @Component({
   selector: 'app-editar-producto',
   standalone: false,
@@ -13,9 +30,9 @@ import { ProductosService } from '../../../../../services/products/products.serv
 })
 export class EditarProductoComponent implements OnInit {
   productoForm: FormGroup;
-  categorias: { id: number, nombre: string }[] = [];
-  ingredientesSeleccionados: any[] = [];
-  insumosSeleccionados: any[] = [];
+  categorias: Categoria[] = [];
+  ingredientesSeleccionados: Ingrediente[] = [];
+  insumosSeleccionados: Insumo[] = [];
   imagenProducto: string | ArrayBuffer | null = null;
 
   constructor(
@@ -34,99 +51,113 @@ export class EditarProductoComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    console.log('✅ Producto recibido:', this.data.producto);
-
-    this.productosService.obtenerCategorias().subscribe((cats) => {
-      this.categorias = cats.map(c => ({
+    this.productosService.obtenerCategorias().subscribe((categorias) => {
+      this.categorias = categorias.map(c => ({
         id: Number(c.id),
         nombre: c.nombre
       }));
 
-      console.log('📦 Categorías recibidas:', this.categorias);
-
-      let idCategoria: number | null = null;
-
-      if (this.data.producto.id_categoria) {
-        idCategoria = Number(this.data.producto.id_categoria);
-      } else if (this.data.producto.categoria?.id) {
-        idCategoria = Number(this.data.producto.categoria.id);
-      }
-
-      const categoriaExiste = this.categorias.some(c => c.id === idCategoria);
-
-      if (!categoriaExiste) {
-        console.warn('⚠️ La categoría del producto no se encuentra en la lista. ID recibido:', idCategoria);
-      }
-
-      this.productoForm.patchValue({
-        nombre: this.data.producto.nombre,
-        categoria: idCategoria,
-        precio: this.data.producto.precio,
-        descripcion: this.data.producto.descripcion
-      });
-
-      this.ingredientesSeleccionados = this.data.producto.ingredientes || [];
-      this.insumosSeleccionados = this.data.producto.insumos || [];
-      this.imagenProducto = this.data.producto.imagen_url || this.data.producto.imagen || null;
+      this.cargarDatosProducto(this.data.producto);
     });
   }
 
-  onFileSelected(event: any): void {
-    const file = event.target.files[0];
-    if (file) {
-      const reader = new FileReader();
-      reader.onload = (e) => {
-        this.imagenProducto = e.target?.result as string;
-      };
-      reader.readAsDataURL(file);
-    }
+  private cargarDatosProducto(producto: any): void {
+    const idCategoria = producto.id_categoria ?? producto.categoria?.id ?? null;
+
+    this.productoForm.patchValue({
+      nombre: producto.nombre ?? '',
+      categoria: Number(idCategoria),
+      precio: producto.precio ?? null,
+      descripcion: producto.descripcion ?? ''
+    });
+
+    this.ingredientesSeleccionados = this.mapItemsToIngredientes(producto.ingredientes);
+    this.insumosSeleccionados = this.mapItemsToInsumos(producto.insumos);
+    this.imagenProducto = producto.imagen_url ?? producto.imagen ?? null;
+  }
+
+  private mapItemsToIngredientes(items: any[]): Ingrediente[] {
+    if (!Array.isArray(items)) return [];
+    return items.map(item => ({
+      id: item.id ?? item.id_ingrediente,
+      nombre: item.nombre ?? '',
+      cantidad: item.cantidad ?? 1
+    }));
+  }
+
+  private mapItemsToInsumos(items: any[]): Insumo[] {
+    if (!Array.isArray(items)) return [];
+    return items.map(item => ({
+      id: item.id ?? item.id_insumo,
+      nombre: item.nombre ?? '',
+      cantidad: item.cantidad ?? 1
+    }));
+  }
+
+  onFileSelected(event: Event): void {
+    const input = event.target as HTMLInputElement;
+    if (!input.files?.length) return;
+
+    const file = input.files[0];
+    const reader = new FileReader();
+    reader.onload = () => {
+      this.imagenProducto = reader.result;
+    };
+    reader.readAsDataURL(file);
   }
 
   abrirModalIngredientes(): void {
     const dialogRef = this.dialog.open(MostrarIngredientesComponent, {
-      width: '400px',
-      data: { ingredientesActuales: this.ingredientesSeleccionados }
+      width: '500px',
+      data: {
+        ingredientesActuales: JSON.parse(JSON.stringify(this.ingredientesSeleccionados))
+      }
     });
 
-    dialogRef.afterClosed().subscribe((seleccionados) => {
-      if (Array.isArray(seleccionados)) {
-        this.ingredientesSeleccionados = seleccionados;
+    dialogRef.afterClosed().subscribe((resultado: Ingrediente[] | undefined) => {
+      if (Array.isArray(resultado)) {
+        this.ingredientesSeleccionados = resultado;
       }
     });
   }
 
   abrirModalInsumos(): void {
     const dialogRef = this.dialog.open(MostrarInsumosComponent, {
-      width: '400px',
-      data: { insumosActuales: this.insumosSeleccionados }
+      width: '500px',
+      data: {
+        insumosActuales: JSON.parse(JSON.stringify(this.insumosSeleccionados))
+      }
     });
 
-    dialogRef.afterClosed().subscribe((seleccionados) => {
-      if (Array.isArray(seleccionados)) {
-        this.insumosSeleccionados = seleccionados;
+    dialogRef.afterClosed().subscribe((resultado: Insumo[] | undefined) => {
+      if (Array.isArray(resultado)) {
+        this.insumosSeleccionados = resultado;
       }
     });
   }
 
   guardarProducto(): void {
-    if (this.productoForm.valid) {
-      const productoActualizado = {
-        nombre: this.productoForm.value.nombre,
-        id_categoria: Number(this.productoForm.value.categoria), // ✅ Garantiza que se mande como número
-        precio: this.productoForm.value.precio,
-        descripcion: this.productoForm.value.descripcion,
-        ingredientes: this.ingredientesSeleccionados.map(i => ({
-          id_ingrediente: i.id,
-          cantidad: i.cantidad
-        })),
-        insumos: this.insumosSeleccionados.map(i => ({
-          id_insumo: i.id,
-          cantidad: i.cantidad
-        })),
-        imagen: this.imagenProducto
-      };
-
-      this.dialogRef.close(productoActualizado);
+    if (this.productoForm.invalid) {
+      this.productoForm.markAllAsTouched();
+      return;
     }
+
+    const productoActualizado = {
+      nombre: this.productoForm.value.nombre,
+      id_categoria: Number(this.productoForm.value.categoria),
+      precio: this.productoForm.value.precio,
+      descripcion: this.productoForm.value.descripcion,
+      ingredientes: this.ingredientesSeleccionados.map(i => ({
+        id_ingrediente: i.id,
+        cantidad: i.cantidad
+      })),
+      insumos: this.insumosSeleccionados.map(i => ({
+        id_insumo: i.id,
+        cantidad: i.cantidad
+      })),
+      imagen: this.imagenProducto
+    };
+
+    this.dialogRef.close(productoActualizado);
   }
 }
