@@ -17,6 +17,7 @@ import { OrdersComponent } from './Orders/orders.component';
 import { MatSelectModule } from '@angular/material/select';
 import { ModalModule } from '../shared-modals/modals/modal.module';
 import { HttpClientJsonpModule } from '@angular/common/http';
+import { CategoriesComponent } from './categories/categories.component';
 
 
 @NgModule({
@@ -29,6 +30,8 @@ import { HttpClientJsonpModule } from '@angular/common/http';
     InventoryComponent,
     ConfigurationComponent,
     OrdersComponent,
+    CategoriesComponent,
+
  
   ],
   imports: [

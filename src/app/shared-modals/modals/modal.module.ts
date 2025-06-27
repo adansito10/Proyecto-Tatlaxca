@@ -33,6 +33,8 @@ import { EliminarUsuarioComponent } from './Usuarios/eliminar-usuario/eliminar-u
 import { ConfirmLogoutDialogComponent } from './confirm-logout-login/confirmLogoutDialogComponent';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { MostrarInsumosComponent } from './Inventario/mostrar-insumos/mostrar.insumos.component';
+import { AgregarCategoriesComponent } from './categories/agregar-categoria/agregar-categoria.component';
+import { EliminarCategoryComponent } from './categories/eliminar-categoria/eliminar-categoria-component';
 
 @NgModule({
   declarations: [
@@ -51,7 +53,9 @@ import { MostrarInsumosComponent } from './Inventario/mostrar-insumos/mostrar.in
   EditarUsuarioComponent,
   EliminarUsuarioComponent,
   ConfirmLogoutDialogComponent,
-  MostrarInsumosComponent
+  MostrarInsumosComponent,
+  AgregarCategoriesComponent,
+  EliminarCategoryComponent
   
   
   ],

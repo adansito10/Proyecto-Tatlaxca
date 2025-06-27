@@ -1,0 +1,17 @@
+<h2 mat-dialog-title>{{ modo === 'agregar' ? 'Agregar' : 'Editar' }} Categoría</h2>
+<mat-dialog-content [formGroup]="form">
+  <mat-form-field appearance="fill" class="full-width mb-3">
+    <mat-label>Nombre</mat-label>
+    <input matInput formControlName="nombre" required>
+  </mat-form-field>
+  <mat-form-field appearance="fill" class="full-width mb-3">
+    <mat-label>Descripción</mat-label>
+    <textarea matInput formControlName="descripcion"></textarea>
+  </mat-form-field>
+</mat-dialog-content>
+<mat-dialog-actions align="end">
+  <button mat-button (click)="cancelar()">Cancelar</button>
+  <button mat-flat-button color="primary" (click)="guardar()" [disabled]="form.invalid">
+    {{ modo === 'agregar' ? 'Agregar' : 'Guardar' }}
+  </button>
+</mat-dialog-actions>

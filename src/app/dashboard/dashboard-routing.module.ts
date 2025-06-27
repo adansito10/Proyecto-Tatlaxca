@@ -8,6 +8,7 @@ import { ReportsComponent } from './Reports/reports.component';
 import { InventoryComponent } from './Inventory/inventory.component';
 import { ConfigurationComponent } from './Configuration/configuration.component';
 import { OrdersComponent } from './Orders/orders.component';
+import { CategoriesComponent } from './categories/categories.component';
 
 const routes: Routes = [
   { path: '', redirectTo: 'inicio', pathMatch: 'full' },
@@ -15,6 +16,7 @@ const routes: Routes = [
   { path: 'products', component: ProductsComponent },
   { path: 'ingredients', component: IngredientsComponent },
   { path: 'users', component: UsersComponent },
+  { path: 'categories', component: CategoriesComponent },
   { path: 'reports', component: ReportsComponent },
   { path: 'orders', component: OrdersComponent },
   { path: 'inventory', component: InventoryComponent },
