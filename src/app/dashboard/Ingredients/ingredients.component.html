@@ -3,44 +3,41 @@
     <h1 class="fw-bold mb-2 ms-2">Gestión de Ingredientes</h1>
 
     <div class="d-flex align-items-center mb-2">
-      <input type="text" class="form-control me-2 buscador-custom" placeholder="Buscar..." style="width: 300px">
-
-
+      <input type="text"class="form-control me-2 buscador-custom"placeholder="Buscar por nombre..."[(ngModel)]="filtroNombre" style="width: 300px">
     </div>
-  <button class="btn custom-agregar-btn mb-2" (click)="abrirModalAgregar()">
-      <mat-icon>add</mat-icon> Agregar
-    </button></div>
 
-  
+    <button class="btn custom-agregar-btn mb-2" (click)="abrirModalAgregar()">
+      <mat-icon>add</mat-icon> Agregar
+    </button>
+  </div>
+
   <div class="table-responsive">
     <table class="table table-hover text-center align-middle w-100">
       <thead class="table-light">
-   <tr>
-    <th>Nombre</th>
-    <th>Unidad</th>
-    <th>Stock</th>
-    <th>Acciones</th>
-  </tr>
+        <tr>
+          <th>Nombre</th>
+          <th>Unidad</th>
+          <th>Stock</th>
+          <th>Acciones</th>
+        </tr>
       </thead>
-<tbody>
-  <tr *ngFor="let ingrediente of ingredientes">
-
-    <td class="align-middle">{{ ingrediente.nombre }}</td>
-
-    <td class="align-middle">{{ ingrediente.unidad }}</td>
-
-    <td class="align-middle">{{ ingrediente.stock }}</td>
-
-    <td class="align-middle">
-      <div class="d-flex justify-content-center gap-2">
-        <button class="btn btn-sm btn-success" (click)="abrirModalEditar(ingrediente)">
-          <i class="bi bi-pencil"></i>
-
-        </button>
-        <button class="btn btn-sm btn-danger" (click)="abrirModalEliminar(ingrediente)">
-          <i class="bi bi-trash"></i>
-        </button>
-      </div>
-    </td>
-  </tr>
-</tbody>
+      <tbody>
+        <tr *ngFor="let ingrediente of ingredientesFiltrados">
+          <td>{{ ingrediente.nombre }}</td>
+          <td>{{ ingrediente.unidad }}</td>
+          <td>{{ ingrediente.stock }}</td>
+          <td>
+            <div class="d-flex justify-content-center gap-2">
+              <button class="btn btn-sm btn-success" (click)="abrirModalEditar(ingrediente)">
+                <i class="bi bi-pencil"></i>
+              </button>
+              <button class="btn btn-sm btn-danger" (click)="abrirModalEliminar(ingrediente)">
+                <i class="bi bi-trash"></i>
+              </button>
+            </div>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</div>

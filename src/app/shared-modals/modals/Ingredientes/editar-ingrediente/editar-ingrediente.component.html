@@ -5,19 +5,35 @@
     <mat-form-field appearance="fill" class="full-width">
       <mat-label>Nombre</mat-label>
       <input matInput formControlName="nombre" />
+      <mat-error *ngIf="form.get('nombre')?.hasError('required')">
+        El nombre es obligatorio
+      </mat-error>
     </mat-form-field>
 
     <mat-form-field appearance="fill" class="full-width">
       <mat-label>Unidad</mat-label>
-      <input matInput formControlName="unidad" />
+      <mat-select formControlName="unidad" required>
+        <mat-option value="kg">Kilogramos (kg)</mat-option>
+        <mat-option value="g">Gramos (g)</mat-option>
+        <mat-option value="l">Litros (l)</mat-option>
+        <mat-option value="ml">Mililitros (ml)</mat-option>
+        <mat-option value="unidad">Unidad</mat-option>
+      </mat-select>
+      <mat-error *ngIf="form.get('unidad')?.hasError('required')">
+        La unidad es obligatoria
+      </mat-error>
     </mat-form-field>
 
     <mat-form-field appearance="fill" class="full-width">
       <mat-label>Stock</mat-label>
       <input matInput type="number" formControlName="stock" min="0" />
+      <mat-error *ngIf="form.get('stock')?.hasError('required')">
+        El stock es obligatorio
+      </mat-error>
+      <mat-error *ngIf="form.get('stock')?.hasError('min')">
+        El stock no puede ser negativo
+      </mat-error>
     </mat-form-field>
-
- 
   </form>
 </mat-dialog-content>
 

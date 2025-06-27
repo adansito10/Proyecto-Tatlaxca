@@ -13,6 +13,7 @@ import { IngredientsService } from '../../services/Ingredients/ingredients.servi
 })
 export class IngredientsComponent implements OnInit {
   ingredientes: any[] = [];
+  filtroNombre: string = '';
 
   constructor(
     private dialog: MatDialog,
@@ -23,13 +24,25 @@ export class IngredientsComponent implements OnInit {
     this.obtenerIngredientes();
   }
 
-  obtenerIngredientes() {
-    this.ingredientsService.obtenerIngredientes().subscribe(data => {
-      this.ingredientes = data.filter(i => i.stock !== -1);
+  obtenerIngredientes(): void {
+    this.ingredientsService.obtenerIngredientes().subscribe({
+      next: data => {
+        this.ingredientes = data.filter(i => i.stock !== -1);
+      },
+      error: error => {
+        console.error('Error al obtener ingredientes:', error);
+      }
     });
   }
 
-  abrirModalAgregar() {
+  get ingredientesFiltrados(): any[] {
+    const texto = this.filtroNombre.toLowerCase().trim();
+    return this.ingredientes.filter(ing =>
+      ing.nombre.toLowerCase().includes(texto)
+    );
+  }
+
+  abrirModalAgregar(): void {
     const dialogRef = this.dialog.open(AgregarIngredienteComponent, {
       width: '500px',
       data: { modo: 'agregar' }
@@ -37,14 +50,15 @@ export class IngredientsComponent implements OnInit {
 
     dialogRef.afterClosed().subscribe(resultado => {
       if (resultado) {
-        this.ingredientsService.crearIngrediente(resultado).subscribe(() => {
-          this.obtenerIngredientes();
+        this.ingredientsService.crearIngrediente(resultado).subscribe({
+          next: () => this.obtenerIngredientes(),
+          error: err => console.error('Error al crear ingrediente:', err)
         });
       }
     });
   }
 
-  abrirModalEditar(ingrediente: any) {
+  abrirModalEditar(ingrediente: any): void {
     const dialogRef = this.dialog.open(EditarIngredienteComponent, {
       width: '500px',
       data: { modo: 'editar', entidad: ingrediente }
@@ -52,33 +66,32 @@ export class IngredientsComponent implements OnInit {
 
     dialogRef.afterClosed().subscribe(resultado => {
       if (resultado) {
-        this.ingredientsService.actualizarIngrediente(ingrediente.id, resultado).subscribe(() => {
-          this.obtenerIngredientes();
+        this.ingredientsService.actualizarIngrediente(ingrediente.id, resultado).subscribe({
+          next: () => this.obtenerIngredientes(),
+          error: err => console.error('Error al actualizar ingrediente:', err)
         });
       }
     });
   }
 
-  abrirModalEliminar(ingrediente: any) {
-  const dialogRef = this.dialog.open(EliminarIngredienteComponent, {
-    width: '400px',
-    data: { 
-      nombre: ingrediente.nombre,
-      id: ingrediente.id
-    }
-  });
+  abrirModalEliminar(ingrediente: any): void {
+    const dialogRef = this.dialog.open(EliminarIngredienteComponent, {
+      width: '400px',
+      data: {
+        nombre: ingrediente.nombre,
+        id: ingrediente.id
+      }
+    });
 
-  dialogRef.afterClosed().subscribe(resultado => {
-    if (resultado) {
-      this.ingredientsService.eliminarIngrediente(ingrediente.id).subscribe({
-        next: () => {
-          this.ingredientes = this.ingredientes.filter(i => i.id !== ingrediente.id);
-        },
-        error: (error) => {
-          console.error('Error al eliminar ingrediente:', error);
-        }
-      });
-    }
-  });
+    dialogRef.afterClosed().subscribe(confirmado => {
+      if (confirmado) {
+        this.ingredientsService.eliminarIngrediente(ingrediente.id).subscribe({
+          next: () => {
+            this.ingredientes = this.ingredientes.filter(i => i.id !== ingrediente.id);
+          },
+          error: err => console.error('Error al eliminar ingrediente:', err)
+        });
+      }
+    });
   }
 }
