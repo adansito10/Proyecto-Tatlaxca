@@ -5,20 +5,6 @@
     <div class="d-flex align-items-center mb-2">
       <input type="text" class="form-control me-2 buscador-custom" placeholder="Buscar..." style="width: 300px" [(ngModel)]="filtroTexto">
 
-      <!-- Botón de categoría con ícono -->
-      <button mat-icon-button [matMenuTriggerFor]="menuCategorias" aria-label="Filtrar por categoría" class="me-2">
-        <mat-icon>category</mat-icon>
-      </button>
-
-      <!-- Menú de categorías -->
-      <mat-menu #menuCategorias="matMenu">
-        <button mat-menu-item (click)="filtroCategoria = ''">
-          <span>Todas</span>
-        </button>
-        <button mat-menu-item *ngFor="let cat of categorias" (click)="filtroCategoria = cat">
-          <span>{{ cat }}</span>
-        </button>
-      </mat-menu>
       
     </div>
 

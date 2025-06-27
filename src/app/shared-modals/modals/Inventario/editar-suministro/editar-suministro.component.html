@@ -1,4 +1,4 @@
-<h2 mat-dialog-title>Agregar Suministro</h2>
+<h2 mat-dialog-title>{{ modo === 'agregar' ? 'Agregar' : 'Editar' }} Suministro</h2>
 
 <mat-dialog-content>
   <form>
@@ -8,35 +8,22 @@
     </mat-form-field>
 
     <mat-form-field appearance="fill" class="w-100 mb-3">
-      <mat-label>Categoría</mat-label>
-      <mat-select [(ngModel)]="item.categoria" name="categoria">
-        <mat-option *ngFor="let cat of categorias" [value]="cat">{{ cat }}</mat-option>
-      </mat-select>
-    </mat-form-field>
-
-    <mat-form-field appearance="fill" class="w-100 mb-3">
       <mat-label>Stock</mat-label>
-      <input type="number" matInput [(ngModel)]="item.stock" name="stock" />
-    </mat-form-field>
-
-    <mat-form-field appearance="fill" class="w-100 mb-3">
-      <mat-label>Stock Mínimo</mat-label>
-      <input type="number" matInput [(ngModel)]="item.stockMinimo" name="stockMinimo" />
+      <input type="number" matInput [(ngModel)]="item.stock" name="stock" min="0" />
     </mat-form-field>
 
     <mat-form-field appearance="fill" class="w-100 mb-3">
       <mat-label>Unidad</mat-label>
-      <input matInput [(ngModel)]="item.unidad" name="unidad" />
-    </mat-form-field>
-
-    <mat-form-field appearance="fill" class="w-100 mb-3">
-      <mat-label>Última Compra</mat-label>
-      <input matInput [(ngModel)]="item.ultimaCompra" name="ultimaCompra" />
+      <mat-select [(ngModel)]="item.unidad" name="unidad">
+        <mat-option *ngFor="let unidad of unidades" [value]="unidad">{{ unidad }}</mat-option>
+      </mat-select>
     </mat-form-field>
   </form>
 </mat-dialog-content>
 
 <mat-dialog-actions align="end">
   <button mat-button (click)="cancelar()">Cancelar</button>
-  <button mat-button color="primary" (click)="guardar()">{{ modo === 'agregar' ? 'Agregar' : 'Guardar' }}</button>
+  <button mat-button color="primary" (click)="guardar()">
+    {{ modo === 'agregar' ? 'Agregar' : 'Guardar' }}
+  </button>
 </mat-dialog-actions>
