@@ -10,6 +10,7 @@ import { AuthService } from '../../../services/auth.service/auth.service';
 })
 export class LoginPageComponent {
   iniciandoSesion = false;
+  mensajeError: string | null = null;
 
   constructor(private router: Router, private authService: AuthService) {}
 
@@ -20,14 +21,25 @@ export class LoginPageComponent {
     const password = (document.querySelector('input[type=password]') as HTMLInputElement).value;
 
     this.iniciandoSesion = true;
+    this.mensajeError = null;
 
     this.authService.login(email, password).subscribe(ok => {
       if (ok) {
-        this.router.navigate(['/dashboard/inicio']);
+ setTimeout(() => {
+      this.router.navigate(['/dashboard/inicio']);
+    }, 1000); 
       } else {
-        alert('Credenciales incorrectas');
+        this.mostrarError('Acceso denegado. Solo los administradores pueden ingresar');
         this.iniciandoSesion = false;
       }
+    }, error => {
+      this.mostrarError('Error de conexión o credenciales inválidas');
+      this.iniciandoSesion = false;
     });
+  }
+
+  private mostrarError(mensaje: string) {
+    this.mensajeError = mensaje;
+    setTimeout(() => this.mensajeError = null, 3000);
   }
 }

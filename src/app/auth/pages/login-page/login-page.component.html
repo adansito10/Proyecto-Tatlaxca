@@ -2,21 +2,26 @@
   <img src="/logocafeteria.jpg" alt="Logo Cafetería" class="logo" />
   <h2>Iniciar sesión</h2>
 
+<div *ngIf="mensajeError" class="alert-error-top">
+  <div class="alert alert-danger alert-dismissible fade show text-center" role="alert">
+    {{ mensajeError }}
+  </div>
+</div>
+
   <form (submit)="onLogin($event)">
     <div class="input-group">
-    <span class="icon"><mat-icon>email</mat-icon></span>
+      <span class="icon"><mat-icon>email</mat-icon></span>
       <input type="email" placeholder="Email Address" required />
     </div>
 
     <div class="input-group">
-    <span class="icon"><mat-icon>lock</mat-icon></span>
+      <span class="icon"><mat-icon>lock</mat-icon></span>
       <input type="password" placeholder="Password" required />
     </div>
 
     <button type="submit">Iniciar sesión</button>
   </form>
 
-  <!-- Mensaje de cargando -->
   <div *ngIf="iniciandoSesion" class="overlay">
     <div class="spinner-box">
       <mat-spinner diameter="40"></mat-spinner>

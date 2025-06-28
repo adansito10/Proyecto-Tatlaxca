@@ -1,33 +1,32 @@
+// auth.guard.ts
 import { Injectable } from '@angular/core';
-import { CanActivate, CanMatch, Router, UrlSegment, ActivatedRouteSnapshot, RouterStateSnapshot } from '@angular/router';
+import { CanActivate, CanMatch, Router, UrlSegment,ActivatedRouteSnapshot, RouterStateSnapshot} from '@angular/router';
 import { Observable } from 'rxjs';
-import { tap, map } from 'rxjs/operators';
+import { map, tap } from 'rxjs/operators';
 import { AuthService } from '../services/auth.service/auth.service';
 
 @Injectable({ providedIn: 'root' })
-export class AuthGuard implements CanMatch, CanActivate {
+export class AuthGuard implements CanActivate, CanMatch {
 
   constructor(private authService: AuthService, private router: Router) {}
 
-  private checkAuthStatus(): Observable<boolean> {
+  private checkAdminAccess(): Observable<boolean> {
     return this.authService.checkAuthentication().pipe(
-      map(isAuth => {
-        console.log('AuthGuard - isAuth:', isAuth);
-        if (!isAuth) {
-          console.log('AuthGuard - No autenticado, redirigiendo a /auth/login');
+      tap(isAdmin => {
+        if (!isAdmin) {
+          console.warn('Acceso denegado: No es administrador');
           this.router.navigate(['/auth/login']);
-          return false;
         }
-        return true;
-      })
+      }),
+      map(isAdmin => isAdmin)
     );
   }
 
-  canMatch(): Observable<boolean> {
-    return this.checkAuthStatus();
+  canActivate(): Observable<boolean> {
+    return this.checkAdminAccess();
   }
 
-  canActivate(): Observable<boolean> {
-    return this.checkAuthStatus();
+  canMatch(): Observable<boolean> {
+    return this.checkAdminAccess();
   }
 }

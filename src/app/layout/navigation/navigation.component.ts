@@ -11,15 +11,14 @@ import { ConfirmLogoutDialogComponent } from '../../shared-modals/modals/confirm
   standalone: false,
   templateUrl: './navigation.component.html',
   styleUrl: './navigation.component.scss',
-  
 })
 export class NavigationComponent {
   private breakpointObserver = inject(BreakpointObserver);
   private router = inject(Router);
-  private dialog = inject(MatDialog); // ✅ Faltaba esta línea
+  private dialog = inject(MatDialog);
 
-
-  isHandset$: Observable<boolean> = this.breakpointObserver.observe(Breakpoints.Handset)
+  isHandset$: Observable<boolean> = this.breakpointObserver
+    .observe(Breakpoints.Handset)
     .pipe(
       map(result => result.matches),
       shareReplay()
@@ -27,14 +26,25 @@ export class NavigationComponent {
 
   isSideMode = false;
   sidenavOpened = true;
+  cerrandoSesion = false;
 
-  cerrandoSesion = false; // 👉 Variable para mostrar el mensaje
+  user: { correo: string; rol: string } | null = null;
 
   constructor() {
     this.isHandset$.subscribe(isHandset => {
       this.isSideMode = !isHandset;
       this.sidenavOpened = this.isSideMode;
     });
+
+    const userData = localStorage.getItem('user');
+    if (userData) {
+      try {
+        this.user = JSON.parse(userData);
+      } catch (e) {
+        console.error('Error al parsear los datos del usuario:', e);
+        this.user = null;
+      }
+    }
   }
 
   onSidenavToggle(opened: boolean) {
@@ -49,17 +59,17 @@ export class NavigationComponent {
     }).unsubscribe();
   }
 
-logout() {
-  const dialogRef = this.dialog.open(ConfirmLogoutDialogComponent);
+  logout() {
+    const dialogRef = this.dialog.open(ConfirmLogoutDialogComponent);
 
-  dialogRef.afterClosed().subscribe(result => {
-    if (result === true) {
-      this.cerrandoSesion = true;
-      setTimeout(() => {
-        localStorage.clear();
-        this.router.navigate(['/auth/login']);
-      }, 3000);
-    }
-  });
-}
+    dialogRef.afterClosed().subscribe(result => {
+      if (result === true) {
+        this.cerrandoSesion = true;
+        setTimeout(() => {
+          localStorage.clear();
+          this.router.navigate(['/auth/login']);
+        }, 3000);
+      }
+    });
+  }
 }

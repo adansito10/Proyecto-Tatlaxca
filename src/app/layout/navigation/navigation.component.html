@@ -75,9 +75,9 @@
       <div class="toolbar-profile">
         <img src="/perfil.jpg" alt="Perfil" class="profile-image">
         <div class="profile-info">
-          <h3>Adansito</h3>
-          <p>Administrador</p>
-        </div>
+       <h3>{{ user?.correo || 'Usuario' }}</h3>
+        <p>{{ user?.rol || 'Rol desconocido' }}</p>
+         </div>
         <button class="btn-config" type="button" [routerLink]="['/dashboard/configuration']">
           <mat-icon>settings</mat-icon>
         </button>

@@ -1,37 +1,53 @@
-import { Injectable, Inject, PLATFORM_ID } from '@angular/core';
+import { Injectable } from '@angular/core';
+import { HttpClient } from '@angular/common/http';
 import { Observable, of } from 'rxjs';
-import { isPlatformBrowser } from '@angular/common';
+import { map } from 'rxjs';
 
-@Injectable({ providedIn: 'root' })
+@Injectable({
+  providedIn: 'root'
+})
 export class AuthService {
-  private isBrowser: boolean;
+  private apiUrl = 'http://localhost:3010/api/users/login';
 
-  constructor(@Inject(PLATFORM_ID) private platformId: Object) {
-    this.isBrowser = isPlatformBrowser(this.platformId);
-  }
+  constructor(private http: HttpClient) {}
 
   login(email: string, password: string): Observable<boolean> {
-    if (email === 'admin@correo.com' && password === '123456') {
-      if (this.isBrowser) {
-        localStorage.setItem('token', 'token-fake');
-      }
-      return of(true);
-    }
-    return of(false);
-  }
-
-  logout() {
-    if (this.isBrowser) {
-      localStorage.removeItem('token');
-    }
+    return this.http.post<any>(this.apiUrl, { correo: email, password }).pipe(
+      map(response => {
+        if (response && response.user && response.user.rol === 'Administrador') {
+          localStorage.setItem('token', response.token);
+          localStorage.setItem('user', JSON.stringify(response.user));
+          return true;
+        }
+        return false;
+      })
+    );
   }
 
   checkAuthentication(): Observable<boolean> {
-    if (!this.isBrowser) {
-      // No hay localStorage en servidor, asumir no autenticado
+    const userData = localStorage.getItem('user');
+
+    if (!userData) return of(false);
+
+    try {
+      const user = JSON.parse(userData);
+      return of(user.rol === 'Administrador');
+    } catch (e) {
+      console.error('Error parsing user from localStorage:', e);
       return of(false);
     }
-    const token = localStorage.getItem('token');
-    return of(!!token);
+  }
+
+  logout() {
+    localStorage.clear();
+  }
+
+  getCurrentUser() {
+    const user = localStorage.getItem('user');
+    return user ? JSON.parse(user) : null;
+  }
+
+  isAdmin(): boolean {
+    return this.getCurrentUser()?.rol === 'Administrador';
   }
 }
