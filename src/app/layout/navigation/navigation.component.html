@@ -6,21 +6,11 @@
     [opened]="sidenavOpened"
     (openedChange)="onSidenavToggle($event)">
 
-    
-
-    <!-- Perfil regresado al sidenav -->
-    <div class="profile-section">
-      <img src="/perfil.jpg" alt="Foto de perfil" class="profile-image">
-      <div class="profile-info">
-        <h3>Adansito</h3>
-        <p>Administrador</p>
-      </div>
-      <button class="btn-config" type="button" [routerLink]="['/dashboard/configuration']">
-        <mat-icon>settings</mat-icon>
-      </button>
+    <div class="company-section">
+      <img src="/logocafeteria.jpg" alt="Logo de la empresa" class="company-logo">
+      <h3 class="company-name">Cafetería Tatlaxca</h3>
     </div>
 
-    <!-- Lista de navegación -->
     <mat-nav-list>
       <a mat-list-item routerLink="/dashboard/inicio" (click)="drawer.close()">
         <mat-icon matListIcon>home</mat-icon>
@@ -56,7 +46,6 @@
       </a>
     </mat-nav-list>
 
-    <!-- Botón de cerrar sesión -->
     <div class="logout-button">
       <button mat-button color="warn" (click)="logout()">
         <mat-icon>logout</mat-icon>
@@ -64,7 +53,6 @@
       </button>
     </div>
 
-    <!-- Overlay de cierre -->
     <div *ngIf="cerrandoSesion" class="overlay">
       <div class="spinner-container">
         <mat-spinner diameter="50"></mat-spinner>
@@ -73,7 +61,6 @@
     </div>
   </mat-sidenav>
 
-  <!-- Contenido principal con logo en toolbar -->
   <mat-sidenav-content [class.content-margin]="isSideMode && sidenavOpened">
     <mat-toolbar color="primary">
       <button type="button" mat-icon-button (click)="drawer.toggle()" aria-label="Abrir/cerrar menú">
@@ -82,6 +69,19 @@
 
       <img src="/logocafeteria.jpg" alt="Logo" class="toolbar-logo">
       <span class="titulo-app">Cafetería Tatlaxca</span>
+
+      <span class="spacer"></span>
+
+      <div class="toolbar-profile">
+        <img src="/perfil.jpg" alt="Perfil" class="profile-image">
+        <div class="profile-info">
+          <h3>Adansito</h3>
+          <p>Administrador</p>
+        </div>
+        <button class="btn-config" type="button" [routerLink]="['/dashboard/configuration']">
+          <mat-icon>settings</mat-icon>
+        </button>
+      </div>
     </mat-toolbar>
 
     <router-outlet></router-outlet>
