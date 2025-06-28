@@ -1,6 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
-import { UsuarioServiceService } from '../../services/Users/usuario-service.service';
+import { UsersService } from '../../services/Users/usuario-service.service';
+import { RolesService } from '../../services/roles/roles.service';
+
 import { AgregarUsuarioComponent } from '../../shared-modals/modals/Usuarios/agregar-usuario/agregar-usuario.component';
 import { EditarUsuarioComponent } from '../../shared-modals/modals/Usuarios/editar-usuario/editar-usuario.component';
 import { EliminarUsuarioComponent } from '../../shared-modals/modals/Usuarios/eliminar-usuario/eliminar-usuario.component';
@@ -14,15 +16,18 @@ import { EliminarUsuarioComponent } from '../../shared-modals/modals/Usuarios/el
 export class UsersComponent implements OnInit {
   usuarios: any[] = [];
   filtroCargo: string = '';
-  cargos: string[] = [ 'Empleado', 'Cocinero', 'Mesero'];
+  cargos: string[] = [];
+  roles: any[] = [];
 
   constructor(
     private dialog: MatDialog,
-    private usuarioService: UsuarioServiceService
+    private usuarioService: UsersService,
+    private rolesService: RolesService
   ) {}
 
   ngOnInit(): void {
     this.cargarUsuarios();
+    this.cargarRoles();
   }
 
   get usuariosFiltrados() {
@@ -38,51 +43,43 @@ export class UsersComponent implements OnInit {
     });
   }
 
-  abrirModalAgregar(): void {
-  const dialogRef = this.dialog.open(AgregarUsuarioComponent, {
-    width: '600px',
-    data: {
-      modo: 'agregar',
-      usuario: {},
-      cargos: this.cargos
-    }
-  });
-
-  dialogRef.afterClosed().subscribe(resultado => {
-    if (!resultado) return;
-
-    const datosAPI = {
-      correo: resultado.correo,
-      password: resultado.password
-    };
-
-    this.usuarioService.crearUsuario(datosAPI).subscribe({
-      next: (apiResponse) => {
-        const usuarioLocal = {
-          correo: resultado.correo,
-          nombre: resultado.nombre || '',
-          apellidoPaterno: resultado.apellidoPaterno || '',
-          apellidoMaterno: resultado.apellidoMaterno || '',
-          telefono: resultado.telefono || '',
-          foto: resultado.foto || '',
-          cargo: resultado.cargo || ''
-        };
-
-        this.usuarios.push(usuarioLocal);
+  cargarRoles(): void {
+    this.rolesService.getRoles().subscribe({
+      next: data => {
+        this.roles = data;
+        this.cargos = data.map((r: any) => r.rol);
       },
-      error: err => console.error('Error al crear usuario', err)
+      error: err => console.error('Error al obtener roles:', err)
     });
-  });
-}
+  }
 
+  abrirModalAgregar(): void {
+    const dialogRef = this.dialog.open(AgregarUsuarioComponent, {
+      width: '600px',
+      data: {
+        modo: 'agregar',
+        usuario: {},
+        roles: this.roles
+      }
+    });
+
+    dialogRef.afterClosed().subscribe(resultado => {
+      if (!resultado) return;
+
+      this.usuarioService.crearUsuario(resultado).subscribe({
+        next: () => this.cargarUsuarios(),
+        error: err => console.error('Error al crear usuario:', err)
+      });
+    });
+  }
 
   abrirModalEditar(usuario: any): void {
     const dialogRef = this.dialog.open(EditarUsuarioComponent, {
-      width: '800px',
+      width: '600px',
       data: {
         modo: 'editar',
         usuario: { ...usuario },
-        cargos: this.cargos
+        roles: this.roles
       }
     });
 
@@ -90,7 +87,7 @@ export class UsersComponent implements OnInit {
       if (resultado) {
         this.usuarioService.editarUsuario(usuario.id, resultado).subscribe({
           next: () => this.cargarUsuarios(),
-          error: err => console.error('Error al editar usuario', err)
+          error: err => console.error('Error al editar usuario:', err)
         });
       }
     });

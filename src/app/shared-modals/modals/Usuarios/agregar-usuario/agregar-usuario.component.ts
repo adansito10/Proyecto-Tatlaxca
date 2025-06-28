@@ -1,4 +1,4 @@
-import { Component, Inject, ViewChild, ElementRef } from '@angular/core';
+import { Component, Inject, ViewChild, ElementRef, OnInit } from '@angular/core';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 
@@ -6,28 +6,32 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
   selector: 'app-agregar-usuario',
   standalone: false,
   templateUrl: './agregar-usuario.component.html',
-  styleUrl: './agregar-usuario.component.scss'
+  styleUrls: ['./agregar-usuario.component.scss']
 })
-export class AgregarUsuarioComponent {
+export class AgregarUsuarioComponent implements OnInit {
   usuarioForm: FormGroup;
   imagenPreview: string | ArrayBuffer | null = null;
-
   @ViewChild('fileInput') fileInput!: ElementRef<HTMLInputElement>;
 
   constructor(
-    public dialogRef: MatDialogRef<AgregarUsuarioComponent>,
-    @Inject(MAT_DIALOG_DATA) public data: { modo: string; usuario: any; cargos: string[] },
-    private fb: FormBuilder
+    private fb: FormBuilder,
+    private dialogRef: MatDialogRef<AgregarUsuarioComponent>,
+    @Inject(MAT_DIALOG_DATA)
+    public data: {
+      modo: 'agregar' | 'editar' | 'eliminar';
+      usuario: any;
+      roles: { id: number; rol: string }[];
+    }
   ) {
     this.usuarioForm = this.fb.group({
-      nombre: [data.usuario.nombre || '', [Validators.required, Validators.pattern('^[a-zA-ZáéíóúÁÉÍÓÚÑñ ]+$')]],
+      nombre: [data.usuario.nombre || '', [Validators.required, Validators.pattern('^[a-zA-ZáéíóúÁÉÍÓÚñÑ ]+$')]],
       apellidoPaterno: [data.usuario.apellidoPaterno || '', Validators.required],
       apellidoMaterno: [data.usuario.apellidoMaterno || '', Validators.required],
-      cargo: [data.usuario.cargo || '', Validators.required],
-      telefono: [data.usuario.telefono || '', [Validators.required, Validators.pattern('^[0-9]{7,10}$')]],
-      foto: [data.usuario.foto || ''],
+      id_rol: [data.usuario.id_rol ?? null, Validators.required],
+      telefono: [data.usuario.telefono || '', [Validators.required, Validators.pattern(/^\d{7,10}$/)]],
       correo: [data.usuario.correo || '', [Validators.required, Validators.email]],
-      password: [data.usuario.password || '', [Validators.required, Validators.minLength(6)]]
+      password: ['', data.modo === 'agregar' ? [Validators.required, Validators.minLength(6)] : []],
+      foto: [data.usuario.foto || '']
     });
 
     if (data.usuario.foto) {
@@ -35,27 +39,42 @@ export class AgregarUsuarioComponent {
     }
   }
 
-  onFileSelected(event: Event) {
+  ngOnInit(): void {
+    if (this.data.modo === 'editar') {
+      this.usuarioForm.get('password')?.clearValidators();
+      this.usuarioForm.get('password')?.updateValueAndValidity();
+    }
+  }
+
+  onFileSelected(event: Event): void {
     const input = event.target as HTMLInputElement;
-    if (!input.files?.length) return;
+    if (!input.files || input.files.length === 0) return;
 
     const file = input.files[0];
     const reader = new FileReader();
-
     reader.onload = () => {
       this.imagenPreview = reader.result;
       this.usuarioForm.patchValue({ foto: reader.result });
     };
-
     reader.readAsDataURL(file);
   }
 
-  guardar() {
+  guardar(): void {
     if (this.usuarioForm.invalid) return;
-    this.dialogRef.close(this.usuarioForm.value);
+
+    const usuario = this.usuarioForm.value;
+    if (this.data.modo === 'editar' && !usuario.password) {
+      delete usuario.password; // Evitar sobrescribir si no se editó
+    }
+
+    this.dialogRef.close(usuario);
   }
 
-  eliminar() {
+  eliminar(): void {
     this.dialogRef.close({ eliminar: true, id: this.data.usuario.id });
+  }
+
+  cancelar(): void {
+    this.dialogRef.close();
   }
 }
