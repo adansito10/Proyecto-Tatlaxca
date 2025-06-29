@@ -9,14 +9,59 @@
 
 }
 
+
 .buscador-custom {
   background-color: #f9f9f9; /* Ejemplo: color claro tipo café */
-  color: #3e2c1c;             /* Texto en marrón oscuro */
+  color: #3e2c1c;      
+         /* Texto en marrón oscuro */
   border: 1px solid #000000;  /* Borde café */
   font-weight: 500;
 }
 
-.buscador-custom::placeholder {
-  color: #5b5b5b; /* Color del texto de placeholder */
-  opacity: 1;
+
+
+.buscador-wrapper {
+  position: relative;
+
+  .icono-busqueda {
+    position: absolute;
+    left: 12px;
+    top: 50%;
+    transform: translateY(-50%);
+    color: black;
+    font-size: 20px;
+    pointer-events: none;
+  }
+
+  .buscador-custom {
+    padding-left: 36px !important; // espacio para el icono
+  }
+}
+
+.icono-busqueda {
+  position: absolute;
+  margin-top: 4px;
+  margin-left: -1px;
+  top: 5%;
+  transform: translateY(-50%);
+  color: black;
+  pointer-events: none;
+}
+
+
+
+
+
+
+
+
+
+
+.icono-busqueda {
+  position: absolute;
+  left: 10px;
+  top: 50%;
+  transform: translateY(-50%);
+  color: black;
+  pointer-events: none;
 }

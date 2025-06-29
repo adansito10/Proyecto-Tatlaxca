@@ -7,7 +7,33 @@
   font-size: 1rem;
   border-radius: 8px;
 
+
 }
+
+
+
+
+.buscador-con-icono {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+
+  .icono-busqueda {
+    position: absolute;
+    left: 10px;
+    margin-top: 3px;
+    color: black; /* Cambia a negro o al color que quieras */
+    pointer-events: none; /* Para que el click pase al input */
+    font-size: 20px;
+    z-index: 2;
+  }
+
+  input.buscador-custom {
+    padding-left: 35px !important; /* Para que el texto no se monte en el icono */
+  }
+}
+
+
 
 .buscador-custom {
   background-color: #f9f9f9; /* Ejemplo: color claro tipo café */
@@ -17,6 +43,26 @@
 }
 
 .buscador-custom::placeholder {
-  color: #5b5b5b; /* Color del texto de placeholder */
+  color: #5b5b5b; 
   opacity: 1;
 }
+
+
+.icono-busqueda {
+  position: absolute;
+  left: 10px;
+  top: 50%;
+  transform: translateY(-50%);
+  color: black;
+  pointer-events: none;
+}
+
+
+
+
+
+
+
+
+
+

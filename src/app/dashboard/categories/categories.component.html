@@ -1,13 +1,23 @@
 <div class="container-fluid py-4">
   <div class="d-flex justify-content-between align-items-center mb-3 flex-wrap">
-    <h3 class="fw-bold mb-2 ms-2">Gestión de Categorías</h3>
-    <div class="d-flex align-items-center mb-2">
-      <input type="text"
-             class="form-control me-2 buscador-custom"
-             placeholder="Buscar por nombre..."
-             [(ngModel)]="filtroNombre"
-             style="width: 300px">
-    </div>
+    <h3  class="fw-bold mb-2 ms-2 text-dark" >Gestión de Categorías</h3>
+    
+    
+   <div class="d-flex align-items-center mb-2 buscador-con-icono">
+  <mat-icon class="icono-busqueda">search</mat-icon>
+
+  <input
+    type="text"
+    class="form-control me-2 buscador-custom"
+    placeholder="Buscar Categoria..."
+    [(ngModel)]="filtroNombre"
+
+    style="width: 300px"
+  >
+</div>
+
+
+
     <button class="btn custom-agregar-btn mb-2" (click)="openAdd()">
       <mat-icon>add</mat-icon> Agregar
     </button>

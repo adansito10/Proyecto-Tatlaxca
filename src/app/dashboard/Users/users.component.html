@@ -2,12 +2,20 @@
   <div class="d-flex justify-content-between align-items-center mb-3 flex-wrap">
     <h3 class="fw-bold mb-2 ms-2 text-dark">Gestión de Usuarios</h3>
 
-    <div class="d-flex align-items-center mb-2">
-      <input type="text" class="form-control me-1 buscador-custom" placeholder="Buscar..." style="width: 260px">
+   <div class="d-flex align-items-center mb-2 position-relative">
+  <mat-icon class="icono-busqueda">search</mat-icon>
 
-      <button mat-icon-button [matMenuTriggerFor]="menuCargos" aria-label="Filtrar por cargo">
-        <mat-icon>category</mat-icon>
-      </button>
+  <input
+    type="text"
+    class="form-control me-2 buscador-custom ps-5"
+    placeholder="Buscar usuario..."
+    style="width: 300px;"
+  />
+
+  <!-- Botón de categoría con ícono forzado a negro -->
+  <button mat-icon-button [matMenuTriggerFor]="menuCargos" aria-label="Filtrar por cargo">
+    <mat-icon class="icono-negro">category</mat-icon>
+  </button>
 
       <mat-menu #menuCargos="matMenu">
         <button mat-menu-item (click)="filtroCargo = ''">

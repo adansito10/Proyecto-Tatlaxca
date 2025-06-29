@@ -23,7 +23,36 @@
 
 
 
+.icono-busqueda {
+  position: absolute;
+  left: 10px;
+  top: 50%;
+  transform: translateY(-50%);
+  color: black;
+  pointer-events: none;
+}
+
+.con-icono {
+  padding-left: 35px !important; 
+}
 
 
 
 
+
+
+
+
+
+
+.custom-input {
+  border: 2px solid rgb(177, 177, 177) !important;
+  color: black;
+  background-color: white;
+  border-radius: 4px;
+}
+
+.icono-negro mat-icon {
+  color: black !important;
+  margin-top: -5px;
+}

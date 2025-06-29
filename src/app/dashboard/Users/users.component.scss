@@ -20,3 +20,17 @@
   color: #5b5b5b; /* Color del texto de placeholder */
   opacity: 1;
 }
+
+
+.icono-busqueda {
+  position: absolute;
+  left: 10px;
+  top: 50%;
+  transform: translateY(-50%);
+  color: black;
+  pointer-events: none;
+}
+
+.icono-negro {
+  color: black !important;
+}

@@ -105,8 +105,7 @@ export class AgregarProductoComponent {
       console.log('Producto a enviar:', productoCompleto);
     this.productosService.crearProducto(productoCompleto).subscribe({
       next: () => {
-        // alert('Producto guardado correctamente'); <-- Esta línea fue eliminada
-        this.dialogRef.close(true); // Cierra el modal y actualiza la lista
+        this.dialogRef.close(true); 
       },
       error: (err) => {
         console.error('Error al guardar producto', err);

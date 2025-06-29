@@ -4,14 +4,12 @@
 }
 
 .sidenav {
-  width: 175px;
+  width: 173px;
   background-color: #1b120a;
   color: white;
-  font-weight: 100;
-  display: flex;
-  flex-direction: column;
-  justify-content: space-between;
 }
+
+
 
 .profile-section {
   display: flex;
@@ -139,6 +137,11 @@ mat-nav-list a mat-icon {
   object-fit: cover;
 }
 
+mat-sidenav {
+  border-radius: 0 !important;
+  box-shadow: none !important; 
+}
+
 .profile-info {
   display: flex;
   flex-direction: column;
@@ -176,3 +179,6 @@ mat-nav-list a mat-icon {
     font-weight: bold;
   }
 }
+
+
+

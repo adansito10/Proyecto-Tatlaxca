@@ -11,7 +11,7 @@ const routes: Routes = [
   },
   {
     path: 'dashboard',
-    canMatch: [AuthGuard], // Protege la ruta completa
+    canMatch: [AuthGuard], 
     loadChildren: () => import('./dashboard/dashboard.module').then(m => m.DashboardModule)
   },
   {

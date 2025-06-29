@@ -1,12 +1,19 @@
 <div class="container-fluid py-4">
   <div class="d-flex justify-content-between align-items-center mb-3 flex-wrap">
-    <h3 class="fw-bold mb-2 ms-2">Gestión de Insumos</h3>
+    <h3  class="fw-bold mb-2 ms-2 text-dark" >Gestión de Insumos</h3>
 
-    <div class="d-flex align-items-center mb-2">
-      <input type="text" class="form-control me-2 buscador-custom" placeholder="Buscar..." style="width: 300px" [(ngModel)]="filtroTexto">
+    <div class="d-flex align-items-center mb-2 position-relative buscador-wrapper">
+  <input
+    type="text"
+    class="form-control me-2 buscador-custom"
+    placeholder="Buscar Insumo..."
+    style="width: 300px"
+     [(ngModel)]="filtroTexto"
+  />
 
-      
-    </div>
+
+  <mat-icon class="icono-busqueda">search</mat-icon>
+</div>
 
      <button class="btn custom-agregar-btn mb-2" (click)="abrirModalAgregar()">
       <mat-icon>add</mat-icon> Agregar
