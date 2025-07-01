@@ -84,7 +84,7 @@ export class AgregarProductoComponent {
       this.imagenProducto &&
       this.ingredientesSeleccionados.length > 0
     ) {
-      const idCategoria = Number(this.productoForm.value.categoria); // Forzar que sea número
+      const idCategoria = Number(this.productoForm.value.categoria); 
 
       const productoCompleto = {
         nombre: this.productoForm.value.nombre,

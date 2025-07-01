@@ -95,7 +95,6 @@ abrirModalEditar(producto: any): void {
         next: () => {
           const index = this.productos.findIndex(p => p.id === producto.id);
           if (index !== -1) {
-            // Buscar la categoría completa en el array local de categorías
             const categoriaCompleta = this.categorias.find(c => c.id === resultado.id_categoria);
 
             this.productos[index] = {

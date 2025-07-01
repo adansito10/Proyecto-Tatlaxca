@@ -7,7 +7,7 @@ import { environment } from '../../enviroments/environment';
   providedIn: 'root'
 })
 export class InsumosService {
-  private apiUrl = `${environment.apiUrl}/supplies`; 
+   private apiUrl = 'http://194.163.44.12:3010/api/supplies'; // Cambia la URL según tu configuración
 
   constructor(private http: HttpClient) {}
 

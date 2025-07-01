@@ -7,7 +7,7 @@ import { map } from 'rxjs';
   providedIn: 'root'
 })
 export class AuthService {
-  private apiUrl = 'http://localhost:3010/api/users/login';
+  private apiUrl = 'http://194.163.44.12:3010/api/users/login';
 
   constructor(private http: HttpClient) {}
 

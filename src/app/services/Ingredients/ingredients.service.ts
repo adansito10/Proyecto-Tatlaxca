@@ -7,7 +7,7 @@ import { environment } from '../../enviroments/environment';
   providedIn: 'root'
 })
 export class IngredientsService {
-  private apiUrl = `${environment.apiUrl}/ingredients`; 
+  private apiUrl = 'http://194.163.44.12:3010/api/ingredients';
 
   constructor(private http: HttpClient) {}
 

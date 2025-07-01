@@ -6,7 +6,7 @@ import { Observable } from 'rxjs';
   providedIn: 'root'
 })
 export class EmployeesService {
-  private apiUrl = 'http://localhost:3010/api/employees'; 
+  private apiUrl = 'http://194.163.44.12:3010/api/employees';
 
   constructor(private http: HttpClient) {}
 

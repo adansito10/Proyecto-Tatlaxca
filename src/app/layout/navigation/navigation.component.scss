@@ -215,3 +215,32 @@ mat-sidenav {
 
 
 
+
+
+
+
+
+
+::ng-deep .mat-mdc-list-item {
+  color: #a3a3a3 !important;
+  opacity: 1 !important;
+}
+
+::ng-deep .mat-mdc-list-item .mat-icon {
+  color: #a3a3a3 !important;
+  opacity: 1 !important;
+}
+
+::ng-deep .mat-mdc-list-item .mdc-list-item__primary-text {
+  color: white !important;
+  opacity: 1 !important;
+}
+
+::ng-deep .mat-mdc-list-item .mdc-list-item__graphic {
+  color: white !important;
+  opacity: 1 !important;
+}
+
+::ng-deep .mat-toolbar button[mat-icon-button] .mat-icon {
+  color: white !important;
+}
