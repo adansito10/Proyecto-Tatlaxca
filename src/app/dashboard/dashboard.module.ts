@@ -18,6 +18,7 @@ import { MatSelectModule } from '@angular/material/select';
 import { ModalModule } from '../shared-modals/modals/modal.module';
 import { HttpClientJsonpModule } from '@angular/common/http';
 import { CategoriesComponent } from './categories/categories.component';
+import { NgChartsModule } from 'ng2-charts';
 
 
 @NgModule({
@@ -41,7 +42,9 @@ import { CategoriesComponent } from './categories/categories.component';
     DashboardRoutingModule,
     SharedModule,
     ModalModule,
-    HttpClientJsonpModule
+    HttpClientJsonpModule,
+    NgChartsModule
+    
     
   ]
 })

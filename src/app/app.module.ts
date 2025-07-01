@@ -9,7 +9,7 @@ import { HttpClient, HttpClientModule } from '@angular/common/http';
 import { AuthRoutingModule } from './auth/auth-routing.module';
 import { RouterModule } from '@angular/router';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
-
+import { NgChartsModule } from 'ng2-charts';
 
 @NgModule({
   declarations: [
@@ -24,7 +24,10 @@ import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
     RouterModule,
     SharedModule,
     HttpClientModule,
-    AuthRoutingModule
+    AuthRoutingModule,
+    
+
+    
   ],
   providers: [
     provideClientHydration(withEventReplay())

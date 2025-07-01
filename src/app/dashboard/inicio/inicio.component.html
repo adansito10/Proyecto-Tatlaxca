@@ -1,8 +1,55 @@
+<div class="dashboard-container">
+  <h2 class="titulo-dashboard">Bienvenido al Panel Administrativo</h2>
 
+  <div class="resumen-cajas">
+    <div class="resumen-card ventas">
+      <div class="resumen-header">
+        <h3>Ventas de hoy</h3>
+        <span class="fecha-dia">{{ fechaActual | date:'EEEE, d MMMM yyyy':'':'es' }}</span>
+      </div>
+      <p class="valor-venta">{{ gananciasHoy | currency:'USD' }}</p>
+    </div>
 
-<p>inicio works!</p>
+    <div class="resumen-card productos">
+      <h3>Productos registrados</h3>
+      <p>128</p>
+    </div>
+    <div class="resumen-card usuarios">
+      <h3>Usuarios activos</h3>
+      <p>4</p>
+    </div>
+    <div class="resumen-card pedidos">
+      <h3>Órdenes del día</h3>
+      <p>32</p>
+    </div>
+  </div>
 
+  <div class="graficas-container">
+    <div class="grafica-box">
+      <h4>📊 Ventas semanales</h4>
+      <canvas baseChart
+        [data]="{ labels: ventasLabels, datasets: ventasData }"
+        [type]="ventasType"
+        [options]="ventasOptions">
+      </canvas>
+    </div>
 
+    <div class="grafica-box">
+      <h4>🥧 Categorías más vendidas</h4>
+      <canvas baseChart
+        [data]="{ labels: categoriasLabels, datasets: categoriasData }"
+        [type]="categoriasType"
+        [options]="categoriasOptions">
+      </canvas>
+    </div>
 
-
-
+    <div class="grafica-box">
+      <h4>📈 Ingresos mensuales</h4>
+      <canvas baseChart
+        [data]="{ labels: ingresosLabels, datasets: ingresosData }"
+        [type]="ingresosType"
+        [options]="ingresosOptions">
+      </canvas>
+    </div>
+  </div>
+</div>

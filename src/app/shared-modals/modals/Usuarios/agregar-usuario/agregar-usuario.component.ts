@@ -60,15 +60,24 @@ export class AgregarUsuarioComponent implements OnInit {
   }
 
   guardar(): void {
-    if (this.usuarioForm.invalid) return;
+  if (this.usuarioForm.invalid) return;
 
-    const usuario = this.usuarioForm.value;
-    if (this.data.modo === 'editar' && !usuario.password) {
-      delete usuario.password; // Evitar sobrescribir si no se editó
-    }
+  const user = {
+    correo: this.usuarioForm.value.correo,
+    password: this.usuarioForm.value.password,
+    id_rol: this.usuarioForm.value.id_rol,
+  };
 
-    this.dialogRef.close(usuario);
-  }
+  const employee = {
+    nombre: this.usuarioForm.value.nombre,
+    apPaterno: this.usuarioForm.value.apellidoPaterno,
+    apMaterno: this.usuarioForm.value.apellidoMaterno,
+    telefono: this.usuarioForm.value.telefono,
+  };
+
+  this.dialogRef.close({ user, employee });
+}
+
 
   eliminar(): void {
     this.dialogRef.close({ eliminar: true, id: this.data.usuario.id });

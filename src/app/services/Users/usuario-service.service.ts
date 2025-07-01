@@ -1,3 +1,4 @@
+// src/app/services/Users/usuario-service.service.ts
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
@@ -14,12 +15,12 @@ export class UsersService {
     return this.http.get<any[]>(this.apiUrl);
   }
 
-  crearUsuario(usuario: any): Observable<any> {
-    return this.http.post<any>(this.apiUrl, usuario);
+  crearUsuario(data: any): Observable<any> {
+    return this.http.post<any>(this.apiUrl, data); 
   }
 
-  editarUsuario(id: number, usuario: any): Observable<any> {
-    return this.http.put<any>(`${this.apiUrl}/${id}`, usuario);
+  editarUsuario(id: number, data: any): Observable<any> {
+    return this.http.put<any>(`${this.apiUrl}/${id}`, data);
   }
 
   eliminarUsuario(id: number): Observable<any> {
@@ -29,4 +30,6 @@ export class UsersService {
   getUsuarioById(id: number): Observable<any> {
     return this.http.get<any>(`${this.apiUrl}/${id}`);
   }
+
+
 }

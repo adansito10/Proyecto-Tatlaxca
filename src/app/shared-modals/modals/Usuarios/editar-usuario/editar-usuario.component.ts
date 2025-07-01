@@ -1,4 +1,4 @@
-import { Component, Inject, ViewChild, ElementRef } from '@angular/core';
+import { Component, Inject } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 
@@ -6,12 +6,10 @@ import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
   selector: 'app-editar-usuario',
   standalone: false,
   templateUrl: './editar-usuario.component.html',
-  styleUrl: './editar-usuario.component.scss'
+  styleUrls: ['./editar-usuario.component.scss']
 })
 export class EditarUsuarioComponent {
   usuarioForm: FormGroup;
-  imagenPreview: string | ArrayBuffer | null = null;
-  @ViewChild('fileInput') fileInput!: ElementRef<HTMLInputElement>;
 
   constructor(
     private fb: FormBuilder,
@@ -22,43 +20,45 @@ export class EditarUsuarioComponent {
       nombre: [data.usuario?.nombre || '', [Validators.required, Validators.pattern('^[a-zA-ZáéíóúÁÉÍÓÚñÑ ]+$')]],
       apellidoPaterno: [data.usuario?.apellidoPaterno || '', Validators.required],
       apellidoMaterno: [data.usuario?.apellidoMaterno || '', Validators.required],
-      cargo: [data.usuario?.cargo || '', Validators.required],
+      id_rol: [this.obtenerIdRolPorNombre(data.usuario?.cargo), Validators.required],
       telefono: [data.usuario?.telefono || '', [Validators.required, Validators.pattern('^[0-9]{10}$')]],
       correo: [data.usuario?.correo || '', [Validators.required, Validators.email]],
-      password: ['', [Validators.minLength(6)]],  // campo vacío y opcional
-      foto: [data.usuario?.foto || null]
+      password: ['', [Validators.minLength(6)]] // opcional
     });
-
-    if (data.usuario?.foto) {
-      this.imagenPreview = data.usuario.foto;
-    }
   }
 
-  onFileSelected(event: Event): void {
-    const input = event.target as HTMLInputElement;
-    if (input.files && input.files.length > 0) {
-      const file = input.files[0];
-      const reader = new FileReader();
-      reader.onload = () => {
-        this.imagenPreview = reader.result;
-        this.usuarioForm.patchValue({ foto: reader.result });
-      };
-      reader.readAsDataURL(file);
-    }
+  private obtenerIdRolPorNombre(cargoNombre: string): number | null {
+    const rol = this.data.roles?.find((r: any) => r.rol === cargoNombre);
+    return rol ? rol.id : null;
   }
 
   guardar(): void {
-    if (this.usuarioForm.valid) {
-      const formValue = this.usuarioForm.value;
+  if (this.usuarioForm.valid) {
+    const formValue = this.usuarioForm.value;
 
-      // Eliminar el campo password si está vacío
-      if (!formValue.password || formValue.password.trim() === '') {
-        delete formValue.password;
-      }
+    const user: any = {
+      id: this.data.usuario.idUsuario || this.data.usuario.id_usuario, // el id del user
+      correo: formValue.correo,
+      id_rol: formValue.id_rol,
+    };
 
-      this.dialogRef.close(formValue);
+    if (formValue.password && formValue.password.trim().length >= 6) {
+      user.password = formValue.password.trim();
     }
+
+    const employee = {
+      id: this.data.usuario.idEmpleado || this.data.usuario.id_empleado, // el id del empleado
+      nombre: formValue.nombre,
+      apPaterno: formValue.apellidoPaterno,
+      apMaterno: formValue.apellidoMaterno,
+      telefono: formValue.telefono
+    };
+
+    this.dialogRef.close({ user, employee });
   }
+}
+
+
 
   eliminar(): void {
     this.dialogRef.close({ eliminar: true });

@@ -1,11 +1,13 @@
 @use '@angular/material' as mat;
 
 html {
-  color-scheme: dark ;
+  color-scheme: dark;
   @include mat.theme((
-    color: mat.$chartreuse-palette,
-    
+    color: mat.$violet-palette,
+
   ));
+}
 
-
+body.dark-mode {
+  color-scheme: light;
 }

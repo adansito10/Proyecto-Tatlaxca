@@ -29,10 +29,10 @@
     <!-- Cargo -->
     <mat-form-field appearance="fill" class="full-width">
       <mat-label>Cargo</mat-label>
-      <mat-select formControlName="cargo">
-        <mat-option *ngFor="let c of data.cargos" [value]="c">{{ c }}</mat-option>
+      <mat-select formControlName="id_rol">
+        <mat-option *ngFor="let r of data.roles" [value]="r.id">{{ r.rol }}</mat-option>
       </mat-select>
-      <mat-error *ngIf="usuarioForm.controls['cargo'].hasError('required')">Requerido</mat-error>
+      <mat-error *ngIf="usuarioForm.controls['id_rol'].hasError('required')">Requerido</mat-error>
     </mat-form-field>
 
     <!-- Teléfono -->
@@ -51,27 +51,14 @@
       <mat-error *ngIf="usuarioForm.controls['correo'].hasError('email')">Correo inválido</mat-error>
     </mat-form-field>
 
-    <!-- Contraseña visible solo en modo editar -->
- <mat-form-field appearance="fill" class="full-width" *ngIf="data.modo === 'editar'">
-  <mat-label>Nueva contraseña (opcional)</mat-label>
-  <input matInput type="password" formControlName="password" placeholder="Escríbela solo si deseas cambiarla" />
-  
-  <mat-error *ngIf="usuarioForm.controls['password'].hasError('minlength') && usuarioForm.controls['password'].touched">
-    Mínimo 6 caracteres
-  </mat-error>
-</mat-form-field>
-
-
-    <!-- Subir Foto -->
-    <div style="margin: 16px 0; text-align: center;">
-      <button mat-stroked-button color="accent" (click)="fileInput.click()" style="width: 100%;">
-        <mat-icon>add_a_photo</mat-icon> Subir Foto del Usuario
-      </button>
-      <input #fileInput type="file" accept="image/*" style="display: none" (change)="onFileSelected($event)" />
-      <div *ngIf="imagenPreview" style="margin-top: 16px;">
-        <img [src]="imagenPreview" alt="Vista previa" style="max-width: 200px; max-height: 150px; border-radius: 4px;" />
-      </div>
-    </div>
+    <!-- Contraseña nueva -->
+    <mat-form-field appearance="fill" class="full-width" *ngIf="data.modo === 'editar'">
+      <mat-label>Nueva contraseña (opcional)</mat-label>
+      <input matInput type="password" formControlName="password" placeholder="Escríbela solo si deseas cambiarla" />
+      <mat-error *ngIf="usuarioForm.controls['password'].hasError('minlength') && usuarioForm.controls['password'].touched">
+        Mínimo 6 caracteres
+      </mat-error>
+    </mat-form-field>
   </form>
 </mat-dialog-content>
 

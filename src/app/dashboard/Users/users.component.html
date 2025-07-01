@@ -12,7 +12,6 @@
     style="width: 300px;"
   />
 
-  <!-- Botón de categoría con ícono forzado a negro -->
   <button mat-icon-button [matMenuTriggerFor]="menuCargos" aria-label="Filtrar por cargo">
     <mat-icon class="icono-negro">category</mat-icon>
   </button>
@@ -49,8 +48,8 @@
       <tbody>
         <tr *ngFor="let usuario of usuariosFiltrados">
           <td class="align-middle">{{ usuario.nombre }}</td>
-          <td class="align-middle">{{ usuario.apellidoPaterno }}</td>
-          <td class="align-middle">{{ usuario.apellidoMaterno }}</td>
+          <td class="align-middle">{{ usuario.appaterno }}</td>
+          <td class="align-middle">{{ usuario.apmaterno }}</td>
           <td class="align-middle">{{ usuario.cargo }}</td>
           <td class="align-middle">{{ usuario.telefono }}</td>
           <td class="align-middle">{{ usuario.correo }}</td>
