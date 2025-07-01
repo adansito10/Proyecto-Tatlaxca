@@ -3,7 +3,6 @@ import { MatDialog } from '@angular/material/dialog';
 import { UsersService } from '../../services/Users/usuario-service.service';
 import { RolesService } from '../../services/roles/roles.service';
 import { EmployeesService } from '../../services/employees/employees-service';
-
 import { AgregarUsuarioComponent } from '../../shared-modals/modals/Usuarios/agregar-usuario/agregar-usuario.component';
 import { EditarUsuarioComponent } from '../../shared-modals/modals/Usuarios/editar-usuario/editar-usuario.component';
 import { EliminarUsuarioComponent } from '../../shared-modals/modals/Usuarios/eliminar-usuario/eliminar-usuario.component';
@@ -13,11 +12,13 @@ import { EliminarUsuarioComponent } from '../../shared-modals/modals/Usuarios/el
   standalone: false,
   templateUrl: './users.component.html',
   styleUrls: ['./users.component.scss']
+
 })
 export class UsersComponent implements OnInit {
   usuarios: any[] = [];
   filtroCargo: string = '';
   cargos: string[] = [];
+  busquedaNombre: string = '';
   roles: any[] = [];
 
   constructor(
@@ -25,6 +26,8 @@ export class UsersComponent implements OnInit {
     private usuarioService: UsersService,
     private empleadoService: EmployeesService,
     private rolesService: RolesService
+
+
   ) {}
 
   ngOnInit(): void {
@@ -32,11 +35,15 @@ export class UsersComponent implements OnInit {
     this.cargarRoles();
   }
 
-  get usuariosFiltrados() {
-    return this.usuarios.filter(usuario =>
-      this.filtroCargo === '' || usuario.cargo === this.filtroCargo
-    );
-  }
+
+     get usuariosFiltrados() {
+  return this.usuarios.filter(usuario =>
+    (this.filtroCargo === '' || usuario.cargo === this.filtroCargo) &&
+    (this.busquedaNombre === '' || usuario.nombre.toLowerCase().includes(this.busquedaNombre.toLowerCase()))
+  );
+}
+
+
 
  
 cargarUsuarios(): void {
@@ -99,12 +106,10 @@ cargarUsuarios(): void {
 
     this.empleadoService.crearEmpleado(resultado).subscribe({
       next: () => this.cargarUsuarios(),
-      error: err => console.error('Error al crear usuario y empleado', err)
+      error: err => console.error('Error al crear empleado', err)
     });
   });
 }
-
-
 
 
 
@@ -120,27 +125,40 @@ abrirModalEditar(usuario: any): void {
 
   dialogRef.afterClosed().subscribe(resultado => {
     if (resultado) {
-      const { user, employee } = resultado;
+      let { user, employee } = resultado;
 
-      this.empleadoService.editarEmpleado(usuario.idEmpleado, employee, user).subscribe({
-        next: () => this.cargarUsuarios(),
-        error: err => console.error('Error al editar empleado y usuario:', err)
+      const empleadoPayload = {
+        id_usuario: usuario.idUsuario || usuario.id_usuario,
+        nombre: employee.nombre,
+        appaterno: employee.appaterno,
+        apmaterno: employee.apmaterno,
+        telefono: employee.telefono
+      };
+
+      this.empleadoService.editarEmpleado(usuario.idEmpleado, empleadoPayload, user).subscribe({
+        next: (respuesta) => {
+          const { employee: empActualizado, user: userActualizado } = respuesta;
+          const rol = this.roles.find(r => r.id === userActualizado.id_rol)?.rol || 'Sin rol';
+
+          this.usuarios = this.usuarios.map(u =>
+            u.idEmpleado === empActualizado.id
+              ? {
+                  ...u,
+                  nombre: empActualizado.nombre,
+                  apellidoPaterno: empActualizado.appaterno,
+                  apellidoMaterno: empActualizado.apmaterno,
+                  telefono: empActualizado.telefono,
+                  correo: userActualizado.correo,
+                  cargo: rol
+                }
+              : u
+          );
+        },
+        error: err => console.error('Error al editar empleado', err)
       });
     }
   });
 }
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 

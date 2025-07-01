@@ -35,9 +35,8 @@ export class EditarUsuarioComponent {
   guardar(): void {
   if (this.usuarioForm.valid) {
     const formValue = this.usuarioForm.value;
-
     const user: any = {
-      id: this.data.usuario.idUsuario || this.data.usuario.id_usuario, // el id del user
+      id: this.data.usuario.idUsuario || this.data.usuario.id_usuario,
       correo: formValue.correo,
       id_rol: formValue.id_rol,
     };
@@ -47,10 +46,10 @@ export class EditarUsuarioComponent {
     }
 
     const employee = {
-      id: this.data.usuario.idEmpleado || this.data.usuario.id_empleado, // el id del empleado
+      id: this.data.usuario.idEmpleado || this.data.usuario.id_empleado, 
       nombre: formValue.nombre,
-      apPaterno: formValue.apellidoPaterno,
-      apMaterno: formValue.apellidoMaterno,
+      appaterno: formValue.apellidoPaterno,
+      apmaterno: formValue.apellidoMaterno, 
       telefono: formValue.telefono
     };
 

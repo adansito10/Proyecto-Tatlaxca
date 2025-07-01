@@ -5,7 +5,6 @@
 <mat-dialog-content *ngIf="data.modo !== 'eliminar'">
   <form [formGroup]="usuarioForm" class="usuario-form">
 
-    <!-- Nombre -->
     <mat-form-field appearance="fill" class="full-width">
       <mat-label>Nombre</mat-label>
       <input matInput formControlName="nombre" />
@@ -13,7 +12,6 @@
       <mat-error *ngIf="usuarioForm.controls['nombre'].hasError('pattern')">Solo letras permitidas</mat-error>
     </mat-form-field>
 
-    <!-- Apellidos -->
     <mat-form-field appearance="fill" class="full-width">
       <mat-label>Apellido Paterno</mat-label>
       <input matInput formControlName="apellidoPaterno" />
@@ -26,7 +24,6 @@
       <mat-error *ngIf="usuarioForm.controls['apellidoMaterno'].hasError('required')">Requerido</mat-error>
     </mat-form-field>
 
-    <!-- Cargo -->
     <mat-form-field appearance="fill" class="full-width">
       <mat-label>Cargo</mat-label>
       <mat-select formControlName="id_rol">
@@ -35,7 +32,6 @@
       <mat-error *ngIf="usuarioForm.controls['id_rol'].hasError('required')">Requerido</mat-error>
     </mat-form-field>
 
-    <!-- Teléfono -->
     <mat-form-field appearance="fill" class="full-width">
       <mat-label>Teléfono</mat-label>
       <input matInput formControlName="telefono" maxlength="10" />
@@ -43,7 +39,6 @@
       <mat-error *ngIf="usuarioForm.controls['telefono'].hasError('pattern')">Solo números</mat-error>
     </mat-form-field>
 
-    <!-- Correo -->
     <mat-form-field appearance="fill" class="full-width">
       <mat-label>Correo electrónico</mat-label>
       <input matInput formControlName="correo" />
@@ -51,7 +46,6 @@
       <mat-error *ngIf="usuarioForm.controls['correo'].hasError('email')">Correo inválido</mat-error>
     </mat-form-field>
 
-    <!-- Contraseña nueva -->
     <mat-form-field appearance="fill" class="full-width" *ngIf="data.modo === 'editar'">
       <mat-label>Nueva contraseña (opcional)</mat-label>
       <input matInput type="password" formControlName="password" placeholder="Escríbela solo si deseas cambiarla" />

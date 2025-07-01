@@ -70,8 +70,8 @@ export class AgregarUsuarioComponent implements OnInit {
 
   const employee = {
     nombre: this.usuarioForm.value.nombre,
-    apPaterno: this.usuarioForm.value.apellidoPaterno,
-    apMaterno: this.usuarioForm.value.apellidoMaterno,
+    appaterno: this.usuarioForm.value.apellidoPaterno,
+    apmaterno: this.usuarioForm.value.apellidoMaterno,
     telefono: this.usuarioForm.value.telefono,
   };
 
