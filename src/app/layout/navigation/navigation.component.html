@@ -18,24 +18,36 @@
       </a>
       <a mat-list-item routerLink="/dashboard/products" (click)="drawer.close()">
         <mat-icon matListIcon>inventory_2</mat-icon>
-        <span>Productos</span>
-      </a>
-      <a mat-list-item routerLink="/dashboard/users" (click)="drawer.close()">
-        <mat-icon matListIcon>group</mat-icon>
-        <span>Usuarios</span>
-      </a>
-      <a mat-list-item routerLink="/dashboard/categories" (click)="drawer.close()">
-        <mat-icon matListIcon>category</mat-icon>
-        <span>Categorías</span>
-      </a>
-      <a mat-list-item routerLink="/dashboard/inventory" (click)="drawer.close()">
-        <mat-icon matListIcon>warehouse</mat-icon>
-        <span>Insumos</span>
+        <span>Menú</span>
       </a>
       <a mat-list-item routerLink="/dashboard/ingredients" (click)="drawer.close()">
         <mat-icon matListIcon>restaurant_menu</mat-icon>
         <span>Ingredientes</span>
       </a>
+       <a mat-list-item routerLink="/dashboard/inventory" (click)="drawer.close()">
+        <mat-icon matListIcon>warehouse</mat-icon>
+        <span>Insumos</span>
+      </a>
+         <a mat-list-item routerLink="/dashboard/categories" (click)="drawer.close()">
+        <mat-icon matListIcon>category</mat-icon>
+        <span>Categorías</span>
+      </a>
+      <a mat-list-item routerLink="/dashboard/users" (click)="drawer.close()">
+        <mat-icon matListIcon>group</mat-icon>
+        <span>Usuarios</span>
+      </a>
+     <a mat-list-item routerLink="/dashboard/tables" (click)="drawer.close()">
+       <mat-icon matListIcon>table_restaurant</mat-icon>
+       <span>Mesas</span>
+      </a>
+     <a mat-list-item routerLink="/dashboard/roles" (click)="drawer.close()">
+      <mat-icon matListIcon>badge</mat-icon> <!-- Representa un rol/cargo -->
+      <span>Roles</span>
+     </a>
+     <a mat-list-item routerLink="/dashboard/status" (click)="drawer.close()">
+       <mat-icon matListIcon>toggle_on</mat-icon> <!-- Representa un estado (activo/inactivo) -->
+       <span>Estado</span>
+       </a>
       <a mat-list-item routerLink="/dashboard/reports" (click)="drawer.close()">
         <mat-icon matListIcon>bar_chart</mat-icon>
         <span>Reportes</span>
@@ -46,12 +58,7 @@
       </a>
     </mat-nav-list>
 
-    <div class="logout-button">
-      <button mat-button color="warn" (click)="logout()">
-        <mat-icon>logout</mat-icon>
-        Cerrar sesión
-      </button>
-    </div>
+  
 
     <div *ngIf="cerrandoSesion" class="overlay">
       <div class="spinner-container">
@@ -62,27 +69,37 @@
   </mat-sidenav>
 
   <mat-sidenav-content [class.content-margin]="isSideMode && sidenavOpened">
-    <mat-toolbar color="primary">
-      <button type="button" mat-icon-button (click)="drawer.toggle()" aria-label="Abrir/cerrar menú">
-        <mat-icon>{{ sidenavOpened ? 'close' : 'menu' }}</mat-icon>
-      </button>
+   <mat-toolbar color="primary">
+  <button type="button" mat-icon-button (click)="drawer.toggle()" aria-label="Abrir/cerrar menú">
+    <mat-icon>{{ sidenavOpened ? 'close' : 'menu' }}</mat-icon>
+  </button>
 
-      <img src="/logocafeteria.jpg" alt="Logo" class="toolbar-logo">
-      <span class="titulo-app">Cafetería Tatiaxca</span>
+  <img src="/logocafeteria.jpg" alt="Logo" class="toolbar-logo">
+  <span class="titulo-app">Cafetería Tatiaxca</span>
 
-      <span class="spacer"></span>
+  <span class="spacer"></span>
 
-      <div class="toolbar-profile">
-        <img src="/perfil.jpg" alt="Perfil" class="profile-image">
-        <div class="profile-info">
-       <h3>{{ user?.correo || 'Usuario' }}</h3>
-        <p>{{ user?.rol || 'Rol desconocido' }}</p>
-         </div>
-        <button class="btn-config" type="button" [routerLink]="['/dashboard/configuration']">
-          <mat-icon>settings</mat-icon>
-        </button>
-      </div>
-    </mat-toolbar>
+  <button mat-button [matMenuTriggerFor]="perfilMenu" class="toolbar-profile-button">
+    <img src="/perfil.jpg" alt="Perfil" class="profile-image" />
+    <div class="profile-info">
+      <h3>{{ user?.correo || 'Usuario' }}</h3>
+      <p>{{ user?.rol || 'Rol desconocido' }}</p>
+        <mat-icon>arrow_drop_down</mat-icon>
+
+    </div>
+  </button>
+
+  <mat-menu #perfilMenu="matMenu">
+    <button mat-menu-item [routerLink]="['/dashboard/configuration']">
+      <mat-icon>settings</mat-icon>
+      <span>Configuración</span>
+    </button>
+    <button mat-menu-item (click)="logout()">
+      <mat-icon>logout</mat-icon>
+      <span>Cerrar sesión</span>
+    </button>
+  </mat-menu>
+</mat-toolbar>
 
     <router-outlet></router-outlet>
   </mat-sidenav-content>

@@ -5,22 +5,9 @@ import { MostrarIngredientesComponent } from '../../../Ingredientes/Mostrar-ingr
 import { MostrarInsumosComponent } from '../../../Inventario/mostrar-insumos/mostrar.insumos.component';
 import { ProductosService } from '../../../../../services/products/products.service';
 
-interface Categoria {
-  id: number;
-  nombre: string;
-}
-
-interface Ingrediente {
-  id: number;
-  nombre: string;
-  cantidad: number;
-}
-
-interface Insumo {
-  id: number;
-  nombre: string;
-  cantidad: number;
-}
+interface Categoria { id: number; nombre: string; }
+interface Ingrediente { id: number; nombre: string; cantidad: number; }
+interface Insumo { id: number; nombre: string; cantidad: number; }
 
 @Component({
   selector: 'app-editar-producto',
@@ -56,7 +43,6 @@ export class EditarProductoComponent implements OnInit {
         id: Number(c.id),
         nombre: c.nombre
       }));
-
       this.cargarDatosProducto(this.data.producto);
     });
   }
@@ -73,6 +59,7 @@ export class EditarProductoComponent implements OnInit {
 
     this.ingredientesSeleccionados = this.mapItemsToIngredientes(producto.ingredientes);
     this.insumosSeleccionados = this.mapItemsToInsumos(producto.insumos);
+    // Aquí asignamos la URL de la imagen que ya existe
     this.imagenProducto = producto.imagen_url ?? producto.imagen ?? null;
   }
 
@@ -142,7 +129,13 @@ export class EditarProductoComponent implements OnInit {
       return;
     }
 
+    let imagenParaEnviar;
+    if (typeof this.imagenProducto === 'string' && this.imagenProducto.startsWith('data:image')) {
+      imagenParaEnviar = this.imagenProducto;
+    }
+
     const productoActualizado = {
+      id: this.data.producto.id,
       nombre: this.productoForm.value.nombre,
       id_categoria: Number(this.productoForm.value.categoria),
       precio: this.productoForm.value.precio,
@@ -155,7 +148,7 @@ export class EditarProductoComponent implements OnInit {
         id_insumo: i.id,
         cantidad: i.cantidad
       })),
-      imagen: this.imagenProducto
+      ...(imagenParaEnviar && { imagen: imagenParaEnviar })
     };
 
     this.dialogRef.close(productoActualizado);

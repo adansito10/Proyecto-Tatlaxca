@@ -19,6 +19,10 @@ import { ModalModule } from '../shared-modals/modals/modal.module';
 import { HttpClientJsonpModule } from '@angular/common/http';
 import { CategoriesComponent } from './categories/categories.component';
 import { NgChartsModule } from 'ng2-charts';
+import { AgregarMesaComponent } from '../shared-modals/modals/tables/agregar-tables/agregar-mesa.component';
+import { TablesComponent } from './tables/tables.component';
+import { RolesComponent } from './roles/roles.component';
+import { StatusComponent } from './status/status.component';
 
 
 @NgModule({
@@ -32,6 +36,10 @@ import { NgChartsModule } from 'ng2-charts';
     ConfigurationComponent,
     OrdersComponent,
     CategoriesComponent,
+    TablesComponent,
+    RolesComponent,
+    StatusComponent
+    
 
  
   ],

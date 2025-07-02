@@ -10,6 +10,8 @@ import { AuthRoutingModule } from './auth/auth-routing.module';
 import { RouterModule } from '@angular/router';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { NgChartsModule } from 'ng2-charts';
+import { Title } from '@angular/platform-browser';
+
 
 @NgModule({
   declarations: [
@@ -30,6 +32,7 @@ import { NgChartsModule } from 'ng2-charts';
     
   ],
   providers: [
+    Title,
     provideClientHydration(withEventReplay())
   ],
   bootstrap: [AppComponent]

@@ -1,5 +1,5 @@
 import { Component, Inject, OnInit } from '@angular/core';
-import { FormBuilder, FormGroup } from '@angular/forms';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { IngredientsService } from '../../../../services/Ingredients/ingredients.service';
 
@@ -11,9 +11,10 @@ import { IngredientsService } from '../../../../services/Ingredients/ingredients
 })
 export class MostrarIngredientesComponent implements OnInit {
   ingredientesForm: FormGroup;
-  controlNombres = ['ing1', 'ing2', 'ing3', 'ing4', 'ing5'];
-  ingredientesDisponibles: { id: number, nombre: string }[] = [];
-
+  controlNombres: string[] = ['ing1', 'ing2', 'ing3', 'ing4', 'ing5'];
+  ingredientesDisponibles: any[] = [];
+  mensajeStockExcedido = false;
+ 
   constructor(
     private fb: FormBuilder,
     private dialogRef: MatDialogRef<MostrarIngredientesComponent>,
@@ -22,8 +23,8 @@ export class MostrarIngredientesComponent implements OnInit {
   ) {
     const group: any = {};
     this.controlNombres.forEach(name => {
-      group[name + '_nombre'] = [''];
-      group[name + '_cantidad'] = [{ value: '', disabled: true }]; // deshabilitado inicialmente
+      group[name + '_nombre'] = [null];
+      group[name + '_cantidad'] = [{ value: '', disabled: true }, [Validators.min(1)]];
     });
     this.ingredientesForm = this.fb.group(group);
   }
@@ -33,49 +34,129 @@ export class MostrarIngredientesComponent implements OnInit {
       next: (data) => {
         this.ingredientesDisponibles = data;
 
-        // Prellenar ingredientes si existen
-        if (Array.isArray(this.data.ingredientesActuales)) {
-          this.data.ingredientesActuales.forEach((ing, index) => {
-            if (index < this.controlNombres.length) {
-              const control = this.controlNombres[index];
-              const ingrediente = this.ingredientesDisponibles.find(i => i.id === ing.id);
-              if (ingrediente) {
-                this.ingredientesForm.get(control + '_nombre')?.setValue(ingrediente);
-                this.ingredientesForm.get(control + '_cantidad')?.setValue(ing.cantidad);
-                this.ingredientesForm.get(control + '_cantidad')?.enable();
-              }
+        this.data.ingredientesActuales?.forEach((ing, index) => {
+          if (index < this.controlNombres.length) {
+            const control = this.controlNombres[index];
+            const encontrado = this.ingredientesDisponibles.find(i => i.id === ing.id);
+            if (encontrado) {
+              this.ingredientesForm.get(control + '_nombre')?.setValue(encontrado);
+              this.ingredientesForm.get(control + '_cantidad')?.setValue(ing.cantidad);
+              this.ingredientesForm.get(control + '_cantidad')?.enable();
             }
-          });
-        }
-
-        // Suscribirse a cambios en cada select para habilitar/deshabilitar cantidad
-        this.controlNombres.forEach(control => {
-          this.ingredientesForm.get(control + '_nombre')?.valueChanges.subscribe(value => {
-            const cantidadControl = this.ingredientesForm.get(control + '_cantidad');
-            if (!value) {
-              cantidadControl?.setValue('');
-              cantidadControl?.disable();
-            } else {
-              cantidadControl?.enable();
-            }
-          });
+          }
         });
+
+        this.escucharCambios();
       },
       error: err => console.error('Error al cargar ingredientes', err)
     });
   }
 
-  guardarIngredientes(): void {
-    const values = this.ingredientesForm.value;
-    const seleccionados = this.controlNombres.map(name => {
-      const ing = values[name + '_nombre'];
-      return {
-        id: ing?.id,
-        nombre: ing?.nombre,
-        cantidad: Number(values[name + '_cantidad']) || 0
-      };
-    }).filter(item => item.id && item.cantidad > 0);
-
-    this.dialogRef.close(seleccionados);
+  escucharCambios(): void {
+    this.controlNombres.forEach(control => {
+      this.ingredientesForm.get(control + '_nombre')?.valueChanges.subscribe(value => {
+        const cantidadControl = this.ingredientesForm.get(control + '_cantidad');
+        if (!value) {
+          cantidadControl?.setValue('');
+          cantidadControl?.disable();
+          cantidadControl?.setErrors(null);
+        } else {
+          cantidadControl?.enable();
+        }
+      });
+    });
   }
+
+  agregarIngrediente(): void {
+    if (this.controlNombres.length >= 30) return;
+
+    const nuevo = `ing${this.controlNombres.length + 1}`;
+    this.controlNombres.push(nuevo);
+    this.ingredientesForm.addControl(nuevo + '_nombre', this.fb.control(null));
+    this.ingredientesForm.addControl(nuevo + '_cantidad',
+      this.fb.control({ value: '', disabled: true }, [Validators.min(1)]));
+
+    this.ingredientesForm.get(nuevo + '_nombre')?.valueChanges.subscribe(value => {
+      const cantidadControl = this.ingredientesForm.get(nuevo + '_cantidad');
+      if (!value) {
+        cantidadControl?.setValue('');
+        cantidadControl?.disable();
+        cantidadControl?.setErrors(null);
+      } else {
+        cantidadControl?.enable();
+      }
+    });
+  }
+
+  getUnidad(control: string): string {
+    const ing = this.ingredientesForm.get(control + '_nombre')?.value;
+    return ing?.unidad || '';
+  }
+
+  getStockMaximo(control: string): number {
+    const ing = this.ingredientesForm.get(control + '_nombre')?.value;
+    return ing?.stock ?? Infinity;
+  }
+
+  puedeGuardar(): boolean {
+    let valido = false;
+    for (const name of this.controlNombres) {
+      const ing = this.ingredientesForm.get(name + '_nombre')?.value;
+      const cantidad = this.ingredientesForm.get(name + '_cantidad')?.value;
+      const cantidadControl = this.ingredientesForm.get(name + '_cantidad');
+
+      if (ing && cantidadControl?.enabled && cantidad > 0 && cantidad <= ing.stock && !cantidadControl.errors) {
+        valido = true;
+      }
+    }
+    return this.ingredientesForm.valid && valido;
+  }
+
+  guardarIngredientes(): void {
+  const values = this.ingredientesForm.value;
+  const seleccionados: any[] = [];
+  let hayError = false;
+  this.mensajeStockExcedido = false; // reiniciar al iniciar
+
+  this.controlNombres.forEach(name => {
+    const ing = values[name + '_nombre'];
+    const cantidadControl = this.ingredientesForm.get(name + '_cantidad');
+    const cantidad = Number(values[name + '_cantidad']) || 0;
+
+    if (!ing && (!cantidad || cantidad <= 0)) {
+      cantidadControl?.setErrors(null);
+      return;
+    }
+
+    if (ing && (cantidad <= 0 || cantidad === null || isNaN(cantidad))) {
+      cantidadControl?.setErrors({ required: true });
+      hayError = true;
+      return;
+    }
+
+    if (cantidad > ing.stock) {
+      cantidadControl?.setErrors({ excedeStock: true });
+      hayError = true;
+      this.mensajeStockExcedido = true;
+    } else if (cantidadControl?.hasError('excedeStock')) {
+      const errors = { ...cantidadControl.errors };
+      delete errors['excedeStock'];
+      cantidadControl.setErrors(Object.keys(errors).length > 0 ? errors : null);
+    }
+
+    if (ing && cantidad > 0 && cantidad <= ing.stock) {
+      seleccionados.push({
+        id: ing.id,
+        nombre: ing.nombre,
+        unidad: ing.unidad,
+        cantidad
+      });
+    }
+  });
+
+  if (hayError || seleccionados.length === 0 || this.ingredientesForm.invalid) return;
+
+  this.mensajeStockExcedido = false;
+  this.dialogRef.close(seleccionados);
+}
 }

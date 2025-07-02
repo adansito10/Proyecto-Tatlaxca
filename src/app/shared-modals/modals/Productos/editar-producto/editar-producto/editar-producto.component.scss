@@ -2,10 +2,38 @@
   width: 100%;
 }
 
-.ingredientes-section {
-  margin: 0px ;
+.full-width-btn {
+  width: 100%;
+  margin-top: 10px;
+  margin-bottom: 20px;
 }
 
-mat-dialog-content {
-  padding-bottom: 0px;
+.ingredientes-section,
+.insumos-section {
+  margin-top: 20px;
+
+  h4 {
+    margin-bottom: 10px;
+    font-size: 16px;
+  }
+
+  .ingrediente-item {
+    display: flex;
+    justify-content: space-between;
+    padding: 6px 12px;
+    background-color: #f5f5f5;
+    border-radius: 6px;
+    margin-bottom: 6px;
+    font-size: 14px;
+    color: #333;
+
+    .nombre {
+      font-weight: 500;
+    }
+
+    .cantidad {
+      color: #555;
+      font-size: 13px;
+    }
+  }
 }

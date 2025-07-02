@@ -1,0 +1,10 @@
+<h2 mat-dialog-title>Eliminar Mesa</h2>
+
+<mat-dialog-content>
+  <p>¿Estás seguro que deseas eliminar la mesa número <strong>{{ data.numero }}</strong>?</p>
+</mat-dialog-content>
+
+<mat-dialog-actions align="end">
+  <button mat-button (click)="cancelar()">Cancelar</button>
+  <button mat-flat-button color="warn" (click)="confirmarEliminacion()">Eliminar</button>
+</mat-dialog-actions>

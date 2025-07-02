@@ -2,25 +2,64 @@
 
 <mat-dialog-content>
   <form [formGroup]="ingredientesForm">
-    <div *ngFor="let controlName of controlNombres; let i = index" style="display: flex; align-items: center; gap: 12px;">
-      <mat-form-field appearance="fill" style="flex: 1;">
-        <mat-label>Ingrediente {{ i + 1 }}</mat-label>
-        <mat-select [formControlName]="controlName + '_nombre'">
-          <mat-option *ngFor="let ing of ingredientesDisponibles" [value]="ing">
-            {{ ing.nombre }}
-          </mat-option>
-        </mat-select>
-      </mat-form-field>
+    <div *ngFor="let controlName of controlNombres; let i = index"
+     style="display: flex; align-items: flex-start; gap: 12px; margin-bottom: 16px;">
 
-      <mat-form-field appearance="fill" style="width: 80px;">
-        <mat-label>Cantidad</mat-label>
-        <input matInput type="number" min="1" [formControlName]="controlName + '_cantidad'" />
-      </mat-form-field>
+  <!-- Ingrediente -->
+  <div style="flex: 1; display: flex; flex-direction: column;">
+    <mat-form-field appearance="fill" style="width: 100%;">
+      <mat-label>Ingrediente {{ i + 1 }}</mat-label>
+      <mat-select [formControlName]="controlName + '_nombre'">
+        <mat-option [value]="null">Ninguno</mat-option>
+        <mat-option *ngFor="let ing of ingredientesDisponibles" [value]="ing">
+          {{ ing.nombre }}
+        </mat-option>
+      </mat-select>
+    </mat-form-field>
+
+    <div *ngIf="ingredientesForm.get(controlName + '_cantidad')?.hasError('excedeStock')"
+         style="color: red; font-size: 13px; margin-left: 14px; margin-top: 2px;">
+      La cantidad supera el stock disponible ({{ getStockMaximo(controlName) }})
     </div>
+  </div>
+
+  <mat-form-field appearance="fill" style="width: 120px;">
+    <mat-label>Cantidad</mat-label>
+    <input matInput type="number" min="1"
+           [formControlName]="controlName + '_cantidad'"
+           [max]="getStockMaximo(controlName)" />
+    <mat-hint align="end">{{ getUnidad(controlName) }}</mat-hint>
+
+    <mat-error *ngIf="ingredientesForm.get(controlName + '_cantidad')?.hasError('min')">
+      La cantidad debe ser al menos 1
+    </mat-error>
+    <mat-error *ngIf="ingredientesForm.get(controlName + '_cantidad')?.hasError('required')">
+      La cantidad es obligatoria
+    </mat-error>
+  </mat-form-field>
+</div>
+
+
+    <button mat-stroked-button type="button" color="accent"
+            (click)="agregarIngrediente()" 
+            [disabled]="controlNombres.length >= 30"
+            style="width: 100%;">
+      + Agregar Ingrediente
+    </button>
+
+    <p *ngIf="controlNombres.length >= 30" style="color: red; font-size: 13px; text-align: center; margin-top: 8px;">
+     límite máximo de 30 ingredientes.
+    </p>
+
+    <p *ngIf="mensajeStockExcedido" style="color: red; font-size: 14px; font-weight: 500; text-align: center; margin-top: 8px;">
+      superan el stock disponible. Por favor revisa las cantidades.
+    </p>
   </form>
 </mat-dialog-content>
 
 <mat-dialog-actions align="end">
   <button mat-button mat-dialog-close>Cancelar</button>
-  <button mat-flat-button color="primary" (click)="guardarIngredientes()">Guardar</button>
+  <button mat-flat-button color="primary" [disabled]="!puedeGuardar()" (click)="guardarIngredientes()">
+    Guardar
+  </button>
 </mat-dialog-actions>

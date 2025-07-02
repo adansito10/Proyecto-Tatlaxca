@@ -6,36 +6,27 @@ import { EditarProductoComponent } from '../../shared-modals/modals/Productos/ed
 import { EliminarProductoComponent } from '../../shared-modals/modals/Productos/eliminar-producto/eliminar-producto/eliminar-producto.component';
 import { VerProductoComponent } from '../../shared-modals/modals/Productos/ver-producto/ver-producto/ver-producto.component';
 
-
-
 @Component({
   selector: 'app-products',
   templateUrl: './products.component.html',
   styleUrls: ['./products.component.scss'],
   standalone: false
 })
-
-
-
 export class ProductsComponent implements OnInit {
   productos: any[] = [];
   filtroTexto: string = '';
   filtroCategoria: string = '';
   categorias: { id: number, nombre: string }[] = [];
 
-
-
   constructor(private dialog: MatDialog, private productosService: ProductosService) {}
 
   ngOnInit(): void {
     this.obtenerProductos();
-    this.obtenerCategorias(); 
-
+    this.obtenerCategorias();
   }
 
   obtenerProductos(): void {
     this.productosService.obtenerProductos().subscribe({
-
       next: data => {
         this.productos = data.filter(p => !p.eliminado);
       },
@@ -43,47 +34,40 @@ export class ProductsComponent implements OnInit {
     });
   }
 
+  obtenerCategorias(): void {
+    this.productosService.obtenerCategorias().subscribe({
+      next: (data) => {
+        this.categorias = data;
+      },
+      error: err => console.error('Error al obtener categorías', err)
+    });
+  }
 
+  get productosFiltrados() {
+    return this.productos.filter(p => {
+      const categoriaNombre = typeof p.categoria === 'string'
+        ? p.categoria
+        : p.categoria?.nombre;
 
-     obtenerCategorias(): void {
-       this.productosService.obtenerCategorias().subscribe({
-        next: (data) => {
-        this.categorias = data; 
-    },
-    error: err => console.error('Error al obtener categorías', err)
-  });
-}
-
-
-get productosFiltrados() {
-  return this.productos.filter(p => {
-    const categoriaNombre = typeof p.categoria === 'string' 
-      ? p.categoria 
-      : p.categoria?.nombre;
-
-    return (!this.filtroCategoria || categoriaNombre === this.filtroCategoria) &&
-           (!this.filtroTexto || p.nombre.toLowerCase().includes(this.filtroTexto.toLowerCase()));
-  });
-}
-
-
-
+      return (!this.filtroCategoria || categoriaNombre === this.filtroCategoria) &&
+             (!this.filtroTexto || p.nombre.toLowerCase().includes(this.filtroTexto.toLowerCase()));
+    });
+  }
 
   abrirModalAgregar(): void {
-  const dialogRef = this.dialog.open(AgregarProductoComponent, {
-    width: '600px',
-    data: { modo: 'agregar', categorias: this.categorias }
-  });
+    const dialogRef = this.dialog.open(AgregarProductoComponent, {
+      width: '600px',
+      data: { modo: 'agregar', categorias: this.categorias }
+    });
 
-  dialogRef.afterClosed().subscribe(resultado => {
-    if (resultado === true) {
-      this.obtenerProductos(); 
-    }
-  });
-}
+    dialogRef.afterClosed().subscribe(resultado => {
+      if (resultado === true) {
+        this.obtenerProductos();
+      }
+    });
+  }
 
-
-abrirModalEditar(producto: any): void {
+ abrirModalEditar(producto: any): void {
   const dialogRef = this.dialog.open(EditarProductoComponent, {
     width: '600px',
     data: { modo: 'editar', producto, categorias: this.categorias }
@@ -91,12 +75,15 @@ abrirModalEditar(producto: any): void {
 
   dialogRef.afterClosed().subscribe(resultado => {
     if (resultado) {
-      this.productosService.actualizarProducto(producto.id, resultado).subscribe({
-        next: () => {
+      // Asegurar que id está presente
+      if (!resultado.id) {
+        resultado.id = producto.id;
+      }
+      this.productosService.actualizarProducto(String(producto.id), resultado).subscribe({
+        next: (productoActualizado) => {
           const index = this.productos.findIndex(p => p.id === producto.id);
           if (index !== -1) {
             const categoriaCompleta = this.categorias.find(c => c.id === resultado.id_categoria);
-
             this.productos[index] = {
               ...this.productos[index],
               ...resultado,
@@ -104,13 +91,14 @@ abrirModalEditar(producto: any): void {
             };
           }
         },
-        error: err => console.error('Error al actualizar producto:', err)
+        error: err => {
+          console.error('Error al actualizar producto:', err);
+          alert('Error al actualizar producto. Revisa la consola para más detalles.');
+        }
       });
     }
   });
 }
-
-
 
 
   abrirModalEliminar(producto: any): void {
@@ -131,17 +119,13 @@ abrirModalEditar(producto: any): void {
     });
   }
 
-
-
-  abrirModalVer(producto: any) {
-  this.dialog.open(VerProductoComponent, {
-    width: '800px',
-    data: {
-      ingredientes: producto.ingredientes || [],
-      insumos: producto.insumos || []
-    }
-  });
-
+  abrirModalVer(producto: any): void {
+    this.dialog.open(VerProductoComponent, {
+      width: '800px',
+      data: {
+        ingredientes: producto.ingredientes || [],
+        insumos: producto.insumos || []
+      }
+    });
   }
-  
 }

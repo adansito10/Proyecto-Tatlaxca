@@ -1,0 +1,38 @@
+<div class="container-fluid py-4">
+  <div class="d-flex justify-content-between align-items-center mb-3 flex-wrap">
+    <h3 class="fw-bold mb-2 ms-2 text-dark">Gestión de Roles</h3>
+
+    
+    <button class="btn custom-agregar-btn mb-2" (click)="abrirModalAgregar()">
+      <mat-icon>add</mat-icon> Agregar
+    </button>
+  </div>
+
+  <div class="table-responsive">
+    <table class="table table-hover text-center align-middle w-100">
+      <thead class="table-light">
+        <tr>
+          <th>Rol</th>
+          <th>Descripción</th>
+          <th>Acciones</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let rol of rolesFiltrados">
+          <td>{{ rol.rol }}</td>
+          <td>{{ rol.descripcion }}</td>
+          <td>
+            <div class="d-flex justify-content-center gap-2">
+              <button class="btn btn-sm btn-success" (click)="abrirModalEditar(rol)">
+                <i class="bi bi-pencil"></i>
+              </button>
+              <button class="btn btn-sm btn-danger" (click)="abrirModalEliminar(rol)">
+                <i class="bi bi-trash"></i>
+              </button>
+            </div>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</div>

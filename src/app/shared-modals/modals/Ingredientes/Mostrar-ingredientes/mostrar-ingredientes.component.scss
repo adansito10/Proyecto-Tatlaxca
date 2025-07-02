@@ -1,0 +1,32 @@
+.ingredientes-form {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.ingrediente-row {
+  display: flex;
+  gap: 16px;
+  align-items: flex-start;
+  flex-wrap: wrap;
+}
+
+.ingrediente-select {
+  flex: 1;
+  min-width: 200px;
+}
+
+.cantidad-input {
+  width: 130px;
+}
+
+@media (max-width: 600px) {
+  .ingrediente-row {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .cantidad-input {
+    width: 100%;
+  }
+}

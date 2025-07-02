@@ -4,8 +4,9 @@
   <form [formGroup]="productoForm">
     <mat-form-field appearance="fill" class="full-width">
       <mat-label>Nombre</mat-label>
-      <input matInput formControlName="nombre">
-    </mat-form-field>
+  <input matInput formControlName="nombre" maxlength="40" required>
+  <mat-hint align="end">{{ productoForm.get('nombre')?.value?.length || 0 }}/40</mat-hint>    
+</mat-form-field>
 
    
    
@@ -18,28 +19,28 @@
 
     <mat-form-field appearance="fill" class="full-width">
       <mat-label>Precio</mat-label>
-      <input matInput type="number" formControlName="precio">
+  <input matInput type="number" formControlName="precio" placeholder="Ej. 45.50" min="1" required>
     </mat-form-field>
 
     <mat-form-field appearance="fill" class="full-width">
       <mat-label>Descripción</mat-label>
-      <textarea matInput formControlName="descripcion"></textarea>
+        <mat-hint align="end">{{ productoForm.get('descripcion')?.value?.length || 0 }}/125</mat-hint>
+  <textarea matInput formControlName="descripcion" maxlength="125" required></textarea>
     </mat-form-field>
 
-   <div class="ingredientes-section">
+  <div class="ingredientes-section">
   <h4>Ingredientes</h4>
   <div *ngIf="ingredientesSeleccionados.length; else sinIngredientes">
-    <ul>
-      <li *ngFor="let ing of ingredientesSeleccionados">
-        {{ ing.nombre }} - {{ ing.cantidad }}
-      </li>
-    </ul>
+    <div class="ingrediente-item" *ngFor="let ing of ingredientesSeleccionados">
+      <span class="nombre">{{ ing.nombre }}</span>
+      <span class="cantidad">Cantidad: {{ ing.cantidad }}</span>
+    </div>
   </div>
   <ng-template #sinIngredientes>
     <p>No se han seleccionado ingredientes.</p>
   </ng-template>
 
-  <button mat-stroked-button color="primary" (click)="abrirModalIngredientes()">
+  <button mat-stroked-button color="primary" class="full-width-btn" (click)="abrirModalIngredientes()">
     Seleccionar Ingredientes
   </button>
 </div>
@@ -47,20 +48,20 @@
 <div class="insumos-section">
   <h4>Insumos</h4>
   <div *ngIf="insumosSeleccionados.length; else sinInsumos">
-    <ul>
-      <li *ngFor="let ins of insumosSeleccionados">
-        {{ ins.nombre }} - {{ ins.cantidad }}
-      </li>
-    </ul>
+    <div class="ingrediente-item" *ngFor="let ins of insumosSeleccionados">
+      <span class="nombre">{{ ins.nombre }}</span>
+      <span class="cantidad">Cantidad: {{ ins.cantidad }}</span>
+    </div>
   </div>
   <ng-template #sinInsumos>
     <p>No se han seleccionado insumos.</p>
   </ng-template>
 
-  <button mat-stroked-button color="primary" (click)="abrirModalInsumos()">
+  <button mat-stroked-button color="primary" class="full-width-btn" (click)="abrirModalInsumos()">
     Seleccionar Insumos
   </button>
 </div>
+
 
 
     <div style="margin: 16px 0; text-align: center;">

@@ -35,7 +35,12 @@ import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { MostrarInsumosComponent } from './Inventario/mostrar-insumos/mostrar.insumos.component';
 import { AgregarCategoriesComponent } from './categories/agregar-categoria/agregar-categoria.component';
 import { EliminarCategoryComponent } from './categories/eliminar-categoria/eliminar-categoria-component';
-
+import { AgregarMesaComponent } from './tables/agregar-tables/agregar-mesa.component';
+import { EliminarMesaComponent } from './tables/eliminar-tables/eliminar-mesa.component';
+import { AgregarRolComponent } from './roles/agrega-rol/agrega-rol.component';
+import { EliminarRolComponent } from './roles/eliminar-rol/eliminar-rol.component';
+import { AgregarStatusComponent } from './status/agrega-status/agregar-status.component';
+import { EliminarStatusComponent } from './status/eliminar-status/eliminar-status.component';
 @NgModule({
   declarations: [
   AgregarProductoComponent,
@@ -55,7 +60,13 @@ import { EliminarCategoryComponent } from './categories/eliminar-categoria/elimi
   ConfirmLogoutDialogComponent,
   MostrarInsumosComponent,
   AgregarCategoriesComponent,
-  EliminarCategoryComponent
+  EliminarCategoryComponent, 
+  AgregarMesaComponent,
+  EliminarMesaComponent,
+  AgregarRolComponent,
+  EliminarRolComponent,
+  AgregarStatusComponent,
+  EliminarStatusComponent
   
   
   ],

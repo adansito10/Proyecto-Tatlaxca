@@ -1,0 +1,31 @@
+<h2 mat-dialog-title>{{ modo === 'agregar' ? 'Agregar Mesa' : 'Editar Mesa' }}</h2>
+
+<mat-dialog-content>
+  <form [formGroup]="mesaForm">
+    <mat-form-field appearance="fill" class="w-100">
+      <mat-label>Número</mat-label>
+      <input matInput type="number" formControlName="numero">
+    </mat-form-field>
+
+    <mat-form-field appearance="fill" class="w-100">
+      <mat-label>Ubicación</mat-label>
+      <input matInput formControlName="ubicacion">
+    </mat-form-field>
+
+    <mat-form-field appearance="fill" class="w-100">
+      <mat-label>Estado</mat-label>
+      <mat-select formControlName="estado">
+        <mat-option *ngFor="let estado of estados" [value]="estado.estado">
+          {{ estado.estado }}
+        </mat-option>
+      </mat-select>
+    </mat-form-field>
+  </form>
+</mat-dialog-content>
+
+<mat-dialog-actions align="end">
+  <button mat-button (click)="cancelar()">Cancelar</button>
+  <button mat-flat-button color="primary" (click)="guardar()" [disabled]="mesaForm.invalid">
+    {{ modo === 'agregar' ? 'Agregar' : 'Actualizar' }}
+  </button>
+</mat-dialog-actions>
