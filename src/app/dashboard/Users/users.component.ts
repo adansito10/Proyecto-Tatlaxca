@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
-import { UsersService } from '../../services/Users/usuario-service.service';
+import { UsersService } from '../../services/Users/users.service';
 import { RolesService } from '../../services/roles/roles.service';
 import { EmployeesService } from '../../services/employees/employees-service';
 import { AgregarUsuarioComponent } from '../../shared-modals/modals/Usuarios/agregar-usuario/agregar-usuario.component';
@@ -36,7 +36,7 @@ export class UsersComponent implements OnInit {
   }
 
 
-     get usuariosFiltrados() {
+    get usuariosFiltrados() {
   return this.usuarios.filter(usuario =>
     (this.filtroCargo === '' || usuario.cargo === this.filtroCargo) &&
     (this.busquedaNombre === '' || usuario.nombre.toLowerCase().includes(this.busquedaNombre.toLowerCase()))
@@ -45,33 +45,23 @@ export class UsersComponent implements OnInit {
 
 
 
- 
-cargarUsuarios(): void {
-    this.usuarioService.getUsuarios().subscribe({
-      next: usuarios => {
-        this.empleadoService.getEmpleados().subscribe({
-          next: empleados => {
-            this.usuarios = empleados.map(empleado => {
-              const usuario = usuarios.find(u => u.id === empleado.id_usuario);
-              const rol = this.roles.find(r => r.id === usuario?.id_rol)?.rol || 'Sin rol';
 
-              return {
-                ...empleado,
-                idEmpleado: empleado.id,           
-                apellidoPaterno: empleado.appaterno,
-                apellidoMaterno: empleado.apmaterno,
-                correo: usuario?.correo || 'Sin correo',
-                cargo: rol
-              };
-            });
-          },
-          error: err => console.error('Error al obtener empleados:', err)
-        });
-      },
-      error: err => console.error('Error al obtener usuarios:', err)
-    });
-  }
-
+ cargarUsuarios(): void {
+  this.empleadoService.getEmpleados().subscribe({
+    next: empleados => {
+      this.usuarios = empleados.map(empleado => ({
+        ...empleado,
+        idEmpleado: empleado.id,
+        idUsuario: empleado.id_usuario,
+        apellidoPaterno: empleado.appaterno,
+        apellidoMaterno: empleado.apmaterno,
+        correo: empleado.correo,
+        cargo: empleado.rol
+      }));
+    },
+    error: err => console.error('Error al obtener empleados', err)
+  });
+}
 
 
 
