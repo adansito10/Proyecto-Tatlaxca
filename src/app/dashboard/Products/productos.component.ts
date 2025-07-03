@@ -75,7 +75,6 @@ export class ProductsComponent implements OnInit {
 
   dialogRef.afterClosed().subscribe(resultado => {
     if (resultado) {
-      // Asegurar que id está presente
       if (!resultado.id) {
         resultado.id = producto.id;
       }

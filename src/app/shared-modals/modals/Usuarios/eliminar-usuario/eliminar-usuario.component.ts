@@ -5,12 +5,12 @@ import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
   selector: 'app-eliminar-usuario',
   standalone: false,
   templateUrl: './eliminar-usuario.component.html',
-  styleUrl: './eliminar-usuario.component.scss'
-})
+  styleUrls: ['./eliminar-usuario.component.scss']})
+
 export class EliminarUsuarioComponent {
  constructor(
     public dialogRef: MatDialogRef<EliminarUsuarioComponent>,
-    @Inject(MAT_DIALOG_DATA) public data: { usuario: string }
+@Inject(MAT_DIALOG_DATA) public data: any
   ) {}
 
   cancelar(): void {

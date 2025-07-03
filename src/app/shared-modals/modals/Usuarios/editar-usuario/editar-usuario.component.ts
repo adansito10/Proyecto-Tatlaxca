@@ -1,3 +1,4 @@
+// editar-usuario.component.ts
 import { Component, Inject } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
@@ -33,31 +34,29 @@ export class EditarUsuarioComponent {
   }
 
   guardar(): void {
-  if (this.usuarioForm.valid) {
-    const formValue = this.usuarioForm.value;
-    const user: any = {
-      id: this.data.usuario.idUsuario || this.data.usuario.id_usuario,
-      correo: formValue.correo,
-      id_rol: formValue.id_rol,
-    };
+    if (this.usuarioForm.valid) {
+      const formValue = this.usuarioForm.value;
+      const user: any = {
+        id: this.data.usuario.idUsuario,
+        correo: formValue.correo,
+        id_rol: formValue.id_rol,
+      };
 
-    if (formValue.password && formValue.password.trim().length >= 6) {
-      user.password = formValue.password.trim();
+      if (formValue.password && formValue.password.trim().length >= 6) {
+        user.password = formValue.password.trim();
+      }
+
+      const employee = {
+        id: this.data.usuario.idEmpleado,
+        nombre: formValue.nombre,
+        appaterno: formValue.apellidoPaterno,
+        apmaterno: formValue.apellidoMaterno,
+        telefono: formValue.telefono
+      };
+
+      this.dialogRef.close({ user, employee });
     }
-
-    const employee = {
-      id: this.data.usuario.idEmpleado || this.data.usuario.id_empleado, 
-      nombre: formValue.nombre,
-      appaterno: formValue.apellidoPaterno,
-      apmaterno: formValue.apellidoMaterno, 
-      telefono: formValue.telefono
-    };
-
-    this.dialogRef.close({ user, employee });
   }
-}
-
-
 
   eliminar(): void {
     this.dialogRef.close({ eliminar: true });
