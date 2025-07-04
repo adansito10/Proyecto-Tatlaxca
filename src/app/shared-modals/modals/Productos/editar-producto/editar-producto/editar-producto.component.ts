@@ -59,7 +59,6 @@ export class EditarProductoComponent implements OnInit {
 
     this.ingredientesSeleccionados = this.mapItemsToIngredientes(producto.ingredientes);
     this.insumosSeleccionados = this.mapItemsToInsumos(producto.insumos);
-    // Aquí asignamos la URL de la imagen que ya existe
     this.imagenProducto = producto.imagen_url ?? producto.imagen ?? null;
   }
 

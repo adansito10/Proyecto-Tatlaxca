@@ -11,16 +11,18 @@ import { IngredientsService } from '../../../../services/Ingredients/ingredients
 })
 export class MostrarIngredientesComponent implements OnInit {
   ingredientesForm: FormGroup;
-  controlNombres: string[] = ['ing1', 'ing2', 'ing3', 'ing4', 'ing5'];
+  // Ya fijo 20 controles
+  controlNombres: string[] = Array.from({ length: 20 }, (_, i) => `ing${i + 1}`);
   ingredientesDisponibles: any[] = [];
   mensajeStockExcedido = false;
- 
+
   constructor(
     private fb: FormBuilder,
     private dialogRef: MatDialogRef<MostrarIngredientesComponent>,
     private ingredientsService: IngredientsService,
     @Inject(MAT_DIALOG_DATA) public data: { ingredientesActuales: any[] }
   ) {
+    // Creamos el grupo con los 20 controles fijos
     const group: any = {};
     this.controlNombres.forEach(name => {
       group[name + '_nombre'] = [null];
@@ -34,6 +36,7 @@ export class MostrarIngredientesComponent implements OnInit {
       next: (data) => {
         this.ingredientesDisponibles = data;
 
+        // Cargamos los ingredientes actuales en los controles fijos (máximo 20)
         this.data.ingredientesActuales?.forEach((ing, index) => {
           if (index < this.controlNombres.length) {
             const control = this.controlNombres[index];
@@ -67,26 +70,7 @@ export class MostrarIngredientesComponent implements OnInit {
     });
   }
 
-  agregarIngrediente(): void {
-    if (this.controlNombres.length >= 30) return;
-
-    const nuevo = `ing${this.controlNombres.length + 1}`;
-    this.controlNombres.push(nuevo);
-    this.ingredientesForm.addControl(nuevo + '_nombre', this.fb.control(null));
-    this.ingredientesForm.addControl(nuevo + '_cantidad',
-      this.fb.control({ value: '', disabled: true }, [Validators.min(1)]));
-
-    this.ingredientesForm.get(nuevo + '_nombre')?.valueChanges.subscribe(value => {
-      const cantidadControl = this.ingredientesForm.get(nuevo + '_cantidad');
-      if (!value) {
-        cantidadControl?.setValue('');
-        cantidadControl?.disable();
-        cantidadControl?.setErrors(null);
-      } else {
-        cantidadControl?.enable();
-      }
-    });
-  }
+  // Quitamos agregarIngrediente()
 
   getUnidad(control: string): string {
     const ing = this.ingredientesForm.get(control + '_nombre')?.value;
@@ -113,50 +97,50 @@ export class MostrarIngredientesComponent implements OnInit {
   }
 
   guardarIngredientes(): void {
-  const values = this.ingredientesForm.value;
-  const seleccionados: any[] = [];
-  let hayError = false;
-  this.mensajeStockExcedido = false; // reiniciar al iniciar
+    const values = this.ingredientesForm.value;
+    const seleccionados: any[] = [];
+    let hayError = false;
+    this.mensajeStockExcedido = false;
 
-  this.controlNombres.forEach(name => {
-    const ing = values[name + '_nombre'];
-    const cantidadControl = this.ingredientesForm.get(name + '_cantidad');
-    const cantidad = Number(values[name + '_cantidad']) || 0;
+    this.controlNombres.forEach(name => {
+      const ing = values[name + '_nombre'];
+      const cantidadControl = this.ingredientesForm.get(name + '_cantidad');
+      const cantidad = Number(values[name + '_cantidad']) || 0;
 
-    if (!ing && (!cantidad || cantidad <= 0)) {
-      cantidadControl?.setErrors(null);
-      return;
-    }
+      if (!ing && (!cantidad || cantidad <= 0)) {
+        cantidadControl?.setErrors(null);
+        return;
+      }
 
-    if (ing && (cantidad <= 0 || cantidad === null || isNaN(cantidad))) {
-      cantidadControl?.setErrors({ required: true });
-      hayError = true;
-      return;
-    }
+      if (ing && (cantidad <= 0 || cantidad === null || isNaN(cantidad))) {
+        cantidadControl?.setErrors({ required: true });
+        hayError = true;
+        return;
+      }
 
-    if (cantidad > ing.stock) {
-      cantidadControl?.setErrors({ excedeStock: true });
-      hayError = true;
-      this.mensajeStockExcedido = true;
-    } else if (cantidadControl?.hasError('excedeStock')) {
-      const errors = { ...cantidadControl.errors };
-      delete errors['excedeStock'];
-      cantidadControl.setErrors(Object.keys(errors).length > 0 ? errors : null);
-    }
+      if (cantidad > ing.stock) {
+        cantidadControl?.setErrors({ excedeStock: true });
+        hayError = true;
+        this.mensajeStockExcedido = true;
+      } else if (cantidadControl?.hasError('excedeStock')) {
+        const errors = { ...cantidadControl.errors };
+        delete errors['excedeStock'];
+        cantidadControl.setErrors(Object.keys(errors).length > 0 ? errors : null);
+      }
 
-    if (ing && cantidad > 0 && cantidad <= ing.stock) {
-      seleccionados.push({
-        id: ing.id,
-        nombre: ing.nombre,
-        unidad: ing.unidad,
-        cantidad
-      });
-    }
-  });
+      if (ing && cantidad > 0 && cantidad <= ing.stock) {
+        seleccionados.push({
+          id: ing.id,
+          nombre: ing.nombre,
+          unidad: ing.unidad,
+          cantidad
+        });
+      }
+    });
 
-  if (hayError || seleccionados.length === 0 || this.ingredientesForm.invalid) return;
+    if (hayError || seleccionados.length === 0 || this.ingredientesForm.invalid) return;
 
-  this.mensajeStockExcedido = false;
-  this.dialogRef.close(seleccionados);
-}
+    this.mensajeStockExcedido = false;
+    this.dialogRef.close(seleccionados);
+  }
 }

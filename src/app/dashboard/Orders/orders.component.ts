@@ -1,4 +1,7 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
+import { OrdersService } from '../../services/orders/orders.service';
+import { OrderDetailComponent } from '../../shared-modals/modals/orders-detail/orders-detail.component';
+import { MatDialog } from '@angular/material/dialog';
 
 @Component({
   selector: 'app-orders',
@@ -6,31 +9,33 @@ import { Component } from '@angular/core';
   templateUrl: './orders.component.html',
   styleUrls: ['./orders.component.scss']
 })
-export class OrdersComponent {
-  Ordenes = [
-    {
-      fecha: '12/05/2025',
-      numeroOrden: '00123',
-      hora:'01:52 p.m',
-      mesa: '#3',
-      productos: ['Pizza', 'Refresco', 'Postre'],
-      total: '$150.00',
-      mesero: 'Adan M',
-      descripcion: 'Finalizado',
-    },
-    {
-      fecha: '13/05/2025',
-      numeroOrden: '00124',
-      hora:'01:52 p.m',
-      mesa: '#5',
-      productos: ['Hamburguesa', 'Papas Fritas'],
-      total: '$120.00',
-      mesero: 'Lucía G',
-      descripcion: 'En preparación',
-    }
-  ];
+export class OrdersComponent implements OnInit {
+  ordenes: any[] = [];
 
-  descargarReporte() {
-    console.log('Descargando reporte del mes:');
+  constructor(
+    private ordersService: OrdersService,
+    private dialog: MatDialog  // <-- Aquí debe estar inyectado
+  ) {}
+
+  ngOnInit(): void {
+    this.ordersService.getAllOrders().subscribe({
+      next: data => {
+        this.ordenes = data;
+      },
+      error: err => {
+        console.error('Error al obtener las órdenes:', err);
+      }
+    });
   }
+
+
+
+verProductos(idOrden: number) {
+  console.log('this.dialog:', this.dialog);
+  this.dialog.open(OrderDetailComponent, {
+    width: '700px',
+    data: { idOrden }
+  });
+}
+
 }

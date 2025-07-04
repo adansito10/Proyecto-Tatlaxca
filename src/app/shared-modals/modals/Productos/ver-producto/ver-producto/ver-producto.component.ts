@@ -8,7 +8,7 @@ import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
   styleUrls: ['./ver-producto.component.scss']
 })
 export class VerProductoComponent {
-constructor(
+  constructor(
     public dialogRef: MatDialogRef<VerProductoComponent>,
     @Inject(MAT_DIALOG_DATA) public data: { ingredientes: any[], insumos: any[] }
   ) {}

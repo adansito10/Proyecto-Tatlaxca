@@ -28,38 +28,54 @@
   <textarea matInput formControlName="descripcion" maxlength="125" required></textarea>
     </mat-form-field>
 
-  <div class="ingredientes-section">
-  <h4>Ingredientes</h4>
-  <div *ngIf="ingredientesSeleccionados.length; else sinIngredientes">
-    <div class="ingrediente-item" *ngFor="let ing of ingredientesSeleccionados">
-      <span class="nombre">{{ ing.nombre }}</span>
-      <span class="cantidad">Cantidad: {{ ing.cantidad }}</span>
+ <div class="grid-container">
+
+  <!-- Ingredientes -->
+  <div class="detalle-box">
+    <h4>Ingredientes</h4>
+    <div class="lista-header">
+      <span class="nombre">Nombre</span>
+      <span class="cantidad">Cantidad</span>
     </div>
-  </div>
-  <ng-template #sinIngredientes>
-    <p>No se han seleccionado ingredientes.</p>
-  </ng-template>
-
-  <button mat-stroked-button color="primary" class="full-width-btn" (click)="abrirModalIngredientes()">
-    Seleccionar Ingredientes
-  </button>
-</div>
-
-<div class="insumos-section">
-  <h4>Insumos</h4>
-  <div *ngIf="insumosSeleccionados.length; else sinInsumos">
-    <div class="ingrediente-item" *ngFor="let ins of insumosSeleccionados">
-      <span class="nombre">{{ ins.nombre }}</span>
-      <span class="cantidad">Cantidad: {{ ins.cantidad }}</span>
+    <div class="scrollable-list">
+      <div *ngIf="ingredientesSeleccionados.length; else sinIngredientes">
+        <div class="item" *ngFor="let ing of ingredientesSeleccionados">
+          <span class="nombre">{{ ing.nombre }}</span>
+          <span class="cantidad">{{ ing.cantidad }}</span>
+        </div>
+      </div>
+      <ng-template #sinIngredientes>
+        <p>No hay ingredientes seleccionados.</p>
+      </ng-template>
     </div>
+    <button mat-stroked-button color="primary" class="full-width-btn mt-2" (click)="abrirModalIngredientes()">
+      Seleccionar Ingredientes
+    </button>
   </div>
-  <ng-template #sinInsumos>
-    <p>No se han seleccionado insumos.</p>
-  </ng-template>
 
-  <button mat-stroked-button color="primary" class="full-width-btn" (click)="abrirModalInsumos()">
-    Seleccionar Insumos
-  </button>
+  <!-- Insumos -->
+  <div class="detalle-box">
+    <h4>Insumos</h4>
+    <div class="lista-header">
+      <span class="nombre">Nombre</span>
+      <span class="cantidad">Cantidad</span>
+    </div>
+    <div class="scrollable-list">
+      <div *ngIf="insumosSeleccionados.length; else sinInsumos">
+        <div class="item" *ngFor="let ins of insumosSeleccionados">
+          <span class="nombre">{{ ins.nombre }}</span>
+          <span class="cantidad">{{ ins.cantidad }}</span>
+        </div>
+      </div>
+      <ng-template #sinInsumos>
+        <p>No hay insumos seleccionados.</p>
+      </ng-template>
+    </div>
+    <button mat-stroked-button color="primary" class="full-width-btn mt-2" (click)="abrirModalInsumos()">
+      Seleccionar Insumos
+    </button>
+  </div>
+
 </div>
 
 

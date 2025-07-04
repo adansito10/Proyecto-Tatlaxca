@@ -41,6 +41,8 @@ import { AgregarRolComponent } from './roles/agrega-rol/agrega-rol.component';
 import { EliminarRolComponent } from './roles/eliminar-rol/eliminar-rol.component';
 import { AgregarStatusComponent } from './status/agrega-status/agregar-status.component';
 import { EliminarStatusComponent } from './status/eliminar-status/eliminar-status.component';
+import { OrderDetailComponent } from './orders-detail/orders-detail.component';
+
 @NgModule({
   declarations: [
   AgregarProductoComponent,
@@ -66,7 +68,10 @@ import { EliminarStatusComponent } from './status/eliminar-status/eliminar-statu
   AgregarRolComponent,
   EliminarRolComponent,
   AgregarStatusComponent,
-  EliminarStatusComponent
+  EliminarStatusComponent,
+  OrderDetailComponent
+  
+  
   
   
   ],

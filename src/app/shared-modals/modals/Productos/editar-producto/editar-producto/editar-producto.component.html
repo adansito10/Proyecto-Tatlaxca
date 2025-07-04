@@ -27,40 +27,55 @@
       <textarea matInput formControlName="descripcion" maxlength="125" required></textarea>
       <mat-hint align="end">{{ productoForm.get('descripcion')?.value?.length || 0 }}/125</mat-hint>
     </mat-form-field>
+<div class="grid-container">
 
-    <div class="ingredientes-section">
-      <h4>Ingredientes</h4>
+  <!-- Ingredientes -->
+  <div class="detalle-box">
+    <h4>Ingredientes</h4>
+    <div class="lista-header">
+      <span class="nombre">Nombre</span>
+      <span class="cantidad">Cantidad</span>
+    </div>
+    <div class="scrollable-list">
       <div *ngIf="ingredientesSeleccionados.length; else sinIngredientes">
-        <div class="ingrediente-item" *ngFor="let ing of ingredientesSeleccionados">
+        <div class="item" *ngFor="let ing of ingredientesSeleccionados">
           <span class="nombre">{{ ing.nombre }}</span>
-          <span class="cantidad">Cantidad: {{ ing.cantidad }}</span>
+          <span class="cantidad">{{ ing.cantidad }}</span>
         </div>
       </div>
       <ng-template #sinIngredientes>
-        <p>No se han seleccionado ingredientes.</p>
+        <p>No hay ingredientes seleccionados.</p>
       </ng-template>
-
-      <button mat-stroked-button color="primary" class="full-width-btn" (click)="abrirModalIngredientes()">
-        Seleccionar Ingredientes
-      </button>
     </div>
+    <button mat-stroked-button color="primary" class="full-width-btn mt-2" (click)="abrirModalIngredientes()">
+      Seleccionar Ingredientes
+    </button>
+  </div>
 
-    <div class="insumos-section">
-      <h4>Insumos</h4>
+  <!-- Insumos -->
+  <div class="detalle-box">
+    <h4>Insumos</h4>
+    <div class="lista-header">
+      <span class="nombre">Nombre</span>
+      <span class="cantidad">Cantidad</span>
+    </div>
+    <div class="scrollable-list">
       <div *ngIf="insumosSeleccionados.length; else sinInsumos">
-        <div class="ingrediente-item" *ngFor="let ins of insumosSeleccionados">
+        <div class="item" *ngFor="let ins of insumosSeleccionados">
           <span class="nombre">{{ ins.nombre }}</span>
-          <span class="cantidad">Cantidad: {{ ins.cantidad }}</span>
+          <span class="cantidad">{{ ins.cantidad }}</span>
         </div>
       </div>
       <ng-template #sinInsumos>
-        <p>No se han seleccionado insumos.</p>
+        <p>No hay insumos seleccionados.</p>
       </ng-template>
-
-      <button mat-stroked-button color="primary" class="full-width-btn" (click)="abrirModalInsumos()">
-        Seleccionar Insumos
-      </button>
     </div>
+    <button mat-stroked-button color="primary" class="full-width-btn mt-2" (click)="abrirModalInsumos()">
+      Seleccionar Insumos
+    </button>
+  </div>
+
+</div>
 
     <div style="margin: 16px 0; text-align: center;">
       <button mat-stroked-button color="accent" (click)="fileInput.click()" style="width: 100%;">

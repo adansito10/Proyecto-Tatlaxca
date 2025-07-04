@@ -1,0 +1,24 @@
+<h2 mat-dialog-title>Detalles de la Orden</h2>
+
+<mat-dialog-content>
+  <div *ngFor="let item of detalles" class="detalle-item mb-3 p-3 rounded shadow-sm border">
+    <div class="fw-bold fs-5 text-primary">
+      {{ item.nombre_producto || 'Producto #' + item.id_menu }}
+    </div>
+
+    <div class="d-flex flex-wrap mt-2">
+      <div class="me-4"><strong>Categoria:</strong> {{ item.categoria }}</div>
+      <div class="me-4"><strong>Cantidad:</strong> {{ item.cantidad }}</div>
+      <div class="me-4"><strong>Precio:</strong> ${{ item.subtotal }}</div>
+      <div class="me-4"><strong>Estado:</strong> {{ item.estado_preparacion }}</div>
+    </div>
+
+    <div class="mt-2">
+      <strong>Comentario:</strong> {{ item.comentario || 'Sin comentario' }}
+    </div>
+  </div>
+</mat-dialog-content>
+
+<mat-dialog-actions align="end">
+  <button mat-button mat-dialog-close>Cerrar</button>
+</mat-dialog-actions>

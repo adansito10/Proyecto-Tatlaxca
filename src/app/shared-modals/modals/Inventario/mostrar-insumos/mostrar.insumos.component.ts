@@ -1,5 +1,5 @@
 import { Component, Inject, OnInit } from '@angular/core';
-import { FormBuilder, FormGroup } from '@angular/forms';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { InsumosService } from '../../../../services/supplies/supplies.service';
 
@@ -11,8 +11,9 @@ import { InsumosService } from '../../../../services/supplies/supplies.service';
 })
 export class MostrarInsumosComponent implements OnInit {
   insumosForm: FormGroup;
-  controlNombres = ['ins1', 'ins2', 'ins3', 'ins4', 'ins5'];
+  controlNombres: string[] = Array.from({ length: 20 }, (_, i) => `ins${i + 1}`);
   insumosDisponibles: { id: number, nombre: string }[] = [];
+  mensajeCantidadInvalida = false;
 
   constructor(
     private fb: FormBuilder,
@@ -22,8 +23,8 @@ export class MostrarInsumosComponent implements OnInit {
   ) {
     const group: any = {};
     this.controlNombres.forEach(name => {
-      group[name + '_nombre'] = [''];
-      group[name + '_cantidad'] = [''];
+      group[name + '_nombre'] = [null];
+      group[name + '_cantidad'] = [{ value: '', disabled: true }, [Validators.min(1)]];
     });
     this.insumosForm = this.fb.group(group);
   }
@@ -33,35 +34,90 @@ export class MostrarInsumosComponent implements OnInit {
       next: (data) => {
         this.insumosDisponibles = data;
 
-        // Prellenar insumos ya seleccionados
-        if (Array.isArray(this.data.insumosActuales)) {
-          this.data.insumosActuales.forEach((insumo, index) => {
-            if (index < this.controlNombres.length) {
-              const control = this.controlNombres[index];
-              const insumoDisponible = this.insumosDisponibles.find(i => i.id === insumo.id);
-              if (insumoDisponible) {
-                this.insumosForm.get(control + '_nombre')?.setValue(insumoDisponible);
-                this.insumosForm.get(control + '_cantidad')?.setValue(insumo.cantidad);
-              }
+        this.data.insumosActuales?.forEach((insumo, index) => {
+          if (index < this.controlNombres.length) {
+            const control = this.controlNombres[index];
+            const encontrado = this.insumosDisponibles.find(i => i.id === insumo.id);
+            if (encontrado) {
+              this.insumosForm.get(control + '_nombre')?.setValue(encontrado);
+              this.insumosForm.get(control + '_cantidad')?.setValue(insumo.cantidad);
+              this.insumosForm.get(control + '_cantidad')?.enable();
             }
-          });
-        }
+          }
+        });
+
+        this.escucharCambios();
       },
       error: err => console.error('Error al cargar insumos:', err)
     });
   }
 
+  escucharCambios(): void {
+    this.controlNombres.forEach(control => {
+      this.insumosForm.get(control + '_nombre')?.valueChanges.subscribe(value => {
+        const cantidadControl = this.insumosForm.get(control + '_cantidad');
+        if (!value) {
+          cantidadControl?.setValue('');
+          cantidadControl?.disable();
+          cantidadControl?.setErrors(null);
+        } else {
+          cantidadControl?.enable();
+        }
+      });
+    });
+  }
+
+  puedeGuardar(): boolean {
+    let valido = false;
+    for (const name of this.controlNombres) {
+      const ins = this.insumosForm.get(name + '_nombre')?.value;
+      const cantidad = this.insumosForm.get(name + '_cantidad')?.value;
+      const cantidadControl = this.insumosForm.get(name + '_cantidad');
+
+      if (ins && cantidadControl?.enabled && cantidad > 0 && !cantidadControl.errors) {
+        valido = true;
+      }
+    }
+    return this.insumosForm.valid && valido;
+  }
+
   guardarInsumos(): void {
     const values = this.insumosForm.value;
-    const seleccionados = this.controlNombres.map(name => {
-      const ins = values[name + '_nombre'];
-      return {
-        id: ins?.id,
-        nombre: ins?.nombre,
-        cantidad: Number(values[name + '_cantidad']) || 0
-      };
-    }).filter(item => item.id && item.cantidad > 0);
+    const seleccionados: any[] = [];
+    let hayError = false;
+    this.mensajeCantidadInvalida = false;
 
+    this.controlNombres.forEach(name => {
+      const ins = values[name + '_nombre'];
+      const cantidadControl = this.insumosForm.get(name + '_cantidad');
+      const cantidad = Number(values[name + '_cantidad']) || 0;
+
+      if (!ins && (!cantidad || cantidad <= 0)) {
+        cantidadControl?.setErrors(null);
+        return;
+      }
+
+      if (ins && (cantidad <= 0 || cantidad === null || isNaN(cantidad))) {
+        cantidadControl?.setErrors({ required: true });
+        hayError = true;
+        return;
+      }
+
+      if (ins && cantidad > 0) {
+        seleccionados.push({
+          id: ins.id,
+          nombre: ins.nombre,
+          cantidad
+        });
+      }
+    });
+
+    if (hayError || seleccionados.length === 0 || this.insumosForm.invalid) {
+      this.mensajeCantidadInvalida = true;
+      return;
+    }
+
+    this.mensajeCantidadInvalida = false;
     this.dialogRef.close(seleccionados);
   }
 }

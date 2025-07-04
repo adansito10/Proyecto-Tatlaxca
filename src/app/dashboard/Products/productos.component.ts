@@ -118,13 +118,16 @@ export class ProductsComponent implements OnInit {
     });
   }
 
-  abrirModalVer(producto: any): void {
+ abrirModalVer(producto: any): void {
+  this.productosService.obtenerProductoPorId(producto.id).subscribe((productoActualizado) => {
     this.dialog.open(VerProductoComponent, {
       width: '800px',
       data: {
-        ingredientes: producto.ingredientes || [],
-        insumos: producto.insumos || []
+        ingredientes: productoActualizado.ingredientes || [],
+        insumos: productoActualizado.insumos || []
       }
     });
+  });
+
   }
 }

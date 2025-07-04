@@ -2,25 +2,37 @@
 
 <mat-dialog-content>
   <form [formGroup]="insumosForm">
-    <div *ngFor="let controlName of controlNombres; let i = index" class="d-flex align-items-center mb-2" style="gap: 12px;">
+    <div *ngFor="let controlName of controlNombres; let i = index" style="display: flex; align-items: flex-start; gap: 12px; margin-bottom: 16px;">
       <mat-form-field appearance="fill" style="flex: 1;">
         <mat-label>Insumo {{ i + 1 }}</mat-label>
         <mat-select [formControlName]="controlName + '_nombre'">
+          <mat-option [value]="null">Ninguno</mat-option>
           <mat-option *ngFor="let ins of insumosDisponibles" [value]="ins">
             {{ ins.nombre }}
           </mat-option>
         </mat-select>
       </mat-form-field>
 
-      <mat-form-field appearance="fill" style="width: 80px;">
+      <mat-form-field appearance="fill" style="width: 120px;">
         <mat-label>Cantidad</mat-label>
-        <input matInput type="number" min="1" [formControlName]="controlName + '_cantidad'" />
+        <input matInput type="number" min="1"
+               [formControlName]="controlName + '_cantidad'" />
+        <mat-error *ngIf="insumosForm.get(controlName + '_cantidad')?.hasError('min')">
+          La cantidad debe ser al menos 1
+        </mat-error>
+        <mat-error *ngIf="insumosForm.get(controlName + '_cantidad')?.hasError('required')">
+          La cantidad es obligatoria
+        </mat-error>
       </mat-form-field>
     </div>
+
+    <p *ngIf="mensajeCantidadInvalida" style="color: red; font-weight: 600; text-align: center;">
+      Por favor, revisa las cantidades ingresadas.
+    </p>
   </form>
 </mat-dialog-content>
 
 <mat-dialog-actions align="end">
   <button mat-button mat-dialog-close>Cancelar</button>
-  <button mat-flat-button color="primary" (click)="guardarInsumos()">Guardar</button>
+  <button mat-flat-button color="primary" [disabled]="!puedeGuardar()" (click)="guardarInsumos()">Guardar</button>
 </mat-dialog-actions>

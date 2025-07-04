@@ -26,11 +26,14 @@ export class ProductosService {
 eliminarProducto(id: number): Observable<any> {
   return this.http.delete(`${this.apiUrl}/${id}`);
 
-  }
-
+}
 
  obtenerCategorias(): Observable<any[]> {
   return this.http.get<any[]>(`${environment.apiUrl}/categories`);
+}
+
+obtenerProductoPorId(id: number): Observable<any> {
+  return this.http.get<any>(`${this.apiUrl}/${id}/details`);
 }
 
 

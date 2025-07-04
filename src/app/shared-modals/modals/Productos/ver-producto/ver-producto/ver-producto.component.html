@@ -1,41 +1,37 @@
 <h2 mat-dialog-title>Detalles del Producto</h2>
 
-<mat-dialog-content class="content-container">
-  <div class="column">
-    <h5>Ingredientes</h5>
-
+<mat-dialog-content class="grid-container">
+  <!-- INGREDIENTES -->
+  <div class="detalle-box">
+    <h4>🧄 Ingredientes</h4>
     <div class="lista-header">
       <span class="nombre">Nombre</span>
       <span class="cantidad">Cantidad</span>
     </div>
-
     <ul *ngIf="data.ingredientes?.length; else sinIngredientes">
       <li *ngFor="let ing of data.ingredientes">
         <span class="nombre">{{ ing.nombre }}</span>
         <span class="cantidad">{{ ing.cantidad }}</span>
       </li>
     </ul>
-
     <ng-template #sinIngredientes>
       <p>No hay ingredientes asignados.</p>
     </ng-template>
   </div>
 
-  <div class="column">
-    <h5>Insumos</h5>
-
+  <!-- INSUMOS -->
+  <div class="detalle-box">
+    <h4>📦 Insumos</h4>
     <div class="lista-header">
       <span class="nombre">Nombre</span>
       <span class="cantidad">Cantidad</span>
     </div>
-
     <ul *ngIf="data.insumos?.length; else sinInsumos">
       <li *ngFor="let ins of data.insumos">
         <span class="nombre">{{ ins.nombre }}</span>
         <span class="cantidad">{{ ins.cantidad }}</span>
       </li>
     </ul>
-
     <ng-template #sinInsumos>
       <p>No hay insumos asignados.</p>
     </ng-template>
@@ -43,5 +39,5 @@
 </mat-dialog-content>
 
 <mat-dialog-actions align="end">
-  <button mat-button (click)="dialogRef.close()">Cerrar</button>
+  <button mat-button mat-dialog-close>Cerrar</button>
 </mat-dialog-actions>

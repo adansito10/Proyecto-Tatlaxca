@@ -1,36 +1,36 @@
 <div class="container-fluid py-4">
   <div class="d-flex justify-content-between align-items-center mb-4 flex-wrap">
-    <h3  class="fw-bold mb-2 ms-2 text-dark">Lista de Ordenes</h3>
-
-  
+    <h3 class="fw-bold mb-2 ms-2 text-dark">Lista de Órdenes</h3>
   </div>
 
   <div class="table-responsive">
     <table class="table table-hover text-center align-middle w-100">
       <thead class="table-light">
         <tr>
-          <th>Número de Orden</th>
-          <th>Fecha</th>
-          <th>Hora</th>
+          <th>Orden</th>
           <th>Mesa</th>
           <th>Mesero</th>
+          <th>Tipo de Cliente</th>
+          <th>Total</th>
+          <th>Fecha</th>
+          <th>Hora</th>
           <th>Productos</th>
           <th>Estado</th>
-          <th>Total</th>
         </tr>
       </thead>
       <tbody>
-        <tr *ngFor="let orden of Ordenes">
-          <td>{{ orden.numeroOrden }}</td>
-          <td>{{ orden.fecha }}</td>
-          <td>{{ orden.hora }}</td>
-          <td>{{ orden.mesa }}</td>
-          <td>{{ orden.mesero }}</td>
+        <tr *ngFor="let orden of ordenes">
+          <td>{{ orden.id }}</td>
+          <td>#{{ orden.table_number }}</td>
+          <td>{{ orden.waiter_name || 'Sin asignar' }}</td>
+          <td>{{ orden.tipo_cliente }}</td>
+          <td>${{ orden.total }}</td>
+          <td>{{ orden.fecha | date: 'shortDate' }}</td>
+          <td>{{ orden.created_at | date: 'shortTime' }}</td>
           <td>
-            <button class="btn btn-sm btn-outline-primary">Ver</button>
+            <button class="btn btn-sm btn-outline-primary" (click)="verProductos(orden.id)">Ver</button>
           </td>
-          <td>{{ orden.descripcion }}</td>
-          <td>{{ orden.total }}</td>
+          <td>{{ orden.status }}</td>
         </tr>
       </tbody>
     </table>
