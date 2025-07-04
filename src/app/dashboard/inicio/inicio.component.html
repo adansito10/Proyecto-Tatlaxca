@@ -1,55 +1,93 @@
 <div class="dashboard-container">
-  <h2 class="titulo-dashboard">Bienvenido al Panel Administrativo</h2>
 
-  <div class="resumen-cajas">
-    <div class="resumen-card ventas">
-      <div class="resumen-header">
-        <h3>Ventas de hoy</h3>
-        <span class="fecha-dia">{{ fechaActual | date:'EEEE, d MMMM yyyy':'':'es' }}</span>
-      </div>
-      <p class="valor-venta">{{ gananciasHoy | currency:'USD' }}</p>
-    </div>
-
-    <div class="resumen-card productos">
-      <h3>Productos registrados</h3>
-      <p>128</p>
-    </div>
-    <div class="resumen-card usuarios">
-      <h3>Usuarios activos</h3>
-      <p>4</p>
-    </div>
-    <div class="resumen-card pedidos">
-      <h3>Órdenes del día</h3>
-      <p>32</p>
-    </div>
+  <!-- Mensaje de bienvenida -->
+  <div class="dashboard-header">
+    <h2>Bienvenido al Panel Administrativo</h2>
+    <p></p>
   </div>
 
-  <div class="graficas-container">
-    <div class="grafica-box">
-      <h4>📊 Ventas semanales</h4>
-      <canvas baseChart
-        [data]="{ labels: ventasLabels, datasets: ventasData }"
-        [type]="ventasType"
-        [options]="ventasOptions">
-      </canvas>
-    </div>
+  <div class="charts-grid">
+    <!-- Gráfica 1 -->
+    <mat-card class="chart-card">
+      <mat-card-header>
+        <mat-card-title><mat-icon>bar_chart</mat-icon> Ventas Diarias</mat-card-title>
+        <mat-card-subtitle>Últimos 7 días</mat-card-subtitle>
+      </mat-card-header>
+      <mat-card-content>
+        <div class="chart-container">
+          <canvas baseChart [data]="dailySalesData" [options]="barChartOptions" [type]="barChartType"></canvas>
+        </div>
+      </mat-card-content>
+    </mat-card>
 
-    <div class="grafica-box">
-      <h4>🥧 Categorías más vendidas</h4>
-      <canvas baseChart
-        [data]="{ labels: categoriasLabels, datasets: categoriasData }"
-        [type]="categoriasType"
-        [options]="categoriasOptions">
-      </canvas>
-    </div>
+    <!-- Gráfica 2 -->
+    <mat-card class="chart-card">
+      <mat-card-header>
+        <mat-card-title><mat-icon>pie_chart</mat-icon> Categorías Populares</mat-card-title>
+        <mat-card-subtitle>Distribución por categoría</mat-card-subtitle>
+      </mat-card-header>
+      <mat-card-content>
+        <div class="chart-container">
+          <canvas baseChart [data]="categoriesData" [options]="doughnutChartOptions" [type]="doughnutChartType"></canvas>
+        </div>
+      </mat-card-content>
+    </mat-card>
 
-    <div class="grafica-box">
-      <h4>📈 Ingresos mensuales</h4>
-      <canvas baseChart
-        [data]="{ labels: ingresosLabels, datasets: ingresosData }"
-        [type]="ingresosType"
-        [options]="ingresosOptions">
-      </canvas>
-    </div>
+    <!-- Productos Más Vendidos como "fila completa" -->
+    <mat-card class="product-carousel-card full-width">
+      <mat-card-header>
+        <mat-card-title>
+          <mat-icon>local_cafe</mat-icon> Productos Más Vendidos
+        </mat-card-title>
+        <mat-button-toggle-group class="filter-toggle">
+          <mat-button-toggle value="all">Todos</mat-button-toggle>
+          <mat-button-toggle value="drinks">Bebidas</mat-button-toggle>
+          <mat-button-toggle value="food">Comida</mat-button-toggle>
+        </mat-button-toggle-group>
+      </mat-card-header>
+      <mat-card-content>
+        <div class="products-list-horizontal">
+          <div class="product-card-horizontal" *ngFor="let product of topProducts">
+            <img [src]="product.imagen_url || 'assets/default-product.png'" class="product-image-horizontal" [alt]="product.nombre">
+            <div class="product-info-horizontal">
+              <h4>{{ product.nombre }}</h4>
+              <p class="product-category">{{ getCategoryName(product.id_categoria) }}</p>
+              <div class="product-stats">
+                <span class="product-price">${{ product.precio }}</span>
+                <span class="sales-count">
+                  <mat-icon>receipt</mat-icon> {{ getProductSales(product.id) }} ventas
+                </span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </mat-card-content>
+    </mat-card>
+
+    <!-- Gráfica 3 -->
+    <mat-card class="chart-card">
+      <mat-card-header>
+        <mat-card-title><mat-icon>show_chart</mat-icon> Tendencias Mensuales</mat-card-title>
+        <mat-card-subtitle>Últimos 6 meses</mat-card-subtitle>
+      </mat-card-header>
+      <mat-card-content>
+        <div class="chart-container">
+          <canvas baseChart [data]="monthlyTrendsData" [options]="lineChartOptions" [type]="lineChartType"></canvas>
+        </div>
+      </mat-card-content>
+    </mat-card>
+
+    <!-- Gráfica 4 -->
+    <mat-card class="chart-card">
+      <mat-card-header>
+        <mat-card-title><mat-icon>credit_card</mat-icon> Métodos de Pago</mat-card-title>
+        <mat-card-subtitle>Distribución de pagos</mat-card-subtitle>
+      </mat-card-header>
+      <mat-card-content>
+        <div class="chart-container">
+          <canvas baseChart [data]="paymentMethodsData" [options]="polarChartOptions" [type]="polarChartType"></canvas>
+        </div>
+      </mat-card-content>
+    </mat-card>
   </div>
 </div>

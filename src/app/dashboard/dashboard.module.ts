@@ -23,7 +23,11 @@ import { AgregarMesaComponent } from '../shared-modals/modals/tables/agregar-tab
 import { TablesComponent } from './tables/tables.component';
 import { RolesComponent } from './roles/roles.component';
 import { StatusComponent } from './status/status.component';
-
+import { MatButtonToggleModule } from '@angular/material/button-toggle';
+import { MatTableModule } from '@angular/material/table';
+import { MatPaginatorModule } from '@angular/material/paginator';
+import { MatSortModule } from '@angular/material/sort';
+import { MatProgressBarModule } from '@angular/material/progress-bar';
 
 @NgModule({
   declarations: [
@@ -38,7 +42,8 @@ import { StatusComponent } from './status/status.component';
     CategoriesComponent,
     TablesComponent,
     RolesComponent,
-    StatusComponent
+    StatusComponent,
+
     
 
  
@@ -51,7 +56,13 @@ import { StatusComponent } from './status/status.component';
     SharedModule,
     ModalModule,
     HttpClientJsonpModule,
-    NgChartsModule
+    NgChartsModule,
+    MatButtonToggleModule,
+    MatTableModule,
+    MatPaginatorModule, 
+    MatSortModule,
+    MatProgressBarModule,
+
     
     
   ]
