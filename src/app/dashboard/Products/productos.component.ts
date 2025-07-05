@@ -80,15 +80,8 @@ export class ProductsComponent implements OnInit {
       }
       this.productosService.actualizarProducto(String(producto.id), resultado).subscribe({
         next: (productoActualizado) => {
-          const index = this.productos.findIndex(p => p.id === producto.id);
-          if (index !== -1) {
-            const categoriaCompleta = this.categorias.find(c => c.id === resultado.id_categoria);
-            this.productos[index] = {
-              ...this.productos[index],
-              ...resultado,
-              categoria: categoriaCompleta || this.productos[index].categoria
-            };
-          }
+          // En vez de actualizar localmente el array, recarga TODOS los productos:
+          this.obtenerProductos();
         },
         error: err => {
           console.error('Error al actualizar producto:', err);
@@ -98,6 +91,7 @@ export class ProductsComponent implements OnInit {
     }
   });
 }
+
 
 
   abrirModalEliminar(producto: any): void {
