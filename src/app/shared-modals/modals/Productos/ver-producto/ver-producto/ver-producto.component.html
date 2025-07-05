@@ -11,7 +11,7 @@
     <ul *ngIf="data.ingredientes?.length; else sinIngredientes">
       <li *ngFor="let ing of data.ingredientes">
         <span class="nombre">{{ ing.nombre }}</span>
-        <span class="cantidad">{{ ing.cantidad }}</span>
+        <span class="cantidad">{{ ing.cantidad}}  {{ ing.unidad}}</span>
       </li>
     </ul>
     <ng-template #sinIngredientes>

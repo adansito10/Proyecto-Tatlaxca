@@ -9,12 +9,17 @@
   color: white;
 }
 
+
+
 mat-nav-list a {
   color: rgb(228, 228, 228);
-  font-size: 14px; 
+  font-size: 13px; 
   padding: 6px 12px; 
-  height: 60px; 
-  margin-top: -19px;
+  height: 50px; 
+  margin-top: -10px;
+
+
+  
 
   mat-icon {
     font-size: 18px; 
@@ -26,7 +31,7 @@ mat-nav-list a {
   }
 
   &:hover {
-    background-color: #121212;
+    background-color: #1c1817;
   }
 }
 
@@ -162,8 +167,25 @@ mat-sidenav {
   box-shadow: none !important;
   border-top-right-radius: 0;
   border-bottom-right-radius: 20px;
-  overflow: hidden;
+  overflow-y: auto;
+
+  &::-webkit-scrollbar {
+    width: 6px;
+  }
+
+  &::-webkit-scrollbar-thumb {
+    background-color: rgba(255, 255, 255, 0.2);
+    border-radius: 8px;
+  }
+
+  &::-webkit-scrollbar-track {
+    background: transparent;
+  }
+
+  scrollbar-width: none;
+  scrollbar-color: rgba(255, 255, 255, 0.1) transparent;
 }
+
 
 .company-section {
   text-align: center;
@@ -300,3 +322,20 @@ mat-sidenav {
     }
   }
 }
+
+
+
+
+.menu-section {
+  padding: 6px 16px;
+  font-weight: bold;
+  font-size: 10px;
+  color: #ffffff;
+  text-transform: uppercase;
+}
+
+
+
+
+
+

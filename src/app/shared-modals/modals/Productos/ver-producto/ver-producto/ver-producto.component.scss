@@ -3,13 +3,12 @@
   grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
   gap: 1.5rem;
   max-height: 65vh;
-  overflow-y: auto;
-  padding: 1rem 0;
+  padding: 0rem 0;
 }
 
 .detalle-box {
   background-color: #ffffff;
-  padding: 0.5rem 1rem;
+  padding: 1rem 1.5rem;
   border-radius: 0.5rem;
 
   h4 {

@@ -3,3 +3,25 @@
   color: white;
   font-weight: bold;
 }
+
+
+
+
+.custom-header {
+  color: white;
+
+  th {
+    background-color: #2d1a15d4;
+    color: white;
+  }
+}
+
+
+
+.table, 
+.table th, 
+.table td {
+  border-width: 1px; /* aumenta el grosor */
+  border-style: solid; /* asegúrate que el borde sea sólido */
+  border-color: rgb(128, 128, 128); /* color negro para más contraste */
+}

@@ -67,7 +67,8 @@ export class EditarProductoComponent implements OnInit {
     return items.map(item => ({
       id: item.id ?? item.id_ingrediente,
       nombre: item.nombre ?? '',
-      cantidad: item.cantidad ?? 1
+      cantidad: item.cantidad ?? 1,
+      unidad: item.unidad ?? ''
     }));
   }
 
@@ -76,7 +77,8 @@ export class EditarProductoComponent implements OnInit {
     return items.map(item => ({
       id: item.id ?? item.id_insumo,
       nombre: item.nombre ?? '',
-      cantidad: item.cantidad ?? 1
+      cantidad: item.cantidad ?? 1,
+      unidad: item.unidad ?? ''
     }));
   }
 
@@ -145,7 +147,8 @@ export class EditarProductoComponent implements OnInit {
       })),
       insumos: this.insumosSeleccionados.map(i => ({
         id_insumo: i.id,
-        cantidad: i.cantidad
+        cantidad: i.cantidad,
+        
       })),
       ...(imagenParaEnviar && { imagen: imagenParaEnviar })
     };
