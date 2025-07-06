@@ -1,4 +1,6 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
+import { SalesService } from '../../services/sales/sales.service';
+import * as XLSX from 'xlsx';
 
 @Component({
   selector: 'app-reports',
@@ -6,89 +8,70 @@ import { Component } from '@angular/core';
   templateUrl: './reports.component.html',
   styleUrls: ['./reports.component.scss']
 })
-export class ReportsComponent {
-  mesSeleccionado: string = 'Mayo 2025';
-  tipoReporteSeleccionado: string = 'ventasDiarias';
+export class ReportsComponent implements OnInit {
+  ventasOriginal: any[] = [];
+  diasDelMes: number[] = [];
+  ventasDelDia: any[] = [];
 
-  meses: string[] = [
-    'Enero 2025', 'Febrero 2025', 'Marzo 2025',
-    'Abril 2025', 'Mayo 2025', 'Junio 2025'
-  ];
+  mesSeleccionado: string = ''; 
+  diaSeleccionado: number = 1;
+  totalMostrado: number = 0;
 
-  ventasDiarias = [
-    {
-      fecha: '12/05/2025',
-      numeroOrden: '00123',
-      mesa: '#3',
-      totalPagado: 120.00,
-      metodoPago: 'Efectivo',
-      mesero: 'Adan M',
-      hora: '01:52 p.m'
-    },
-    {
-      fecha: '14/05/2025',
-      numeroOrden: '00154',
-      mesa: '#1',
-      totalPagado: 150.00,
-      metodoPago: 'Transferencia',
-      mesero: 'Angel Y',
-      hora: '04:33 p.m'
-    },
-    {
-      fecha: '15/05/2025',
-      numeroOrden: '00165',
-      mesa: '#4',
-      totalPagado: 544.00,
-      metodoPago: 'Tarjeta',
-      mesero: 'Adan M',
-      hora: '11:22 a.m'
-    },
-    {
-      fecha: '16/05/2025',
-      numeroOrden: '00166',
-      mesa: '#2',
-      totalPagado: 110.00,
-      metodoPago: 'Efectivo',
-      mesero: 'Casar G',
-      hora: '06:35 p.m'
-    },
-    {
-      fecha: '17/05/2025',
-      numeroOrden: '00177',
-      mesa: '#6',
-      totalPagado: 56.00,
-      metodoPago: 'Efectivo',
-      mesero: 'Adan M',
-      hora: '05:50 p.m'
-    },
-    {
-      fecha: '18/05/2025',
-      numeroOrden: '00184',
-      mesa: '#1',
-      totalPagado: 250.00,
-      metodoPago: 'Transferencia',
-      mesero: 'Angel Y',
-      hora: '04:29 p.m'
-    }
-  ];
+  paginaDias = 1;
+  diasPorPagina = 7;
+  totalPaginasDias = 1;
 
-  // Reporte 2: Comidas más vendidas
-  comidasMasVendidas = [
-    { nombre: 'Hamburguesa', cantidad: 120 },
-    { nombre: 'Pizza', cantidad: 95 },
-    { nombre: 'Tacos', cantidad: 80 }
-  ];
+  constructor(private salesService: SalesService) {}
 
-  // Reporte 3: Ventas por mesero
-  ventasMeseros = [
-    { mesero: 'Adan M', ventas: 3, total: 726.00 },
-    { mesero: 'Angel Y', ventas: 2, total: 400.00 },
-    { mesero: 'Casar G', ventas: 1, total: 110.00 }
-  ];
+  ngOnInit(): void {
+    this.salesService.getAllSales().subscribe(data => {
+      this.ventasOriginal = data;
+    });
+  }
 
-  descargarReporte() {
-    console.log('Descargando reporte del mes:', this.mesSeleccionado);
-    console.log('Tipo de reporte:', this.tipoReporteSeleccionado);
-    // Aquí puedes implementar lógica para exportar según tipo seleccionado
+  seleccionarMes(mes: string) {
+    this.mesSeleccionado = mes;
+    const [year, month] = mes.split('-').map(Number);
+    const dias = new Date(year, month, 0).getDate();
+    this.diasDelMes = Array.from({ length: dias }, (_, i) => i + 1);
+
+    this.totalPaginasDias = Math.ceil(this.diasDelMes.length / this.diasPorPagina);
+    this.paginaDias = 1;
+    this.diaSeleccionado = 1;
+    this.actualizarVentasDelDia();
+  }
+
+  get diasVisibles(): number[] {
+    const start = (this.paginaDias - 1) * this.diasPorPagina;
+    return this.diasDelMes.slice(start, start + this.diasPorPagina);
+  }
+
+  cambiarPaginaDias(direccion: number): void {
+    this.paginaDias = Math.min(this.totalPaginasDias, Math.max(1, this.paginaDias + direccion));
+  }
+
+  seleccionarDia(dia: number) {
+    this.diaSeleccionado = dia;
+    this.actualizarVentasDelDia();
+  }
+
+  actualizarVentasDelDia() {
+    const fechaFiltro = `${this.mesSeleccionado}-${this.diaSeleccionado.toString().padStart(2, '0')}`;
+    this.ventasDelDia = this.ventasOriginal.filter(v => v.fecha_pago.startsWith(fechaFiltro));
+    this.totalMostrado = this.ventasDelDia.reduce((acc, venta) => acc + Number(venta.total_pagado), 0);
+  }
+
+  descargarExcel() {
+    const data = this.ventasDelDia.map(v => ({
+      ID: v.id,
+      Orden: v.id_orden,
+      Método_Pago: v.metodo_pago,
+      Fecha_Pago: v.fecha_pago,
+      Total_Pagado: v.total_pagado
+    }));
+    const ws = XLSX.utils.json_to_sheet(data);
+    const wb = XLSX.utils.book_new();
+    XLSX.utils.book_append_sheet(wb, ws, 'Ventas');
+    XLSX.writeFile(wb, `ventas_${this.mesSeleccionado}_${this.diaSeleccionado}.xlsx`);
   }
 }

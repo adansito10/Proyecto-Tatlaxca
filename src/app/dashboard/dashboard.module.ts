@@ -24,10 +24,18 @@ import { TablesComponent } from './tables/tables.component';
 import { RolesComponent } from './roles/roles.component';
 import { StatusComponent } from './status/status.component';
 import { MatButtonToggleModule } from '@angular/material/button-toggle';
-import { MatTableModule } from '@angular/material/table';
-import { MatPaginatorModule } from '@angular/material/paginator';
 import { MatSortModule } from '@angular/material/sort';
 import { MatProgressBarModule } from '@angular/material/progress-bar';
+import { HttpClientModule } from '@angular/common/http';
+import { MatTableModule } from '@angular/material/table';
+import { MatFormFieldModule } from '@angular/material/form-field';
+import { MatDatepickerModule } from '@angular/material/datepicker';
+import { MatNativeDateModule } from '@angular/material/core';
+import { MatInputModule } from '@angular/material/input';
+import { MatButtonModule } from '@angular/material/button';
+import { MatPaginatorModule } from '@angular/material/paginator';
+
+
 
 @NgModule({
   declarations: [
@@ -59,9 +67,17 @@ import { MatProgressBarModule } from '@angular/material/progress-bar';
     NgChartsModule,
     MatButtonToggleModule,
     MatTableModule,
-    MatPaginatorModule, 
     MatSortModule,
     MatProgressBarModule,
+    MatTableModule,
+    MatFormFieldModule,
+    MatDatepickerModule,
+    MatNativeDateModule,
+    MatInputModule,
+    MatButtonModule,
+    MatPaginatorModule
+
+        
 
     
     
