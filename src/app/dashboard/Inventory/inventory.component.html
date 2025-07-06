@@ -27,17 +27,18 @@
           <th>Nombre del Insumo</th>
           <th>Stock</th>
           <th>Unidad</th>
+          <th>Última actualización</th>
           <th>Acciones</th>
         </tr>
       </thead>
       <tbody>
         <tr *ngFor="let item of inventarioFiltrado">
          <td class="align-middle">{{ item.nombre }}</td>
-          <td class="align-middle" [ngClass]="{'text-danger': item.stock < item.stockMinimo}">
-            {{ item.stock }}
-          </td>
+          <td class="align-middle" [ngClass]="{'text-danger': item.stock < item.stockMinimo}">{{ item.stock }}</td>
           <td class="align-middle">{{ item.unidad }}</td>
+          <td>{{ (item.updated_at || item.created_at) | date:'short' }}</td>
           <td class="align-middle">
+            
             <div class="d-flex justify-content-center gap-2">
               <button class="btn btn-sm btn-success" (click)="abrirModalEditar(item)">
                 <i class="bi bi-pencil"></i>
