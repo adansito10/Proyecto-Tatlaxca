@@ -23,8 +23,8 @@ export class EditarUsuarioComponent {
       apellidoMaterno: [data.usuario?.apellidoMaterno || '', Validators.required],
       id_rol: [this.obtenerIdRolPorNombre(data.usuario?.cargo), Validators.required],
       telefono: [data.usuario?.telefono || '', [Validators.required, Validators.pattern('^[0-9]{10}$')]],
-      correo: [data.usuario?.correo || '', [Validators.required, Validators.email]],
-      password: ['', [Validators.minLength(6)]] // opcional
+      correo: [data.usuario.correo || '',[ Validators.required, Validators.email,  Validators.pattern(/^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.com$/) ]],
+      password: ['', [Validators.minLength(6)]] 
     });
   }
 

@@ -5,9 +5,9 @@ import { UsersService } from '../../services/Users/users.service';
 import { RolesService } from '../../services/roles/roles.service';
 import { EmployeesService } from '../../services/employees/employees-service';
 import { ChangeDetectorRef } from '@angular/core';
-import { AgregarUsuarioComponent } from '../../shared-modals/modals/Usuarios/agregar-usuario/agregar-usuario.component';
-import { EditarUsuarioComponent } from '../../shared-modals/modals/Usuarios/editar-usuario/editar-usuario.component';
-import { EliminarUsuarioComponent } from '../../shared-modals/modals/Usuarios/eliminar-usuario/eliminar-usuario.component';
+import { AgregarUsuarioComponent } from '../../shared-modals/modals/users/agregar-usuario/agregar-usuario.component';
+import { EditarUsuarioComponent } from '../../shared-modals/modals/users/editar-usuario/editar-usuario.component';
+import { EliminarUsuarioComponent } from '../../shared-modals/modals/users/eliminar-usuario/eliminar-usuario.component';
 
 @Component({
   selector: 'app-users',

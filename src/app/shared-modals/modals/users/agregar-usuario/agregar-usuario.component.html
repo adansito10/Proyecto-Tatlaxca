@@ -47,6 +47,9 @@
       <input matInput formControlName="correo" maxlength="40" />
       <mat-error *ngIf="usuarioForm.get('correo')?.hasError('required')">El correo es requerido</mat-error>
       <mat-error *ngIf="usuarioForm.get('correo')?.hasError('email')">Correo inválido</mat-error>
+       <mat-error *ngIf="usuarioForm.get('correo')?.hasError('pattern')">
+    solo letras y numeros terminar en <strong>.com</strong>
+  </mat-error>
       <mat-hint align="end">{{ usuarioForm.get('correo')?.value?.length || 0 }}/40</mat-hint>
     </mat-form-field>
 

@@ -1,65 +1,49 @@
-<div class="config-container">
-  <!-- LADO IZQUIERDO -->
-  <div class="left-panel">
-    <div class="profile-photo">
-      <img [src]="" alt="Foto de perfil">
-      <input type="file" id="uploadFoto" (change)="onFotoSeleccionada($event)" hidden>
-      <label for="uploadFoto">
-        <button mat-mini-fab  class="edit-icon" type="button">
-          <mat-icon>edit</mat-icon>
-        </button>
-      </label>
-    </div>
+<div class="perfil-container" *ngIf="usuario; else cargando">
+  <div class="perfil-card">
+    <div class="perfil-layout">
 
-    <h3 class="nombre-usuario">Adan Morales</h3>
-    <p class="rol-usuario">administrador</p>
+      <!-- Foto -->
+      <div class="perfil-avatar">
+        <img src="/perfil.jpg" alt="Foto de perfil" />
+      </div>
 
-    <mat-divider></mat-divider>
+      <div class="perfil-info">
+        <h2 class="nombre-usuario">{{ usuario.nombre }} {{ usuario.appaterno }} {{ usuario.apmaterno }}</h2>
+        <p class="rol-usuario">{{ usuario.rol }}</p>
+        <hr />
 
-    <div class="opciones">
-    </div>
-  </div>
+        <div class="perfil-grid">
+          <div class="campo">
+            <label>Nombre</label>
+            <input type="text" [value]="usuario.nombre" disabled />
+          </div>
 
-  <!-- LADO DERECHO -->
-  <div class="right-panel">
-    <h2 class="titulo-panel">
-     información personal
-    </h2>
+          <div class="campo">
+            <label>Apellido Paterno</label>
+            <input type="text" [value]="usuario.appaterno" disabled />
+          </div>
 
-    <form class="formulario-info">
-      <mat-form-field appearance="outline">
-        <mat-label>Nombre</mat-label>
-        <input matInput>
-      </mat-form-field>
+          <div class="campo">
+            <label>Apellido Materno</label>
+            <input type="text" [value]="usuario.apmaterno" disabled />
+          </div>
 
-      <mat-form-field appearance="outline">
-        <mat-label>Apellido Materno</mat-label>
-        <input matInput>
-      </mat-form-field>
+          <div class="campo">
+            <label>Teléfono</label>
+            <input type="text" [value]="usuario.telefono" disabled />
+          </div>
 
-      <mat-form-field appearance="outline">
-        <mat-label>Apellido Paterno</mat-label>
-        <input matInput>
-      </mat-form-field>
+          <div class="campo full-width">
+            <label>Correo electrónico</label>
+            <input type="email" [value]="usuario.correo" disabled />
+          </div>
+        </div>
+      </div>
 
-      <mat-form-field appearance="outline">
-        <mat-label>Teléfono</mat-label>
-        <input matInput>
-      </mat-form-field>
-
-      <mat-form-field appearance="outline">
-        <mat-label>Rol</mat-label>
-        <input matInput disabled value="Administrador">
-      </mat-form-field>
-
-      <mat-form-field appearance="outline">
-        <mat-label>Correo electrónico</mat-label>
-        <input matInput type="email">
-      </mat-form-field>
-    </form>
-
-    <div class="boton-editar ">
-      <button mat-flat-button  color="warn">Editar información</button>
     </div>
   </div>
 </div>
+
+<ng-template #cargando>
+  <p class="cargando-texto">Cargando información del usuario...</p>
+</ng-template>

@@ -29,7 +29,7 @@ export class AgregarUsuarioComponent implements OnInit {
       apellidoMaterno: [data.usuario.apellidoMaterno || '', Validators.required],
       id_rol: [data.usuario.id_rol ?? null, Validators.required],
       telefono: [data.usuario.telefono || '', [Validators.required, Validators.pattern(/^\d{7,10}$/)]],
-      correo: [data.usuario.correo || '', [Validators.required, Validators.email]],
+correo: [data.usuario.correo || '',[ Validators.required, Validators.email, Validators.pattern(/^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.com$/) ]],
       password: ['', data.modo === 'agregar' ? [Validators.required, Validators.minLength(6)] : []],
       foto: [data.usuario.foto || '']
     });

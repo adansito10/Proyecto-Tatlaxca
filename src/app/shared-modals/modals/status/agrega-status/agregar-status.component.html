@@ -4,14 +4,14 @@
   <form [formGroup]="statusForm">
     <mat-form-field appearance="fill" class="w-100">
       <mat-label>Estado</mat-label>
-      <input matInput formControlName="estado" />
-      <mat-error *ngIf="statusForm.get('estado')?.hasError('required')">El estado es obligatorio</mat-error>
+      <input matInput formControlName="estado" maxlength="20" />
+      <mat-hint align="end">{{ statusForm.get('estado')?.value?.length || 0 }}/20</mat-hint>      <mat-error *ngIf="statusForm.get('estado')?.hasError('required')">El estado es obligatorio</mat-error>
     </mat-form-field>
 
     <mat-form-field appearance="fill" class="w-100">
       <mat-label>Descripción</mat-label>
-      <textarea matInput formControlName="descripcion" rows="3"></textarea>
-    </mat-form-field>
+      <textarea matInput formControlName="descripcion" rows="3" maxlength="80"></textarea>
+      <mat-hint align="end">{{ statusForm.get('descripcion')?.value?.length || 0 }}/80</mat-hint>    </mat-form-field>
   </form>
 </mat-dialog-content>
 

@@ -27,9 +27,9 @@ import { EliminarSuministroComponent } from './Inventario/eliminar-suministro/el
 
 import { MatDatepickerModule } from '@angular/material/datepicker';
 import { MatNativeDateModule } from '@angular/material/core';
-import { AgregarUsuarioComponent } from './Usuarios/agregar-usuario/agregar-usuario.component';
-import { EditarUsuarioComponent } from './Usuarios/editar-usuario/editar-usuario.component';
-import { EliminarUsuarioComponent } from './Usuarios/eliminar-usuario/eliminar-usuario.component';
+import { AgregarUsuarioComponent } from './users/agregar-usuario/agregar-usuario.component';
+import { EditarUsuarioComponent } from './users/editar-usuario/editar-usuario.component';
+import { EliminarUsuarioComponent } from './users/eliminar-usuario/eliminar-usuario.component';
 import { ConfirmLogoutDialogComponent } from './confirm-logout-login/confirmLogoutDialogComponent';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { MostrarInsumosComponent } from './Inventario/mostrar-insumos/mostrar.insumos.component';
