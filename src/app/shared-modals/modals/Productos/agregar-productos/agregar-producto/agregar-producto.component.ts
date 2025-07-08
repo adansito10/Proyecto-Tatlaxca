@@ -79,30 +79,26 @@ export class AgregarProductoComponent {
   }
 
   guardarProducto(): void {
-    if (
-      this.productoForm.valid &&
-      this.imagenProducto &&
-      this.ingredientesSeleccionados.length > 0
-    ) {
-      const idCategoria = Number(this.productoForm.value.categoria); 
+  if (this.productoForm.valid && this.imagenProducto) {
+    const idCategoria = Number(this.productoForm.value.categoria); 
 
-      const productoCompleto = {
-        nombre: this.productoForm.value.nombre,
-        descripcion: this.productoForm.value.descripcion,
-        precio: this.productoForm.value.precio,
-        id_categoria: idCategoria,
-        imagen: this.imagenProducto,
-        ingredientes: this.ingredientesSeleccionados.map(i => ({
-          id_ingrediente: i.id,
-          cantidad: i.cantidad
-        })),
-        insumos: this.insumosSeleccionados.map(i => ({
-          id_insumo: i.id,
-          cantidad: i.cantidad
-        }))
-      };
+    const productoCompleto = {
+      nombre: this.productoForm.value.nombre,
+      descripcion: this.productoForm.value.descripcion,
+      precio: this.productoForm.value.precio,
+      id_categoria: idCategoria,
+      imagen: this.imagenProducto,
+      ingredientes: this.ingredientesSeleccionados.map(i => ({
+        id_ingrediente: i.id,
+        cantidad: i.cantidad
+      })),
+      insumos: this.insumosSeleccionados.map(i => ({
+        id_insumo: i.id,
+        cantidad: i.cantidad
+      }))
+    };
 
-      console.log('Producto a enviar:', productoCompleto);
+    console.log('Producto a enviar:', productoCompleto);
     this.productosService.crearProducto(productoCompleto).subscribe({
       next: () => {
         this.dialogRef.close(true); 
@@ -112,9 +108,15 @@ export class AgregarProductoComponent {
         alert('Error al guardar el producto');
       }
     });
+
   } else {
-    alert('Faltan datos obligatorios o imagen');
+    if (!this.productoForm.valid) {
+      alert('Por favor llena todos los campos obligatorios.');
+    } else if (!this.imagenProducto) {
+      alert('Por favor selecciona una imagen del producto.');
+    }
   }
 }
+
 
 }

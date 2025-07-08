@@ -4,8 +4,10 @@
   <form [formGroup]="ingredienteForm">
     <mat-form-field appearance="fill" class="full-width">
       <mat-label>Nombre</mat-label>
-      <input matInput formControlName="nombre" required>
-      <mat-error *ngIf="ingredienteForm.get('nombre')?.hasError('required')">
+  <input matInput formControlName="nombre" required maxlength="40">
+  <mat-hint align="end">
+    {{ ingredienteForm.get('nombre')?.value?.length || 0 }}/40
+  </mat-hint>      <mat-error *ngIf="ingredienteForm.get('nombre')?.hasError('required')">
         El nombre es obligatorio
       </mat-error>
     </mat-form-field>
@@ -33,6 +35,10 @@
       <mat-error *ngIf="ingredienteForm.get('stock')?.hasError('min')">
         El stock no puede ser negativo
       </mat-error>
+      <mat-error *ngIf="ingredienteForm.get('stock')?.hasError('min')">
+  El stock debe ser mayor que cero
+</mat-error>
+
     </mat-form-field>
 
    

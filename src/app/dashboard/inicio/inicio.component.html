@@ -1,93 +1,114 @@
-<div class="dashboard-container">
+<div class="container py-4">
+  <h2 class="fw-bold mb-4">📊 Dashboard Administrativo</h2>
 
-  <!-- Mensaje de bienvenida -->
-  <div class="dashboard-header">
-<h2 class="fw-bold mb-2 ms-2 text-dark">Bienvenido al Panel Administrativo Adán</h2>
-    <p></p>
-  </div>
+  <div class="row">
+    <!-- Ventas por Día -->
+    <div class="col-md-6 mb-4">
+      <mat-card>
+        <mat-card-header>
+          <mat-card-title><mat-icon>calendar_today</mat-icon> Ganancias por Día</mat-card-title>
+        </mat-card-header>
+        <mat-card-content>
+          <canvas baseChart [data]="ventasDiaData" [type]="'line'"></canvas>
+        </mat-card-content>
+      </mat-card>
+    </div>
 
-  <div class="charts-grid">
-    <!-- Gráfica 1 -->
-    <mat-card class="chart-card">
-      <mat-card-header>
-        <mat-card-title><mat-icon>bar_chart</mat-icon> Ventas Diarias</mat-card-title>
-        <mat-card-subtitle>Últimos 7 días</mat-card-subtitle>
-      </mat-card-header>
-      <mat-card-content>
-        <div class="chart-container">
-          <canvas baseChart [data]="dailySalesData" [options]="barChartOptions" [type]="barChartType"></canvas>
-        </div>
-      </mat-card-content>
-    </mat-card>
+    <!-- Ventas por Hora Pico -->
+    <div class="col-md-6 mb-4">
+      <mat-card>
+        <mat-card-header>
+          <mat-card-title><mat-icon>schedule</mat-icon> Horas Pico</mat-card-title>
+        </mat-card-header>
+        <mat-card-content>
+          <canvas baseChart [data]="ventasHoraData" [type]="'bar'"></canvas>
+        </mat-card-content>
+      </mat-card>
+    </div>
 
-    <!-- Gráfica 2 -->
-    <mat-card class="chart-card">
-      <mat-card-header>
-        <mat-card-title><mat-icon>pie_chart</mat-icon> Categorías Populares</mat-card-title>
-        <mat-card-subtitle>Distribución por categoría</mat-card-subtitle>
-      </mat-card-header>
-      <mat-card-content>
-        <div class="chart-container">
-          <canvas baseChart [data]="categoriesData" [options]="doughnutChartOptions" [type]="doughnutChartType"></canvas>
-        </div>
-      </mat-card-content>
-    </mat-card>
+    <!-- Ventas por Mesero -->
+    <div class="col-md-6 mb-4">
+      <mat-card>
+        <mat-card-header>
+          <mat-card-title><mat-icon>people</mat-icon> Ventas por Mesero</mat-card-title>
+        </mat-card-header>
+        <mat-card-content>
+          <canvas baseChart [data]="ventasMeseroData" [type]="'doughnut'"></canvas>
+        </mat-card-content>
+      </mat-card>
+    </div>
 
-    <!-- Productos Más Vendidos como "fila completa" -->
-    <mat-card class="product-carousel-card full-width">
-      <mat-card-header>
-        <mat-card-title>
-          <mat-icon>local_cafe</mat-icon> Productos Más Vendidos
-        </mat-card-title>
-        <mat-button-toggle-group class="filter-toggle">
-          <mat-button-toggle value="all">Todos</mat-button-toggle>
-          <mat-button-toggle value="drinks">Bebidas</mat-button-toggle>
-          <mat-button-toggle value="food">Comida</mat-button-toggle>
-        </mat-button-toggle-group>
-      </mat-card-header>
-      <mat-card-content>
-        <div class="products-list-horizontal">
-          <div class="product-card-horizontal" *ngFor="let product of topProducts">
-            <img [src]="product.imagen_url || 'assets/default-product.png'" class="product-image-horizontal" [alt]="product.nombre">
-            <div class="product-info-horizontal">
-              <h4>{{ product.nombre }}</h4>
-              <p class="product-category">{{ getCategoryName(product.id_categoria) }}</p>
-              <div class="product-stats">
-                <span class="product-price">${{ product.precio }}</span>
-                <span class="sales-count">
-                  <mat-icon>receipt</mat-icon> {{ getProductSales(product.id) }} ventas
-                </span>
-              </div>
-            </div>
-          </div>
-        </div>
-      </mat-card-content>
-    </mat-card>
+    <!-- Categorías Populares -->
+    <div class="col-md-6 mb-4">
+      <mat-card>
+        <mat-card-header>
+          <mat-card-title><mat-icon>category</mat-icon> Categorías Populares</mat-card-title>
+        </mat-card-header>
+        <mat-card-content>
+          <canvas baseChart [data]="categoriasData" [type]="'pie'"></canvas>
+        </mat-card-content>
+      </mat-card>
+    </div>
 
-    <!-- Gráfica 3 -->
-    <mat-card class="chart-card">
-      <mat-card-header>
-        <mat-card-title><mat-icon>show_chart</mat-icon> Tendencias Mensuales</mat-card-title>
-        <mat-card-subtitle>Últimos 6 meses</mat-card-subtitle>
-      </mat-card-header>
-      <mat-card-content>
-        <div class="chart-container">
-          <canvas baseChart [data]="monthlyTrendsData" [options]="lineChartOptions" [type]="lineChartType"></canvas>
-        </div>
-      </mat-card-content>
-    </mat-card>
+    <!-- Productos Más Vendidos -->
+    <div class="col-md-6 mb-4">
+      <mat-card>
+        <mat-card-header>
+          <mat-card-title><mat-icon>star</mat-icon> Productos Más Vendidos</mat-card-title>
+        </mat-card-header>
+        <mat-card-content>
+          <table class="table table-hover align-middle">
+            <thead class="table-light">
+              <tr>
+                <th>Producto</th>
+                <th>Ventas</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr *ngFor="let p of topProductos">
+                <td>{{ p.nombre }}</td>
+                <td><span class="badge bg-primary">{{ p.ventas }} ventas</span></td>
+              </tr>
+            </tbody>
+          </table>
+        </mat-card-content>
+      </mat-card>
+    </div>
 
-    <!-- Gráfica 4 -->
-    <mat-card class="chart-card">
-      <mat-card-header>
-        <mat-card-title><mat-icon>credit_card</mat-icon> Métodos de Pago</mat-card-title>
-        <mat-card-subtitle>Distribución de pagos</mat-card-subtitle>
-      </mat-card-header>
-      <mat-card-content>
-        <div class="chart-container">
-          <canvas baseChart [data]="paymentMethodsData" [options]="polarChartOptions" [type]="polarChartType"></canvas>
-        </div>
-      </mat-card-content>
-    </mat-card>
+    <!-- Órdenes Recientes -->
+    <div class="col-md-6 mb-4">
+      <mat-card>
+        <mat-card-header>
+          <mat-card-title><mat-icon>receipt_long</mat-icon> Órdenes Recientes</mat-card-title>
+        </mat-card-header>
+        <mat-card-content>
+          <table class="table table-striped align-middle">
+            <thead class="table-light">
+              <tr>
+                <th>Fecha</th>
+                <th>Mesa</th>
+                <th>Total</th>
+                <th>Estado</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr *ngFor="let o of ordenes | slice:0:5">
+               <td>{{ o.created_at | date:'short' }}</td>
+                <td>{{ o.table_number }}</td>
+                <td>${{ o.total }}</td>
+                <td>
+                  <span class="badge bg-{{ o.status === 'cancelled' ? 'danger' : 'success' }}">
+                    {{ o.status }}
+                  </span>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </mat-card-content>
+      </mat-card>
+    </div>
+
+    <!-- Stock Bajo -->
+    
   </div>
 </div>

@@ -11,7 +11,7 @@ export class EditarSuministroComponent {
   modo: 'agregar' | 'editar';
   item: any;
   categorias: string[];
-  unidades: string[] = ['Kg', 'L', 'Unidad', 'Paquete']; // 👈 Aquí defines las opciones del select
+  unidades: string[] = ['Kg', 'L', 'Unidad', 'Paquete'];
 
   constructor(
     public dialogRef: MatDialogRef<EditarSuministroComponent>,
@@ -22,8 +22,12 @@ export class EditarSuministroComponent {
     this.categorias = data.categorias;
   }
 
-  guardar() {
-    this.dialogRef.close(this.item);
+  guardar(formulario: any) {
+    if (formulario.valid) {
+      this.dialogRef.close(this.item);
+    } else {
+      formulario.form.markAllAsTouched(); // muestra errores si no ha tocado campos
+    }
   }
 
   cancelar() {

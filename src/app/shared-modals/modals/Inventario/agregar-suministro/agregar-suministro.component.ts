@@ -19,7 +19,7 @@ export class AgregarSuministroComponent {
     this.suministroForm = this.fb.group({
       nombre: ['', Validators.required],
       unidad: ['', Validators.required],
-      stock: [0, [Validators.required, Validators.min(0)]]
+      stock: [0, [Validators.required, Validators.min(0.01)]]
     });
 
     if (data?.suministro) {

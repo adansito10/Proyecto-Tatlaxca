@@ -7,21 +7,24 @@
 
     <mat-form-field appearance="fill" class="full-width">
       <mat-label>Nombre</mat-label>
-      <input matInput formControlName="nombre" />
+      <input matInput formControlName="nombre" maxlength="15" />
       <mat-error *ngIf="usuarioForm.get('nombre')?.hasError('required')">El nombre es requerido</mat-error>
       <mat-error *ngIf="usuarioForm.get('nombre')?.hasError('pattern')">Solo letras permitidas</mat-error>
+      <mat-hint align="end">{{ usuarioForm.get('nombre')?.value?.length || 0 }}/15</mat-hint>
     </mat-form-field>
 
     <mat-form-field appearance="fill" class="full-width">
       <mat-label>Apellido Paterno</mat-label>
-      <input matInput formControlName="apellidoPaterno" />
+      <input matInput formControlName="apellidoPaterno" maxlength="15" />
       <mat-error *ngIf="usuarioForm.get('apellidoPaterno')?.hasError('required')">El apellido paterno es requerido</mat-error>
+      <mat-hint align="end">{{ usuarioForm.get('apellidoPaterno')?.value?.length || 0 }}/15</mat-hint>
     </mat-form-field>
 
     <mat-form-field appearance="fill" class="full-width">
       <mat-label>Apellido Materno</mat-label>
-      <input matInput formControlName="apellidoMaterno" />
+      <input matInput formControlName="apellidoMaterno" maxlength="15" />
       <mat-error *ngIf="usuarioForm.get('apellidoMaterno')?.hasError('required')">El apellido materno es requerido</mat-error>
+      <mat-hint align="end">{{ usuarioForm.get('apellidoMaterno')?.value?.length || 0 }}/15</mat-hint>
     </mat-form-field>
 
     <mat-form-field class="full-width">
@@ -34,23 +37,26 @@
 
     <mat-form-field appearance="fill" class="full-width">
       <mat-label>Teléfono</mat-label>
-      <input matInput formControlName="telefono" maxlength="10" />
+      <input matInput formControlName="telefono" maxlength="10" />      <mat-hint align="end">{{ usuarioForm.get('telefono')?.value?.length || 0 }}/10</mat-hint>
       <mat-error *ngIf="usuarioForm.get('telefono')?.hasError('required')">El teléfono es requerido</mat-error>
       <mat-error *ngIf="usuarioForm.get('telefono')?.hasError('pattern')">Solo números válidos</mat-error>
     </mat-form-field>
 
     <mat-form-field appearance="fill" class="full-width">
       <mat-label>Correo electrónico</mat-label>
-      <input matInput formControlName="correo" />
+      <input matInput formControlName="correo" maxlength="40" />
       <mat-error *ngIf="usuarioForm.get('correo')?.hasError('required')">El correo es requerido</mat-error>
       <mat-error *ngIf="usuarioForm.get('correo')?.hasError('email')">Correo inválido</mat-error>
+      <mat-hint align="end">{{ usuarioForm.get('correo')?.value?.length || 0 }}/40</mat-hint>
     </mat-form-field>
 
     <mat-form-field appearance="fill" class="full-width">
       <mat-label>Contraseña</mat-label>
-      <input matInput type="password" formControlName="password" />
+      <input matInput type="password" formControlName="password" maxlength="12" />
       <mat-error *ngIf="usuarioForm.get('password')?.hasError('required')">La contraseña es requerida</mat-error>
       <mat-error *ngIf="usuarioForm.get('password')?.hasError('minlength')">Mínimo 6 caracteres</mat-error>
+      <mat-error *ngIf="usuarioForm.get('password')?.hasError('maxlength')">Máximo 12 caracteres</mat-error>
+      <mat-hint align="end">{{ usuarioForm.get('password')?.value?.length || 0 }}/12</mat-hint>
     </mat-form-field>
  
   </form>

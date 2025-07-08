@@ -1,29 +1,39 @@
 <h2 mat-dialog-title>{{ modo === 'agregar' ? 'Agregar' : 'Editar' }} Suministro</h2>
 
 <mat-dialog-content>
-  <form>
+  <form #formulario="ngForm">
     <mat-form-field appearance="fill" class="w-100 mb-3">
       <mat-label>Nombre</mat-label>
-      <input matInput [(ngModel)]="item.nombre" name="nombre" />
+      <input matInput [(ngModel)]="item.nombre" name="nombre" required maxlength="40" #nombre="ngModel" />
+      <mat-hint align="end">{{ item.nombre?.length || 0 }}/40</mat-hint>
+      <mat-error *ngIf="nombre.invalid && nombre.touched">
+        El nombre es obligatorio y máximo 40 caracteres
+      </mat-error>
     </mat-form-field>
 
     <mat-form-field appearance="fill" class="w-100 mb-3">
       <mat-label>Stock</mat-label>
-      <input type="number" matInput [(ngModel)]="item.stock" name="stock" min="0" />
+      <input type="number" matInput [(ngModel)]="item.stock" name="stock" required min="0.01" #stock="ngModel"/>
+      <mat-error *ngIf="stock.invalid && stock.touched">
+        El stock debe ser mayor a 0
+      </mat-error>
     </mat-form-field>
 
     <mat-form-field appearance="fill" class="w-100 mb-3">
       <mat-label>Unidad</mat-label>
-      <mat-select [(ngModel)]="item.unidad" name="unidad">
+      <mat-select [(ngModel)]="item.unidad" name="unidad" required #unidad="ngModel">
         <mat-option *ngFor="let unidad of unidades" [value]="unidad">{{ unidad }}</mat-option>
       </mat-select>
+      <mat-error *ngIf="unidad.invalid && unidad.touched">
+        La unidad es obligatoria
+      </mat-error>
     </mat-form-field>
   </form>
 </mat-dialog-content>
 
 <mat-dialog-actions align="end">
   <button mat-button (click)="cancelar()">Cancelar</button>
-  <button mat-button color="primary" (click)="guardar()">
+  <button mat-flat-button color="primary" (click)="guardar(formulario)" [disabled]="formulario.invalid" >
     {{ modo === 'agregar' ? 'Agregar' : 'Guardar' }}
   </button>
 </mat-dialog-actions>

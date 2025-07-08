@@ -7,10 +7,14 @@
       <input matInput type="number" formControlName="numero">
     </mat-form-field>
 
-    <mat-form-field appearance="fill" class="w-100">
-      <mat-label>Ubicación</mat-label>
-      <input matInput formControlName="ubicacion">
-    </mat-form-field>
+   <mat-form-field appearance="fill" class="w-100">
+  <mat-label>Ubicación</mat-label>
+  <mat-select formControlName="ubicacion">
+    <mat-option value="Interior">Interior</mat-option>
+    <mat-option value="Exterior">Exterior</mat-option>
+  </mat-select>
+</mat-form-field>
+
 
     <mat-form-field appearance="fill" class="w-100">
       <mat-label>Estado</mat-label>

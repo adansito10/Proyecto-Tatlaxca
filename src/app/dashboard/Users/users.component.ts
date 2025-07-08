@@ -4,6 +4,7 @@ import { MatDialog } from '@angular/material/dialog';
 import { UsersService } from '../../services/Users/users.service';
 import { RolesService } from '../../services/roles/roles.service';
 import { EmployeesService } from '../../services/employees/employees-service';
+import { ChangeDetectorRef } from '@angular/core';
 import { AgregarUsuarioComponent } from '../../shared-modals/modals/Usuarios/agregar-usuario/agregar-usuario.component';
 import { EditarUsuarioComponent } from '../../shared-modals/modals/Usuarios/editar-usuario/editar-usuario.component';
 import { EliminarUsuarioComponent } from '../../shared-modals/modals/Usuarios/eliminar-usuario/eliminar-usuario.component';
@@ -25,7 +26,9 @@ export class UsersComponent implements OnInit {
     private dialog: MatDialog,
     private usuarioService: UsersService,
     private empleadoService: EmployeesService,
-    private rolesService: RolesService
+    private rolesService: RolesService,
+    private cdr: ChangeDetectorRef,
+
   ) {}
 
   ngOnInit(): void {
@@ -87,68 +90,76 @@ export class UsersComponent implements OnInit {
     });
   }
 
-  abrirModalEditar(usuario: any): void {
-    const usuarioParaEditar = {
-      idEmpleado: usuario.idEmpleado,
-      idUsuario: usuario.idUsuario,
-      nombre: usuario.nombre,
-      apellidoPaterno: usuario.apellidoPaterno,
-      apellidoMaterno: usuario.apellidoMaterno,
-      telefono: usuario.telefono,
-      correo: usuario.correo,
-      cargo: usuario.cargo
-    };
+abrirModalEditar(usuario: any): void {
+  const usuarioParaEditar = {
+    idEmpleado: usuario.idEmpleado,
+    idUsuario: usuario.idUsuario,
+    nombre: usuario.nombre,
+    apellidoPaterno: usuario.apellidoPaterno,
+    apellidoMaterno: usuario.apellidoMaterno,
+    telefono: usuario.telefono,
+    correo: usuario.correo,
+    cargo: usuario.cargo
+  };
 
-    const dialogRef = this.dialog.open(EditarUsuarioComponent, {
-      width: '600px',
-      data: {
-        modo: 'editar',
-        usuario: usuarioParaEditar,
-        roles: this.roles
+  const dialogRef = this.dialog.open(EditarUsuarioComponent, {
+    width: '600px',
+    data: {
+      modo: 'editar',
+      usuario: { ...usuarioParaEditar }, // copiado para no afectar el original hasta guardar
+      roles: this.roles
+    }
+  });
+
+  dialogRef.afterClosed().subscribe(resultado => {
+    if (resultado) {
+      const { user, employee } = resultado;
+
+      if (!user.id) {
+        console.error('ID de usuario faltante, cancelando edición');
+        return;
       }
-    });
 
-    dialogRef.afterClosed().subscribe(resultado => {
-      if (resultado) {
-        const { user, employee } = resultado;
+      const empleadoPayload = {
+        id_usuario: user.id,
+        nombre: employee.nombre,
+        appaterno: employee.appaterno,
+        apmaterno: employee.apmaterno,
+        telefono: employee.telefono
+      };
 
-        if (!user.id) {
-          console.error('ID de usuario faltante, cancelando edición');
-          return;
-        }
+      this.empleadoService.editarEmpleado(usuarioParaEditar.idEmpleado, empleadoPayload, user).subscribe({
+        next: (respuesta) => {
+          const { employee: empActualizado, user: userActualizado } = respuesta;
 
-        const empleadoPayload = {
-          id_usuario: user.id,
-          nombre: employee.nombre,
-          appaterno: employee.appaterno,
-          apmaterno: employee.apmaterno,
-          telefono: employee.telefono
-        };
+          const rol = this.roles.find(r => r.id === userActualizado.id_rol)?.rol || 'Sin rol';
 
-        this.empleadoService.editarEmpleado(usuarioParaEditar.idEmpleado, empleadoPayload, user).subscribe({
-          next: (respuesta) => {
-            const { employee: empActualizado, user: userActualizado } = respuesta;
-            const rol = this.roles.find(r => r.id === userActualizado.id_rol)?.rol || 'Sin rol';
+          // Actualizar directamente el objeto original en this.usuarios
+          const index = this.usuarios.findIndex(u => u.idEmpleado === empActualizado.id);
 
-            this.usuarios = this.usuarios.map(u =>
-              u.idEmpleado === empActualizado.id
-                ? {
-                    ...u,
-                    nombre: empActualizado.nombre,
-                    appaterno: empActualizado.appaterno,
-                    apmaterno: empActualizado.apmaterno,
-                    telefono: empActualizado.telefono,
-                    correo: userActualizado.correo,
-                    cargo: rol
-                  }
-                : u
-            );
-          },
-          error: err => console.error('Error al editar empleado', err)
-        });
-      }
-    });
-  }
+          if (index !== -1) {
+            this.usuarios[index] = {
+              ...this.usuarios[index],
+              nombre: empActualizado.nombre,
+              apellidoPaterno: empActualizado.appaterno,
+              apellidoMaterno: empActualizado.apmaterno,
+              telefono: empActualizado.telefono,
+              correo: userActualizado.correo,
+              cargo: rol
+            };
+
+            // Forzar nueva referencia para que Angular detecte cambios en *ngFor
+            this.usuarios = [...this.usuarios];
+            this.cdr.detectChanges();  // <--- aquí forzamos actualización
+
+          }
+        },
+        error: err => console.error('Error al editar empleado', err)
+      });
+    }
+  });
+}
+
 
   abrirModalEliminar(usuario: any): void {
   const dialogRef = this.dialog.open(EliminarUsuarioComponent, {

@@ -20,7 +20,7 @@ export class AgregarIngredienteComponent {
     this.ingredienteForm = this.fb.group({
       nombre: [data.entidad?.nombre || '', Validators.required],
       unidad: [data.entidad?.unidad || '', Validators.required],
-      stock: [data.entidad?.stock || 0, [Validators.required, Validators.min(0)]]
+      stock: [data.entidad?.stock || 0, [Validators.required, Validators.min(0.01)]]
     });
   }
 
