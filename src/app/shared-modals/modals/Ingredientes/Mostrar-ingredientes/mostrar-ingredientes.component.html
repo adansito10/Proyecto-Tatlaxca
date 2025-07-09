@@ -5,15 +5,15 @@
     <div *ngFor="let controlName of controlNombres; let i = index"
          style="display: flex; align-items: flex-start; gap: 12px; margin-bottom: 16px;">
 
-      <!-- Ingrediente -->
       <div style="flex: 1; display: flex; flex-direction: column;">
         <mat-form-field appearance="fill" style="width: 100%;">
           <mat-label>Ingrediente {{ i + 1 }}</mat-label>
           <mat-select [formControlName]="controlName + '_nombre'">
             <mat-option [value]="null">Ninguno</mat-option>
-            <mat-option *ngFor="let ing of ingredientesDisponibles" [value]="ing">
-              {{ ing.nombre }}
-            </mat-option>
+           <mat-option *ngFor="let ing of getIngredientesDisponiblesPara(controlName)" [value]="ing">
+  {{ ing.nombre }}
+</mat-option>
+
           </mat-select>
         </mat-form-field>
 

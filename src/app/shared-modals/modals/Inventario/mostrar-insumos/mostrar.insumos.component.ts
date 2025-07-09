@@ -120,4 +120,16 @@ export class MostrarInsumosComponent implements OnInit {
     this.mensajeCantidadInvalida = false;
     this.dialogRef.close(seleccionados);
   }
+
+  getInsumosDisponiblesPara(controlActual: string): any[] {
+  const seleccionados = this.controlNombres
+    .filter(name => name !== controlActual)
+    .map(name => this.insumosForm.get(name + '_nombre')?.value)
+    .filter(v => v);
+
+  return this.insumosDisponibles.filter(ins =>
+    !seleccionados.some(sel => sel.id === ins.id)
+  );
+}
+
 }

@@ -1,13 +1,15 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { Observable, of } from 'rxjs';
-import { map } from 'rxjs';
+import { Observable, of, BehaviorSubject } from 'rxjs';
+import { map } from 'rxjs/operators';
 
 @Injectable({
   providedIn: 'root'
 })
 export class AuthService {
   private apiUrl = 'http://194.163.44.12:3010/api/users/login';
+
+  private currentUserSubject = new BehaviorSubject<any>(this.getCurrentUser());
 
   constructor(private http: HttpClient) {}
 
@@ -17,6 +19,7 @@ export class AuthService {
         if (response && response.user && response.user.rol === 'Administrador') {
           localStorage.setItem('token', response.token);
           localStorage.setItem('user', JSON.stringify(response.user));
+          this.currentUserSubject.next(response.user); // Emitimos usuario actualizado
           return true;
         }
         return false;
@@ -26,7 +29,6 @@ export class AuthService {
 
   checkAuthentication(): Observable<boolean> {
     const userData = localStorage.getItem('user');
-
     if (!userData) return of(false);
 
     try {
@@ -40,11 +42,16 @@ export class AuthService {
 
   logout() {
     localStorage.clear();
+    this.currentUserSubject.next(null); // Emitimos usuario nulo al hacer logout
   }
 
   getCurrentUser() {
     const user = localStorage.getItem('user');
     return user ? JSON.parse(user) : null;
+  }
+
+  getCurrentUserObservable(): Observable<any> {
+    return this.currentUserSubject.asObservable();
   }
 
   isAdmin(): boolean {

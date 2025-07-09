@@ -1,6 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { ChartData } from 'chart.js';
 import { DashboardService } from '../../services/dashboard/dashboard.service';
+import { AuthService } from '../../services/auth.service/auth.service';
+import { EmployeesService } from '../../services/employees/employees-service';
 
 @Component({
   selector: 'app-inicio',
@@ -22,15 +24,44 @@ export class InicioComponent implements OnInit {
   ventasPorMesero: any[] = [];
   horasPico: any[] = [];
   productosConStockBajo: any[] = [];
+  mesActual: string = '';
+  nombreUsuario: string = '';
 
   public ventasDiaData: ChartData<'line'> = { labels: [], datasets: [] };
   public ventasHoraData: ChartData<'bar'> = { labels: [], datasets: [] };
   public ventasMeseroData: ChartData<'doughnut'> = { labels: [], datasets: [] };
   public categoriasData: ChartData<'pie'> = { labels: [], datasets: [] };
 
-  constructor(private dashboardService: DashboardService) {}
+  constructor(private dashboardService: DashboardService,
+    private authService: AuthService,
+    private employeesService: EmployeesService 
+  ) {}
+
+
 
   ngOnInit(): void {
+  this.authService.getCurrentUserObservable().subscribe(user => {
+    if (user && user.correo) {
+      this.employeesService.getEmpleados().subscribe({
+        next: (empleados) => {
+          const empleado = empleados.find(emp => emp.correo === user.correo);
+          if (empleado) {
+            this.nombreUsuario = empleado.nombre; // Solo nombre, o concatena si quieres
+          } else {
+            this.nombreUsuario = '';
+          }
+        },
+        error: (err) => {
+          console.error('Error al obtener empleados', err);
+          this.nombreUsuario = '';
+        }
+      });
+    } else {
+      this.nombreUsuario = '';
+    }
+  });
+
+
     this.dashboardService.getDashboardData().subscribe(data => {
       this.ventas = data.ventas;
       this.productos = data.productos;
@@ -38,6 +69,11 @@ export class InicioComponent implements OnInit {
       this.ingredientes = data.ingredientes;
       this.ordenes = data.ordenes;
       this.detalles = data.detalles;
+
+      this.mesActual = new Date().toLocaleDateString('es-MX', {
+        month: 'long',
+        year: 'numeric'
+      });
 
       this.procesarDatos();
     });
@@ -76,24 +112,37 @@ export class InicioComponent implements OnInit {
       .sort((a, b) => b.cantidad - a.cantidad);
   }
 
-procesarVentasPorDia() {
-  const diasSemana = ['dom', 'lun', 'mar', 'mié', 'jue', 'vie', 'sáb'];
-  const conteo: { [dia: string]: number } = {};
-  for (const v of this.ventas) {
-    const fecha = new Date(v.fecha_pago);
-    const diaIndex = fecha.getUTCDay();  // obtiene día de la semana en UTC (0 = dom)
-    const dia = diasSemana[diaIndex];
-    const total = parseFloat(v.total_pagado) || 0;
-    conteo[dia] = (conteo[dia] || 0) + total;
-  }
-  this.ventasPorDia = Object.entries(conteo)
-    .map(([dia, total]) => ({ dia, total }))
-    .sort((a, b) => this.ordenDiasSemana(a.dia) - this.ordenDiasSemana(b.dia));
-}
+  procesarVentasPorDia() {
+    const diasSemana = ['dom', 'lun', 'mar', 'mié', 'jue', 'vie', 'sáb'];
+    const conteo: { [clave: string]: number } = {};
+    const ahora = new Date();
 
-  ordenDiasSemana(dia: string): number {
-    const orden = ['lun', 'mar', 'mié', 'jue', 'vie', 'sáb', 'dom'];
-    return orden.indexOf(dia);
+    for (const v of this.ventas) {
+      const fecha = new Date(v.fecha_pago);
+      if (
+        fecha.getMonth() === ahora.getMonth() &&
+        fecha.getFullYear() === ahora.getFullYear()
+      ) {
+        const diaNombre = diasSemana[fecha.getDay()];
+        const fechaTexto = fecha.toLocaleDateString('es-MX', {
+          day: '2-digit',
+          month: '2-digit'
+        });
+        const clave = `${diaNombre} (${fechaTexto})`;
+        const total = parseFloat(v.total_pagado) || 0;
+        conteo[clave] = (conteo[clave] || 0) + total;
+      }
+    }
+
+    this.ventasPorDia = Object.entries(conteo)
+      .map(([clave, total]) => ({ clave, total }))
+      .sort((a, b) => {
+        const matchA = a.clave.match(/\((\d{2}\/\d{2})\)/);
+        const matchB = b.clave.match(/\((\d{2}\/\d{2})\)/);
+        const fechaA = matchA ? new Date(`2024/${matchA[1]}`) : new Date();
+        const fechaB = matchB ? new Date(`2024/${matchB[1]}`) : new Date();
+        return fechaA.getTime() - fechaB.getTime();
+      });
   }
 
   procesarVentasPorMesero() {
@@ -108,18 +157,17 @@ procesarVentasPorDia() {
       .sort((a, b) => b.total - a.total);
   }
 
-procesarHorasPico() {
-  const conteo: { [hora: string]: number } = {};
-  for (const v of this.ventas) {
-    const fecha = new Date(v.created_at);
-    const hora = fecha.getUTCHours().toString().padStart(2, '0') + ':00';
-    conteo[hora] = (conteo[hora] || 0) + 1;
+  procesarHorasPico() {
+    const conteo: { [hora: string]: number } = {};
+    for (const v of this.ventas) {
+      const fecha = new Date(v.created_at);
+      const hora = fecha.getUTCHours().toString().padStart(2, '0') + ':00';
+      conteo[hora] = (conteo[hora] || 0) + 1;
+    }
+    this.horasPico = Object.entries(conteo)
+      .map(([hora, cantidad]) => ({ hora, cantidad }))
+      .sort((a, b) => b.cantidad - a.cantidad);
   }
-  this.horasPico = Object.entries(conteo)
-    .map(([hora, cantidad]) => ({ hora, cantidad }))
-    .sort((a, b) => b.cantidad - a.cantidad);
-}
-
 
   verificarStockBajo() {
     this.productosConStockBajo = [...this.ingredientes, ...this.insumos].filter(i => i.stock < 5);
@@ -127,7 +175,7 @@ procesarHorasPico() {
 
   configurarGraficas() {
     this.ventasDiaData = {
-      labels: this.ventasPorDia.map(d => d.dia),
+      labels: this.ventasPorDia.map(d => d.clave),
       datasets: [{
         label: 'Ganancias ($)',
         data: this.ventasPorDia.map(d => d.total),

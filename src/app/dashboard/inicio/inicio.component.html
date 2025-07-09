@@ -1,8 +1,8 @@
 <div class="container py-4">
-  <h2 class="fw-bold mb-4">📊 Dashboard Administrativo</h2>
+<h2 class="fw-bold mb-4">Bienvenido {{ nombreUsuario }}</h2>
+<h5 style="color: rgb(255, 255, 255);" class="mb-4">Datos del mes actual: {{ mesActual | titlecase }}</h5>
 
   <div class="row">
-    <!-- Ventas por Día -->
     <div class="col-md-6 mb-4">
       <mat-card>
         <mat-card-header>
@@ -14,7 +14,6 @@
       </mat-card>
     </div>
 
-    <!-- Ventas por Hora Pico -->
     <div class="col-md-6 mb-4">
       <mat-card>
         <mat-card-header>
@@ -26,7 +25,34 @@
       </mat-card>
     </div>
 
-    <!-- Ventas por Mesero -->
+
+
+
+    <div class="col-12 mb-4">
+  <mat-card>
+    <mat-card-header>
+      <mat-card-title>
+      Productos Más Vendidos
+      </mat-card-title>
+    </mat-card-header>
+    <mat-card-content>
+      <div class="d-flex flex-wrap justify-content-center gap-4">
+        <div *ngFor="let p of topProductos; let i = index" class="ranking-card">
+          <img [src]="p.imagen" alt="{{ p.nombre }}" class="ranking-img" />
+          <div class="ranking-info">
+            <h5 class="text-white text-center mb-1" [title]="p.nombre">
+              #{{ i + 1 }} - {{ p.nombre }}
+            </h5>
+            <p class="text-center mb-0">
+              <span class="badge bg-primary">{{ p.ventas }} ventas</span>
+            </p>
+          </div>
+        </div>
+      </div>
+    </mat-card-content>
+  </mat-card>
+</div>
+
     <div class="col-md-6 mb-4">
       <mat-card>
         <mat-card-header>
@@ -38,7 +64,6 @@
       </mat-card>
     </div>
 
-    <!-- Categorías Populares -->
     <div class="col-md-6 mb-4">
       <mat-card>
         <mat-card-header>
@@ -50,39 +75,17 @@
       </mat-card>
     </div>
 
-    <!-- Productos Más Vendidos -->
-    <div class="col-md-6 mb-4">
-      <mat-card>
-        <mat-card-header>
-          <mat-card-title><mat-icon>star</mat-icon> Productos Más Vendidos</mat-card-title>
-        </mat-card-header>
-        <mat-card-content>
-          <table class="table table-hover align-middle">
-            <thead class="table-light">
-              <tr>
-                <th>Producto</th>
-                <th>Ventas</th>
-              </tr>
-            </thead>
-            <tbody>
-              <tr *ngFor="let p of topProductos">
-                <td>{{ p.nombre }}</td>
-                <td><span class="badge bg-primary">{{ p.ventas }} ventas</span></td>
-              </tr>
-            </tbody>
-          </table>
-        </mat-card-content>
-      </mat-card>
-    </div>
 
-    <!-- Órdenes Recientes -->
+
+
+
     <div class="col-md-6 mb-4">
       <mat-card>
         <mat-card-header>
           <mat-card-title><mat-icon>receipt_long</mat-icon> Órdenes Recientes</mat-card-title>
         </mat-card-header>
         <mat-card-content>
-          <table class="table table-striped align-middle">
+          <table class="table table-dark table-striped align-middle bg-dark text-white">
             <thead class="table-light">
               <tr>
                 <th>Fecha</th>
@@ -108,7 +111,6 @@
       </mat-card>
     </div>
 
-    <!-- Stock Bajo -->
     
   </div>
 </div>

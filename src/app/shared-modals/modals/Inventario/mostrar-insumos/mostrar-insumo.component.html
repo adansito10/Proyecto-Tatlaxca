@@ -7,9 +7,10 @@
         <mat-label>Insumo {{ i + 1 }}</mat-label>
         <mat-select [formControlName]="controlName + '_nombre'">
           <mat-option [value]="null">Ninguno</mat-option>
-          <mat-option *ngFor="let ins of insumosDisponibles" [value]="ins">
-            {{ ins.nombre }}
-          </mat-option>
+         <mat-option *ngFor="let ins of getInsumosDisponiblesPara(controlName)" [value]="ins">
+  {{ ins.nombre }}
+</mat-option>
+
         </mat-select>
       </mat-form-field>
 

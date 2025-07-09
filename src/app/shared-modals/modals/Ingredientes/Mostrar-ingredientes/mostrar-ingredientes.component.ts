@@ -11,7 +11,6 @@ import { IngredientsService } from '../../../../services/Ingredients/ingredients
 })
 export class MostrarIngredientesComponent implements OnInit {
   ingredientesForm: FormGroup;
-  // Ya fijo 20 controles
   controlNombres: string[] = Array.from({ length: 20 }, (_, i) => `ing${i + 1}`);
   ingredientesDisponibles: any[] = [];
   mensajeStockExcedido = false;
@@ -22,7 +21,6 @@ export class MostrarIngredientesComponent implements OnInit {
     private ingredientsService: IngredientsService,
     @Inject(MAT_DIALOG_DATA) public data: { ingredientesActuales: any[] }
   ) {
-    // Creamos el grupo con los 20 controles fijos
     const group: any = {};
     this.controlNombres.forEach(name => {
       group[name + '_nombre'] = [null];
@@ -36,7 +34,6 @@ export class MostrarIngredientesComponent implements OnInit {
       next: (data) => {
         this.ingredientesDisponibles = data;
 
-        // Cargamos los ingredientes actuales en los controles fijos (máximo 20)
         this.data.ingredientesActuales?.forEach((ing, index) => {
           if (index < this.controlNombres.length) {
             const control = this.controlNombres[index];
@@ -70,7 +67,17 @@ export class MostrarIngredientesComponent implements OnInit {
     });
   }
 
-  // Quitamos agregarIngrediente()
+
+  getIngredientesDisponiblesPara(controlActual: string): any[] {
+  const seleccionados = this.controlNombres
+    .filter(name => name !== controlActual)
+    .map(name => this.ingredientesForm.get(name + '_nombre')?.value)
+    .filter(v => v); 
+
+  return this.ingredientesDisponibles.filter(ing =>
+    !seleccionados.some(sel => sel.id === ing.id)
+  );
+}
 
   getUnidad(control: string): string {
     const ing = this.ingredientesForm.get(control + '_nombre')?.value;
