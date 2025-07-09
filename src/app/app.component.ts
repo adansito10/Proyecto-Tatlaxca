@@ -27,8 +27,22 @@ export class AppComponent implements OnInit {
 
         if (path.includes('/login')) {
           pageTitle = 'Inicio de Sesión - Cafetería Tatiaxca';
+        } else if (path.includes('/dashboard/ingredients')) {
+         pageTitle = 'Ingredientes - Cafetería Tatiaxca';
+        } else if (path.includes('/dashboard/categories')) {
+         pageTitle = 'Categorias - Cafetería Tatiaxca';
+        } else if (path.includes('/dashboard/users')) {
+         pageTitle = 'Usuarios - Cafetería Tatiaxca';
         } else if (path.includes('/dashboard/inicio')) {
          pageTitle = 'inicio - Cafetería Tatiaxca';
+        } else if (path.includes('/dashboard/inventory')) {
+         pageTitle = 'Insumos - Cafetería Tatiaxca';
+        } else if (path.includes('/dashboard/configuration')) {
+         pageTitle = 'Perfil - Cafetería Tatiaxca';
+        } else if (path.includes('/dashboard/orders')) {
+         pageTitle = 'Ordenes - Cafetería Tatiaxca';
+        } else if (path.includes('/dashboard/reports')) {
+         pageTitle = 'Ventas - Cafetería Tatiaxca';
         } else if (path.includes('/dashboard/products')) {
           pageTitle = 'Menu - Cafetería Tatiaxca';
         } else if (path.includes('/dashboard/tables')) {
