@@ -3,11 +3,11 @@ import { Component, OnInit } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { UsersService } from '../../services/Users/users.service';
 import { RolesService } from '../../services/roles/roles.service';
-import { EmployeesService } from '../../services/employees/employees-service';
 import { ChangeDetectorRef } from '@angular/core';
 import { AgregarUsuarioComponent } from '../../shared-modals/modals/users/agregar-usuario/agregar-usuario.component';
 import { EditarUsuarioComponent } from '../../shared-modals/modals/users/editar-usuario/editar-usuario.component';
 import { EliminarUsuarioComponent } from '../../shared-modals/modals/users/eliminar-usuario/eliminar-usuario.component';
+import { EmployeesService } from '../../services/employees/employees-service';
 
 @Component({
   selector: 'app-users',
@@ -134,7 +134,6 @@ abrirModalEditar(usuario: any): void {
 
           const rol = this.roles.find(r => r.id === userActualizado.id_rol)?.rol || 'Sin rol';
 
-          // Actualizar directamente el objeto original en this.usuarios
           const index = this.usuarios.findIndex(u => u.idEmpleado === empActualizado.id);
 
           if (index !== -1) {
@@ -148,7 +147,6 @@ abrirModalEditar(usuario: any): void {
               cargo: rol
             };
 
-            // Forzar nueva referencia para que Angular detecte cambios en *ngFor
             this.usuarios = [...this.usuarios];
             this.cdr.detectChanges();  // <--- aquí forzamos actualización
 
@@ -171,11 +169,13 @@ abrirModalEditar(usuario: any): void {
   });
 
   dialogRef.afterClosed().subscribe(resultado => {
-    if (resultado === true) { 
-      this.usuarioService.eliminarUsuario(usuario.id).subscribe({
+    if (resultado === true) {
+      this.empleadoService.eliminarEmpleado(usuario.id).subscribe({
         next: () => this.cargarUsuarios(),
         error: err => console.error('Error al eliminar usuario', err)
       });
+
+
     }
   });
 }

@@ -1,4 +1,4 @@
-<h2 mat-dialog-title>Agregar Suministro</h2>
+<h2 mat-dialog-title>Agregar Insumo</h2>
 
 <mat-dialog-content>
   <form [formGroup]="suministroForm">
@@ -15,8 +15,6 @@
     <mat-form-field appearance="fill" class="full-width">
       <mat-label>Unidad de Medida</mat-label>
       <mat-select formControlName="unidad" required>
-        <mat-option value="Kg">Kilogramos</mat-option>
-        <mat-option value="L">Litros</mat-option>
         <mat-option value="Unidad">Unidades</mat-option>
         <mat-option value="Paquete">Paquetes</mat-option>
       </mat-select>

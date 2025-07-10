@@ -5,9 +5,9 @@ import { MostrarIngredientesComponent } from '../../../Ingredientes/Mostrar-ingr
 import { MostrarInsumosComponent } from '../../../Inventario/mostrar-insumos/mostrar.insumos.component';
 import { ProductosService } from '../../../../../services/products/products.service';
 
-interface Categoria { id: number; nombre: string; }
-interface Ingrediente { id: number; nombre: string; cantidad: number; }
-interface Insumo { id: number; nombre: string; cantidad: number; }
+interface Categoria { id: number; nombre: string;  }
+interface Ingrediente { id: number; nombre: string; cantidad: number; unidad: string; }
+interface Insumo { id: number; nombre: string; cantidad: number; unidad: string; }
 
 @Component({
   selector: 'app-editar-producto',
@@ -56,6 +56,9 @@ export class EditarProductoComponent implements OnInit {
       precio: producto.precio ?? null,
       descripcion: producto.descripcion ?? ''
     });
+
+      console.log('🧪 Ingredientes recibidos del backend:', producto.ingredientes);
+  console.log('🧪 Insumos recibidos del backend:', producto.insumos);
 
     this.ingredientesSeleccionados = this.mapItemsToIngredientes(producto.ingredientes);
     this.insumosSeleccionados = this.mapItemsToInsumos(producto.insumos);

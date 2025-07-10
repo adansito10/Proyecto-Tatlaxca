@@ -18,7 +18,7 @@ mat-card {
 }
 
 mat-card-header {
-  color: #bb86fc;
+  color: #ffffff;
 }
 
 table {
@@ -142,6 +142,126 @@ canvas {
 }
 
 
+
+
+
+
+
+
+.productos-grid {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  gap: 1rem;
+  padding: 1rem 0;
+}
+
+.producto-card {
+  flex: 1 1 calc(20% - 1rem); /* 5 tarjetas por fila con espacio */
+  max-width: calc(20% - 1rem);
+  box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+  border-radius: 10px;
+  overflow: hidden;
+  background-color: #1e1e1e;
+  color: white;
+}
+
+
+
+.producto-card img {
+  height: 150px;
+  object-fit: cover;
+}
+
+.producto-nombre {
+  font-size: 1.1rem;
+  text-align: center;
+  margin: 0.5rem 0;
+  color: #fff;
+}
+
+.producto-ventas {
+  text-align: center;
+  margin-bottom: 0;
+}
+
+.badge.bg-primary {
+  background-color: #3f51b5; /* Azul Material */
+  padding: 0.4em 0.8em;
+  border-radius: 1em;
+  font-size: 0.85rem;
+}
+
+
+
+
+@media (max-width: 1200px) {
+  .producto-card {
+    flex: 1 1 calc(25% - 1rem); /* 4 por fila */
+    max-width: calc(25% - 1rem);
+  }
+}
+
+@media (max-width: 992px) {
+  .producto-card {
+    flex: 1 1 calc(33.33% - 1rem); /* 3 por fila */
+    max-width: calc(33.33% - 1rem);
+  }
+}
+
+@media (max-width: 768px) {
+  .producto-card {
+    flex: 1 1 calc(50% - 1rem); /* 2 por fila */
+    max-width: calc(50% - 1rem);
+  }
+}
+
+@media (max-width: 480px) {
+  .producto-card {
+    flex: 1 1 100%; /* 1 por fila */
+    max-width: 100%;
+  }
+}
+
+
+
+
+
+
+
+
+
+
+.graficas-row {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  gap: 1rem;
+}
+
+.grafica-col {
+  flex: 1 1 calc(43.33% - 1rem);
+  max-width: calc(66.33% - 1rem);
+  min-width: 260px;
+}
+
+/* Asegura que los gráficos se vean más pequeños */
+.grafica-col mat-card-content canvas {
+  height:200px !important;
+  max-height: 200px;
+  width: 100% !important;
+  display: block;
+  margin: 0 auto;
+  object-fit: contain;
+}
+
+/* Responsivo */
+@media (max-width: 992px) {
+  .grafica-col {
+    flex: 1 1 100%;
+    max-width: 100%;
+  }
+}
 
 
 

@@ -14,17 +14,19 @@
         </mat-select>
       </mat-form-field>
 
-      <mat-form-field appearance="fill" style="width: 120px;">
-        <mat-label>Cantidad</mat-label>
-        <input matInput type="number" min="1"
-               [formControlName]="controlName + '_cantidad'" />
-        <mat-error *ngIf="insumosForm.get(controlName + '_cantidad')?.hasError('min')">
-          La cantidad debe ser al menos 1
-        </mat-error>
-        <mat-error *ngIf="insumosForm.get(controlName + '_cantidad')?.hasError('required')">
-          La cantidad es obligatoria
-        </mat-error>
-      </mat-form-field>
+   <mat-form-field appearance="fill" style="width: 120px;">
+  <mat-label>Cantidad</mat-label>
+  <input matInput type="number" min="1" [formControlName]="controlName + '_cantidad'" />
+  <mat-hint align="end">{{ getUnidad(controlName) }}</mat-hint>
+
+  <mat-error *ngIf="insumosForm.get(controlName + '_cantidad')?.hasError('min')">
+    La cantidad debe ser al menos 1
+  </mat-error>
+  <mat-error *ngIf="insumosForm.get(controlName + '_cantidad')?.hasError('required')">
+    La cantidad es obligatoria
+  </mat-error>
+</mat-form-field>
+
     </div>
 
     <p *ngIf="mensajeCantidadInvalida" style="color: red; font-weight: 600; text-align: center;">

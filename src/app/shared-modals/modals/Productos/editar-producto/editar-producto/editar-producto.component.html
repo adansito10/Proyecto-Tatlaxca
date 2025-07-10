@@ -40,7 +40,7 @@
       <div *ngIf="ingredientesSeleccionados.length; else sinIngredientes">
         <div class="item" *ngFor="let ing of ingredientesSeleccionados">
           <span class="nombre">{{ ing.nombre }}</span>
-          <span class="cantidad">{{ ing.cantidad }}</span>
+        <span class="cantidad">{{ ing.cantidad }} {{ ing.unidad }}</span>
         </div>
       </div>
       <ng-template #sinIngredientes>

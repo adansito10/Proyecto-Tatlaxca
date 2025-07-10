@@ -11,7 +11,7 @@ export class EditarSuministroComponent {
   modo: 'agregar' | 'editar';
   item: any;
   categorias: string[];
-  unidades: string[] = ['Kg', 'L', 'Unidad', 'Paquete'];
+  unidades: string[] = ['Unidades', 'Paquete'];
 
   constructor(
     public dialogRef: MatDialogRef<EditarSuministroComponent>,

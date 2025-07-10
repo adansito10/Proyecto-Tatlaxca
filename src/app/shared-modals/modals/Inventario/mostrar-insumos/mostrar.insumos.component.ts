@@ -132,4 +132,10 @@ export class MostrarInsumosComponent implements OnInit {
   );
 }
 
+getUnidad(control: string): string {
+  const ins = this.insumosForm.get(control + '_nombre')?.value;
+  return ins?.unidad || '';
+}
+
+
 }

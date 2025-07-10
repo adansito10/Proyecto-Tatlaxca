@@ -15,11 +15,9 @@
     <mat-form-field appearance="fill" class="full-width">
       <mat-label>Unidad</mat-label>
       <mat-select formControlName="unidad" required>
-        <mat-option value="kg">Kilogramos (kg)</mat-option>
-        <mat-option value="g">Gramos (g)</mat-option>
-        <mat-option value="l">Litros (l)</mat-option>
+        <mat-option value="g">Gramos (gr)</mat-option>
         <mat-option value="ml">Mililitros (ml)</mat-option>
-        <mat-option value="unidad">Unidad</mat-option>
+        <mat-option value="unidades">Unidades</mat-option>
       </mat-select>
       <mat-error *ngIf="ingredienteForm.get('unidad')?.hasError('required')">
         La unidad es obligatoria

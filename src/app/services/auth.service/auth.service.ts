@@ -19,7 +19,7 @@ export class AuthService {
         if (response && response.user && response.user.rol === 'Administrador') {
           localStorage.setItem('token', response.token);
           localStorage.setItem('user', JSON.stringify(response.user));
-          this.currentUserSubject.next(response.user); // Emitimos usuario actualizado
+          this.currentUserSubject.next(response.user); 
           return true;
         }
         return false;
@@ -27,22 +27,23 @@ export class AuthService {
     );
   }
 
-  checkAuthentication(): Observable<boolean> {
-    const userData = localStorage.getItem('user');
-    if (!userData) return of(false);
+checkAuthentication(): Observable<boolean> {
+  const userData = localStorage.getItem('user');
+  if (!userData) return of(false);
 
-    try {
-      const user = JSON.parse(userData);
-      return of(user.rol === 'Administrador');
-    } catch (e) {
-      console.error('Error parsing user from localStorage:', e);
-      return of(false);
-    }
+  try {
+    const user = JSON.parse(userData);
+    return of(user.rol?.toLowerCase() === 'administrador');
+  } catch (e) {
+    console.error('Error parsing user from localStorage:', e);
+    return of(false);
   }
+}
+
 
   logout() {
     localStorage.clear();
-    this.currentUserSubject.next(null); // Emitimos usuario nulo al hacer logout
+    this.currentUserSubject.next(null); 
   }
 
   getCurrentUser() {

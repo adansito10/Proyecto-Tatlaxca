@@ -29,7 +29,7 @@
     <ul *ngIf="data.insumos?.length; else sinInsumos">
       <li *ngFor="let ins of data.insumos">
         <span class="nombre">{{ ins.nombre }}</span>
-        <span class="cantidad">{{ ins.cantidad }}</span>
+        <span class="cantidad">{{ ins.cantidad }} {{ ins.unidad}}</span>
       </li>
     </ul>
     <ng-template #sinInsumos>

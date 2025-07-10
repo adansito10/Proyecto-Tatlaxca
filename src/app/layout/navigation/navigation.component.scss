@@ -119,22 +119,7 @@ mat-nav-list a {
   }
 }
 
-.overlay {
-  position: absolute;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  background-color: rgba(0, 0, 0, 0.6);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
 
-.spinner-container {
-  display: flex;
-  align-items: center;
-}
 
 mat-nav-list a mat-icon {
   font-size: 20px; 
@@ -337,5 +322,30 @@ mat-sidenav {
 
 
 
+.overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background-color: rgba(0, 0, 0, 0.5); /* oscurece fondo */
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
+  padding: 1rem; /* añade espacio interno */
+  box-sizing: border-box;
+}
 
+.spinner-container {
+  display: flex;
+  flex-direction: column; /* en columna para que se vea mejor en móviles */
+  align-items: center;
+  text-align: center;
+  color: white;
+  font-size: 1.2rem;
+}
 
+.spinner-container mat-spinner {
+  margin-bottom: 15px;
+}

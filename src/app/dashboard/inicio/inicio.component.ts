@@ -19,6 +19,7 @@ export class InicioComponent implements OnInit {
   detalles: any[] = [];
 
   topProductos: any[] = [];
+  productosMenosVendidos: any[] = [];
   categoriasMasVendidas: any[] = [];
   ventasPorDia: any[] = [];
   ventasPorMesero: any[] = [];
@@ -28,39 +29,31 @@ export class InicioComponent implements OnInit {
   nombreUsuario: string = '';
 
   public ventasDiaData: ChartData<'line'> = { labels: [], datasets: [] };
+  public ventasSemanaData: ChartData<'line'> = { labels: [], datasets: [] };
   public ventasHoraData: ChartData<'bar'> = { labels: [], datasets: [] };
   public ventasMeseroData: ChartData<'doughnut'> = { labels: [], datasets: [] };
   public categoriasData: ChartData<'pie'> = { labels: [], datasets: [] };
 
-  constructor(private dashboardService: DashboardService,
+  constructor(
+    private dashboardService: DashboardService,
     private authService: AuthService,
-    private employeesService: EmployeesService 
+    private employeesService: EmployeesService
   ) {}
 
-
-
   ngOnInit(): void {
-  this.authService.getCurrentUserObservable().subscribe(user => {
-    if (user && user.correo) {
-      this.employeesService.getEmpleados().subscribe({
-        next: (empleados) => {
-          const empleado = empleados.find(emp => emp.correo === user.correo);
-          if (empleado) {
-            this.nombreUsuario = empleado.nombre; // Solo nombre, o concatena si quieres
-          } else {
-            this.nombreUsuario = '';
-          }
-        },
-        error: (err) => {
-          console.error('Error al obtener empleados', err);
-          this.nombreUsuario = '';
-        }
-      });
-    } else {
-      this.nombreUsuario = '';
-    }
-  });
-
+    this.authService.getCurrentUserObservable().subscribe(user => {
+      if (user && user.correo) {
+        this.employeesService.getEmpleados().subscribe({
+          next: (empleados) => {
+            const empleado = empleados.find(emp => emp.correo === user.correo);
+            this.nombreUsuario = empleado ? empleado.nombre : '';
+          },
+          error: () => this.nombreUsuario = ''
+        });
+      } else {
+        this.nombreUsuario = '';
+      }
+    });
 
     this.dashboardService.getDashboardData().subscribe(data => {
       this.ventas = data.ventas;
@@ -81,8 +74,10 @@ export class InicioComponent implements OnInit {
 
   procesarDatos() {
     this.procesarTopProductos();
+    this.procesarProductosMenosVendidos();
     this.procesarCategorias();
     this.procesarVentasPorDia();
+    this.procesarVentasPorSemana();
     this.procesarVentasPorMesero();
     this.procesarHorasPico();
     this.verificarStockBajo();
@@ -97,6 +92,18 @@ export class InicioComponent implements OnInit {
     this.topProductos = this.productos
       .map(p => ({ ...p, ventas: conteo[p.id] || 0 }))
       .sort((a, b) => b.ventas - a.ventas)
+      .slice(0, 5);
+  }
+
+  procesarProductosMenosVendidos() {
+    const conteo: { [id: number]: number } = {};
+    for (const d of this.detalles) {
+      conteo[d.id_menu] = (conteo[d.id_menu] || 0) + d.cantidad;
+    }
+
+    this.productosMenosVendidos = this.productos
+      .map(p => ({ ...p, ventas: conteo[p.id] || 0 }))
+      .sort((a, b) => a.ventas - b.ventas)
       .slice(0, 5);
   }
 
@@ -143,6 +150,40 @@ export class InicioComponent implements OnInit {
         const fechaB = matchB ? new Date(`2024/${matchB[1]}`) : new Date();
         return fechaA.getTime() - fechaB.getTime();
       });
+  }
+
+  procesarVentasPorSemana() {
+    const semanas: { [semana: string]: number } = {};
+    const now = new Date();
+
+    for (const v of this.ventas) {
+      const fecha = new Date(v.fecha_pago);
+      if (
+        fecha.getMonth() === now.getMonth() &&
+        fecha.getFullYear() === now.getFullYear()
+      ) {
+        const weekNumber = this.getNumeroSemana(fecha);
+        const clave = `Semana ${weekNumber}`;
+        const total = parseFloat(v.total_pagado) || 0;
+        semanas[clave] = (semanas[clave] || 0) + total;
+      }
+    }
+
+    const clavesOrdenadas = Object.keys(semanas).sort((a, b) =>
+      parseInt(a.replace('Semana ', '')) - parseInt(b.replace('Semana ', ''))
+    );
+
+    this.ventasSemanaData = {
+      labels: clavesOrdenadas,
+      datasets: [{
+        label: 'Ganancias Semanales',
+        data: clavesOrdenadas.map(k => semanas[k]),
+        borderColor: '#ff9800',
+        backgroundColor: 'rgba(255, 152, 0, 0.3)',
+        fill: true,
+        tension: 0.3
+      }]
+    };
   }
 
   procesarVentasPorMesero() {
@@ -210,6 +251,12 @@ export class InicioComponent implements OnInit {
         backgroundColor: ['#4caf50', '#2196f3', '#ff9800', '#9c27b0']
       }]
     };
+  }
+
+  getNumeroSemana(fecha: Date): number {
+    const temp = new Date(fecha.getFullYear(), 0, 1);
+    const diff = fecha.getTime() - temp.getTime();
+    return Math.ceil(((diff / (1000 * 60 * 60 * 24)) + temp.getDay() + 1) / 7);
   }
 
   getColorPorStock(stock: number): string {
