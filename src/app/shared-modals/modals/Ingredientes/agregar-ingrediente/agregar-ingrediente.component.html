@@ -4,7 +4,7 @@
   <form [formGroup]="ingredienteForm">
     <mat-form-field appearance="fill" class="full-width">
       <mat-label>Nombre</mat-label>
-  <input matInput formControlName="nombre" required maxlength="40">
+  <input matInput formControlName="nombre" required maxlength="40" appCapitalize>
   <mat-hint align="end">
     {{ ingredienteForm.get('nombre')?.value?.length || 0 }}/40
   </mat-hint>      <mat-error *ngIf="ingredienteForm.get('nombre')?.hasError('required')">

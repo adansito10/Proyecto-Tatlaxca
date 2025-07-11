@@ -12,6 +12,7 @@ export class AgregarMesaComponent implements OnInit {
   mesaForm!: FormGroup;
   modo: 'agregar' | 'editar';
   estados: any[] = [];
+  errorMensaje: string = '';
 
   constructor(
     private fb: FormBuilder,
@@ -24,6 +25,7 @@ export class AgregarMesaComponent implements OnInit {
 
   ngOnInit(): void {
     const mesa = this.data?.entidad;
+
 
     this.mesaForm = this.fb.group({
       numero: [mesa?.numero || '', Validators.required],
@@ -39,14 +41,14 @@ export class AgregarMesaComponent implements OnInit {
       next: (data) => {
         this.estados = data.filter((e: any) => !e.deleted_at);
       },
-      error: (err) => console.error('Error al cargar estados:', err)
+      error: (err) => console.error('Error al cargar estados', err)
     });
   }
 
   guardar(): void {
     if (this.mesaForm.invalid) return;
     const formData = this.mesaForm.value;
-    this.dialogRef.close(formData); // Solo devuelve los datos
+    this.dialogRef.close(formData);
   }
 
   cancelar(): void {

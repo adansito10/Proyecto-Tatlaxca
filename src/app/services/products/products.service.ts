@@ -36,8 +36,6 @@ obtenerProductoPorId(id: number): Observable<any> {
   return this.http.get<any>(`${this.apiUrl}/${id}/details`);
 }
 
-restaurarProducto(id: number) {
-  return this.http.put(`/api/menu/${id}/restore`, {}); // o el endpoint que definiste
-}
+
   
 }

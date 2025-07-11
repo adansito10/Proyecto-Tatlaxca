@@ -4,7 +4,7 @@
   <form [formGroup]="suministroForm">
     <mat-form-field appearance="fill" class="full-width">
       <mat-label>Nombre del insumo</mat-label>
-  <input matInput formControlName="nombre" required maxlength="40">
+  <input matInput formControlName="nombre" required maxlength="40" appCapitalize>
   <mat-hint align="end">
     {{ suministroForm.get('nombre')?.value?.length || 0 }}/40
   </mat-hint>      <mat-error *ngIf="suministroForm.get('nombre')?.hasError('required')">Este campo es obligatorio</mat-error>

@@ -7,14 +7,14 @@
 <table class="table table-bordered table-hover text-center align-middle w-100">
   <thead class="custom-header">
         <tr>
-          <th>Orden</th>
+          <th>ID Orden</th>
           <th>Mesa</th>
           <th>Mesero</th>
           <th>Tipo de Cliente</th>
-          <th>Total</th>
           <th>Fecha</th>
           <th>Hora</th>
           <th>Productos</th>
+          <th>Total</th>
           <th>Estado</th>
         </tr>
       </thead>
@@ -24,12 +24,12 @@
           <td>#{{ orden.table_number }}</td>
           <td>{{ orden.waiter_name || 'Sin asignar' }}</td>
           <td>{{ orden.tipo_cliente }}</td>
-          <td>${{ orden.total }}</td>
           <td>{{ orden.fecha | date: 'shortDate' }}</td>
           <td>{{ orden.created_at | date: 'shortTime' }}</td>
           <td>
             <button class="btn btn-sm btn-outline-primary" (click)="verProductos(orden.id)">Ver</button>
           </td>
+         <td>${{ orden.total }}</td>
           <td>{{ orden.status }}</td>
         </tr>
       </tbody>

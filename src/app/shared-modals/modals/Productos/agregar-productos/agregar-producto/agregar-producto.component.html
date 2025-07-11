@@ -4,7 +4,7 @@
   <form [formGroup]="productoForm">
     <mat-form-field appearance="fill" class="full-width">
       <mat-label>Nombre</mat-label>
-  <input matInput formControlName="nombre" maxlength="40" required>
+  <input matInput formControlName="nombre" maxlength="40" required appCapitalize>
   <mat-hint align="end">{{ productoForm.get('nombre')?.value?.length || 0 }}/40</mat-hint>    
 </mat-form-field>
 
@@ -25,7 +25,7 @@
     <mat-form-field appearance="fill" class="full-width">
       <mat-label>Descripción</mat-label>
         <mat-hint align="end">{{ productoForm.get('descripcion')?.value?.length || 0 }}/125</mat-hint>
-  <textarea matInput formControlName="descripcion" maxlength="125" required></textarea>
+  <textarea matInput formControlName="descripcion" maxlength="125" required appCapitalize ></textarea>
     </mat-form-field>
 
  <div class="grid-container">

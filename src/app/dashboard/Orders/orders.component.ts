@@ -14,7 +14,7 @@ export class OrdersComponent implements OnInit {
 
   constructor(
     private ordersService: OrdersService,
-    private dialog: MatDialog  // <-- Aquí debe estar inyectado
+    private dialog: MatDialog  
   ) {}
 
   ngOnInit(): void {
@@ -23,7 +23,7 @@ export class OrdersComponent implements OnInit {
         this.ordenes = data;
       },
       error: err => {
-        console.error('Error al obtener las órdenes:', err);
+        console.error('Error al obtener las órdenes', err);
       }
     });
   }

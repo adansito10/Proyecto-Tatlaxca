@@ -4,7 +4,7 @@
   <form [formGroup]="productoForm">
     <mat-form-field appearance="fill" class="full-width">
       <mat-label>Nombre</mat-label>
-      <input matInput formControlName="nombre" maxlength="40" required>
+      <input matInput formControlName="nombre" maxlength="40" required appCapitalize>
       <mat-hint align="end">{{ productoForm.get('nombre')?.value?.length || 0 }}/40</mat-hint>
     </mat-form-field>
 
@@ -24,12 +24,11 @@
 
     <mat-form-field appearance="fill" class="full-width">
       <mat-label>Descripción</mat-label>
-      <textarea matInput formControlName="descripcion" maxlength="125" required></textarea>
+      <textarea matInput formControlName="descripcion" maxlength="125" required  appCapitalize></textarea>
       <mat-hint align="end">{{ productoForm.get('descripcion')?.value?.length || 0 }}/125</mat-hint>
     </mat-form-field>
 <div class="grid-container">
 
-  <!-- Ingredientes -->
   <div class="detalle-box">
     <h4>Ingredientes</h4>
     <div class="lista-header">
@@ -52,7 +51,6 @@
     </button>
   </div>
 
-  <!-- Insumos -->
   <div class="detalle-box">
     <h4>Insumos</h4>
     <div class="lista-header">
@@ -63,7 +61,7 @@
       <div *ngIf="insumosSeleccionados.length; else sinInsumos">
         <div class="item" *ngFor="let ins of insumosSeleccionados">
           <span class="nombre">{{ ins.nombre }}</span>
-          <span class="cantidad">{{ ins.cantidad }} </span>
+          <span class="cantidad">{{ ins.cantidad }} {{ ins.unidad }} </span>
         </div>
       </div>
       <ng-template #sinInsumos>

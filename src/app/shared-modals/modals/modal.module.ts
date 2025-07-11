@@ -42,6 +42,7 @@ import { EliminarRolComponent } from './roles/eliminar-rol/eliminar-rol.componen
 import { AgregarStatusComponent } from './status/agrega-status/agregar-status.component';
 import { EliminarStatusComponent } from './status/eliminar-status/eliminar-status.component';
 import { OrderDetailComponent } from './orders-detail/orders-detail.component';
+import { CapitalizeDirective } from '../../directive/capitalize.directive';
 
 @NgModule({
   declarations: [
@@ -69,7 +70,9 @@ import { OrderDetailComponent } from './orders-detail/orders-detail.component';
   EliminarRolComponent,
   AgregarStatusComponent,
   EliminarStatusComponent,
-  OrderDetailComponent
+  OrderDetailComponent,
+  CapitalizeDirective
+ 
   
   
   
