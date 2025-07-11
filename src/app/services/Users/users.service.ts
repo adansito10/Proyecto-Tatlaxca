@@ -31,5 +31,4 @@ export class UsersService {
     return this.http.get<any>(`${this.apiUrl}/${id}`);
   }
 
-
 }

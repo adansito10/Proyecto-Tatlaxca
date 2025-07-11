@@ -24,9 +24,6 @@ export class IngredientsService {
   }
 
  eliminarIngrediente(id: number): Observable<any> {
-    return this.http.put(`${this.apiUrl}/${id}`, {
-      stock: -1,
-      deletedAt: new Date().toISOString() 
-    });
- }
+    return this.http.delete<any>(`${this.apiUrl}/${id}`);
+  }
 }

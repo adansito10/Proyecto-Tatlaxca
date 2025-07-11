@@ -14,8 +14,9 @@ import { ProductosService } from '../../../../../services/products/products.serv
 export class AgregarProductoComponent {
   productoForm: FormGroup;
   categorias: { id: number, nombre: string }[] = [];
-  ingredientesSeleccionados: { id: number, nombre: string, cantidad: number }[] = [];
-  insumosSeleccionados: { id: number, nombre: string, cantidad: number }[] = [];
+ingredientesSeleccionados: { id: number, nombre: string, cantidad: number, unidad: string }[] = [];
+insumosSeleccionados: { id: number, nombre: string, cantidad: number, unidad: string }[] = [];
+
   imagenProducto: string | ArrayBuffer | null = null;
 
   constructor(

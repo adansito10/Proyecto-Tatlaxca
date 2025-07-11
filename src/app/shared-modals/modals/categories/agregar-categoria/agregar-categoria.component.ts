@@ -5,7 +5,7 @@ import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 @Component({
   selector: 'app-agregar-categories',
   standalone: false,
-  templateUrl: './agregar-categoria.Component.html',
+  templateUrl: './agregar-categoria.component.html',
   styleUrl: './agregar-categoria.component.scss'
 
 })

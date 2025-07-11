@@ -5,8 +5,8 @@ import { OrderDetailsService } from '../../../services/order-detail/order-detail
 @Component({
   selector: 'app-ver-prders',
   standalone: false,
-  templateUrl: './Orders-detail.component.html',
-  styleUrls: ['./Orders-detail.component.scss']
+  templateUrl: './orders-detail.component.html',
+  styleUrls: ['./orders-detail.component.scss']
 
 })
 export class OrderDetailComponent implements OnInit {

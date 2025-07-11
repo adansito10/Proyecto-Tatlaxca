@@ -22,9 +22,9 @@ export class EmployeesService {
     return this.http.post<any>(this.apiUrl, data);
   }
 
-editarEmpleado(id: number, employee: any, user: any): Observable<any> {
+  editarEmpleado(id: number, employee: any, user: any): Observable<any> {
   return this.http.put<any>(`${this.apiUrl}/${id}`, { employee, user });
-}
+  }
 
   eliminarEmpleado(id: number): Observable<any> {
     return this.http.delete<any>(`${this.apiUrl}/${id}`);
