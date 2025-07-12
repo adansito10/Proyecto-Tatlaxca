@@ -26,6 +26,7 @@ export class InicioComponent implements OnInit {
   horasPico: any[] = [];
   productosConStockBajo: any[] = [];
   mesActual: string = '';
+  ordenesPorDia: { clave: string; cantidad: number }[] = [];
   nombreUsuario: string = '';
 
   public ventasDiaData: ChartData<'line'> = { labels: [], datasets: [] };
@@ -33,6 +34,9 @@ export class InicioComponent implements OnInit {
   public ventasHoraData: ChartData<'bar'> = { labels: [], datasets: [] };
   public ventasMeseroData: ChartData<'doughnut'> = { labels: [], datasets: [] };
   public categoriasData: ChartData<'pie'> = { labels: [], datasets: [] };
+  public ordenesDiaData: ChartData<'bar'> = { labels: [], datasets: [] };
+
+  mesAnterior: number = new Date().getMonth();
 
   constructor(
     private dashboardService: DashboardService,
@@ -73,6 +77,16 @@ export class InicioComponent implements OnInit {
   }
 
   procesarDatos() {
+    const mesActual = new Date().getMonth();
+
+    if (this.mesAnterior !== mesActual) {
+      this.topProductos = [];
+      this.productosMenosVendidos = [];
+      this.categoriasMasVendidas = [];
+      this.ventasPorMesero = [];
+      this.mesAnterior = mesActual;
+    }
+
     this.procesarTopProductos();
     this.procesarProductosMenosVendidos();
     this.procesarCategorias();
@@ -80,6 +94,7 @@ export class InicioComponent implements OnInit {
     this.procesarVentasPorSemana();
     this.procesarVentasPorMesero();
     this.procesarHorasPico();
+    this.procesarOrdenesPorDia();
     this.verificarStockBajo();
     this.configurarGraficas();
   }
@@ -100,7 +115,6 @@ export class InicioComponent implements OnInit {
     for (const d of this.detalles) {
       conteo[d.id_menu] = (conteo[d.id_menu] || 0) + d.cantidad;
     }
-
     this.productosMenosVendidos = this.productos
       .map(p => ({ ...p, ventas: conteo[p.id] || 0 }))
       .sort((a, b) => a.ventas - b.ventas)
@@ -121,63 +135,67 @@ export class InicioComponent implements OnInit {
 
   procesarVentasPorDia() {
     const diasSemana = ['dom', 'lun', 'mar', 'mié', 'jue', 'vie', 'sáb'];
-    const conteo: { [clave: string]: number } = {};
-    const ahora = new Date();
+    const conteo: { [clave: string]: { total: number, fecha: Date } } = {};
 
     for (const v of this.ventas) {
-      const fecha = new Date(v.fecha_pago);
-      if (
-        fecha.getMonth() === ahora.getMonth() &&
-        fecha.getFullYear() === ahora.getFullYear()
-      ) {
-        const diaNombre = diasSemana[fecha.getDay()];
-        const fechaTexto = fecha.toLocaleDateString('es-MX', {
-          day: '2-digit',
-          month: '2-digit'
-        });
-        const clave = `${diaNombre} (${fechaTexto})`;
-        const total = parseFloat(v.total_pagado) || 0;
-        conteo[clave] = (conteo[clave] || 0) + total;
+      const partes = v.fecha_pago.slice(0, 10).split('-');
+      const fecha = new Date(Number(partes[0]), Number(partes[1]) - 1, Number(partes[2]));
+
+      const diaNombre = diasSemana[fecha.getDay()];
+      const dia = fecha.getDate().toString().padStart(2, '0');
+      const mes = (fecha.getMonth() + 1).toString().padStart(2, '0');
+
+      const claveVisible = `${diaNombre} (${dia}/${mes})`;
+
+      const total = parseFloat(v.total_pagado) || 0;
+
+      if (conteo[claveVisible]) {
+        conteo[claveVisible].total += total;
+      } else {
+        conteo[claveVisible] = { total, fecha };
       }
     }
 
-    this.ventasPorDia = Object.entries(conteo)
-      .map(([clave, total]) => ({ clave, total }))
-      .sort((a, b) => {
-        const matchA = a.clave.match(/\((\d{2}\/\d{2})\)/);
-        const matchB = b.clave.match(/\((\d{2}\/\d{2})\)/);
-        const fechaA = matchA ? new Date(`2024/${matchA[1]}`) : new Date();
-        const fechaB = matchB ? new Date(`2024/${matchB[1]}`) : new Date();
-        return fechaA.getTime() - fechaB.getTime();
-      });
+    let ventasPorDia = Object.entries(conteo)
+      .map(([clave, data]) => ({ clave, total: data.total, fecha: data.fecha }))
+      .sort((a, b) => a.fecha.getTime() - b.fecha.getTime());
+
+    const fechaLimite = new Date();
+    fechaLimite.setDate(fechaLimite.getDate() - 7);
+    ventasPorDia = ventasPorDia.filter(v => v.fecha >= fechaLimite);
+
+    this.ventasPorDia = ventasPorDia.map(({ clave, total }) => ({ clave, total }));
   }
 
   procesarVentasPorSemana() {
-    const semanas: { [semana: string]: number } = {};
-    const now = new Date();
+    const semanas: { [claveVisible: string]: { total: number, semana: number, año: number } } = {};
 
     for (const v of this.ventas) {
       const fecha = new Date(v.fecha_pago);
-      if (
-        fecha.getMonth() === now.getMonth() &&
-        fecha.getFullYear() === now.getFullYear()
-      ) {
-        const weekNumber = this.getNumeroSemana(fecha);
-        const clave = `Semana ${weekNumber}`;
-        const total = parseFloat(v.total_pagado) || 0;
-        semanas[clave] = (semanas[clave] || 0) + total;
+      const weekNumber = this.getNumeroSemana(fecha);
+      const año = fecha.getFullYear();
+      const claveInterna = `${weekNumber}-${año}`;
+
+      if (!semanas[claveInterna]) {
+        semanas[claveInterna] = { total: 0, semana: weekNumber, año };
       }
+
+      const total = parseFloat(v.total_pagado) || 0;
+      semanas[claveInterna].total += total;
     }
 
-    const clavesOrdenadas = Object.keys(semanas).sort((a, b) =>
-      parseInt(a.replace('Semana ', '')) - parseInt(b.replace('Semana ', ''))
-    );
+    let clavesOrdenadas = Object.entries(semanas)
+      .sort(([, a], [, b]) => a.año !== b.año ? a.año - b.año : a.semana - b.semana);
+
+    if (clavesOrdenadas.length > 5) {
+      clavesOrdenadas = clavesOrdenadas.slice(-5);
+    }
 
     this.ventasSemanaData = {
-      labels: clavesOrdenadas,
+      labels: clavesOrdenadas.map(([, v]) => `Semana ${v.semana}`),
       datasets: [{
         label: 'Ganancias Semanales',
-        data: clavesOrdenadas.map(k => semanas[k]),
+        data: clavesOrdenadas.map(([, v]) => v.total),
         borderColor: '#ff9800',
         backgroundColor: 'rgba(255, 152, 0, 0.3)',
         fill: true,
@@ -202,12 +220,48 @@ export class InicioComponent implements OnInit {
     const conteo: { [hora: string]: number } = {};
     for (const v of this.ventas) {
       const fecha = new Date(v.created_at);
-      const hora = fecha.getUTCHours().toString().padStart(2, '0') + ':00';
+      const hora = fecha.getHours().toString().padStart(2, '0') + ':00';
+
       conteo[hora] = (conteo[hora] || 0) + 1;
     }
-    this.horasPico = Object.entries(conteo)
+    let horas = Object.entries(conteo)
       .map(([hora, cantidad]) => ({ hora, cantidad }))
       .sort((a, b) => b.cantidad - a.cantidad);
+
+    horas = horas.slice(0, 5);
+    this.horasPico = horas;
+  }
+
+  procesarOrdenesPorDia() {
+    const diasSemana = ['dom', 'lun', 'mar', 'mié', 'jue', 'vie', 'sáb'];
+    const conteo: { [clave: string]: { cantidad: number; fecha: Date } } = {};
+
+    for (const o of this.ordenes) {
+      const fechaOrden = new Date(o.fecha_creacion || o.created_at || o.fecha || '');
+      if (isNaN(fechaOrden.getTime())) continue;
+
+      const diaNombre = diasSemana[fechaOrden.getDay()];
+      const dia = fechaOrden.getDate().toString().padStart(2, '0');
+      const mes = (fechaOrden.getMonth() + 1).toString().padStart(2, '0');
+
+      const claveVisible = `${diaNombre} (${dia}/${mes})`;
+
+      if (conteo[claveVisible]) {
+        conteo[claveVisible].cantidad += 1;
+      } else {
+        conteo[claveVisible] = { cantidad: 1, fecha: fechaOrden };
+      }
+    }
+
+    let ordenesPorDia = Object.entries(conteo)
+      .map(([clave, data]) => ({ clave, cantidad: data.cantidad, fecha: data.fecha }))
+      .sort((a, b) => a.fecha.getTime() - b.fecha.getTime());
+
+    const fechaLimite = new Date();
+    fechaLimite.setDate(fechaLimite.getDate() - 7);
+    ordenesPorDia = ordenesPorDia.filter(o => o.fecha >= fechaLimite);
+
+    this.ordenesPorDia = ordenesPorDia.map(({ clave, cantidad }) => ({ clave, cantidad }));
   }
 
   verificarStockBajo() {
@@ -249,6 +303,15 @@ export class InicioComponent implements OnInit {
       datasets: [{
         data: this.categoriasMasVendidas.map(c => c.cantidad),
         backgroundColor: ['#4caf50', '#2196f3', '#ff9800', '#9c27b0']
+      }]
+    };
+
+    this.ordenesDiaData = {
+      labels: this.ordenesPorDia.map(o => o.clave),
+      datasets: [{
+        label: 'Órdenes atendidas',
+        data: this.ordenesPorDia.map(o => o.cantidad),
+        backgroundColor: 'rgba(54, 162, 235, 0.6)'
       }]
     };
   }

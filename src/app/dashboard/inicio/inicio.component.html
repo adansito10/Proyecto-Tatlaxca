@@ -58,7 +58,7 @@
     </div>
 
 
-     <div class="col-md-6 mb-1">
+     <div class="grafica-col">
       <mat-card>
         <mat-card-header>
           <mat-card-title>
@@ -70,6 +70,23 @@
         </mat-card-content>
       </mat-card>
     </div>
+
+    <div class="grafica-col">
+  <mat-card>
+    <mat-card-header>
+      <mat-card-title>
+        <mat-icon>assignment_turned_in</mat-icon> Órdenes Atendidas por Día
+      </mat-card-title>
+    </mat-card-header>
+    <mat-card-content>
+      <canvas baseChart
+              [data]="ordenesDiaData"
+              [type]="'bar'">
+      </canvas>
+    </mat-card-content>
+  </mat-card>
+</div>
+
 
     <div class="col-12 mb-4">
       <mat-card>
@@ -104,6 +121,8 @@
         </mat-card-content>
       </mat-card>
     </div>
+
+    
 
     <div class="col-md-6 mb-4">
       <mat-card>

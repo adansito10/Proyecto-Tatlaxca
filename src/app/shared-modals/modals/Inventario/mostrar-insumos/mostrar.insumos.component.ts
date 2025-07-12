@@ -107,6 +107,7 @@ export class MostrarInsumosComponent implements OnInit {
         seleccionados.push({
           id: ins.id,
           nombre: ins.nombre,
+              unidad: ins.unidad, 
           cantidad
         });
       }

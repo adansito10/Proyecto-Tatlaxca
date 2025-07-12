@@ -64,7 +64,7 @@
       <div *ngIf="insumosSeleccionados.length; else sinInsumos">
         <div class="item" *ngFor="let ins of insumosSeleccionados">
           <span class="nombre">{{ ins.nombre }}</span>
-          <span class="cantidad">{{ ins.cantidad }} {{ ins.unidad }}</span>
+          <span class="cantidad">{{ ins.cantidad }} {{ ins.unidad }} </span>
         </div>
       </div>
       <ng-template #sinInsumos>
