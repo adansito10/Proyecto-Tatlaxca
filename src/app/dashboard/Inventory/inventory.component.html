@@ -25,8 +25,8 @@
   <thead class="custom-header">
         <tr>
           <th>Nombre del Insumo</th>
-          <th>Stock</th>
           <th>Unidad</th>
+          <th>Stock</th>
           <th>Última actualización</th>
           <th>Acciones</th>
         </tr>
@@ -34,8 +34,8 @@
       <tbody>
         <tr *ngFor="let item of inventarioFiltrado">
          <td class="align-middle">{{ item.nombre }}</td>
+             <td class="align-middle">{{ item.unidad }}</td>
           <td class="align-middle" [ngClass]="{'text-danger': item.stock < item.stockMinimo}">{{ item.stock }}</td>
-          <td class="align-middle">{{ item.unidad }}</td>
           <td>{{ (item.updated_at || item.created_at) | date:'short' }}</td>
           <td class="align-middle">
             
