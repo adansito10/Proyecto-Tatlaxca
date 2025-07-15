@@ -21,7 +21,12 @@
 .table, 
 .table th, 
 .table td {
-  border-width: 1px; /* aumenta el grosor */
-  border-style: solid; /* asegúrate que el borde sea sólido */
-  border-color: rgb(128, 128, 128); /* color negro para más contraste */
+  border-width: 1px;
+  border-style: solid; 
+  border-color: rgb(128, 128, 128); 
+}
+
+
+.form-label{
+  font-weight: 600;
 }

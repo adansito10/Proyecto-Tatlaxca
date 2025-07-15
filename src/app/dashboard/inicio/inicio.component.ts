@@ -277,7 +277,8 @@ export class InicioComponent implements OnInit {
         borderColor: 'rgba(75,192,192,1)',
         fill: true,
         backgroundColor: 'rgba(75,192,192,0.2)',
-        tension: 0.4
+        tension: 0.4,
+        
       }]
     };
 

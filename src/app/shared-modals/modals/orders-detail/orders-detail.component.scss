@@ -1,0 +1,16 @@
+mat-dialog-actions {
+  margin-top: 1rem;
+  justify-content: flex-end;
+
+  button {
+    color: #ffffff;
+    background-color: #1976d2;
+    border-radius: 6px;
+    padding: 6px 14px;
+    font-weight: 500;
+
+    &:hover {
+      background-color: #115293;
+    }
+  }
+}

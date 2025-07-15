@@ -14,19 +14,13 @@ import * as XLSX from 'xlsx';
 })
 export class ReportsComponent implements OnInit {
   ventasOriginal: any[] = [];
-  diasDelMes: number[] = [];
-  ventasDelDia: any[] = [];
+  ventasFiltradas: any[] = [];
 
   empleados: any[] = [];
   mesas: any[] = [];
 
-  mesSeleccionado: string = '';
-  diaSeleccionado: number = 1;
+  fechaFiltro: string = ''; 
   totalMostrado: number = 0;
-
-  paginaDias = 1;
-  diasPorPagina = 7;
-  totalPaginasDias = 1;
 
   constructor(
     private salesService: SalesService,
@@ -37,128 +31,151 @@ export class ReportsComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
-    this.salesService.getAllSales().subscribe(data => {
-      this.ventasOriginal = data;
-    });
-
     this.tablesService.obtenerMesas().subscribe(m => this.mesas = m);
     this.employeesService.getEmpleados().subscribe(e => this.empleados = e);
-  }
 
-  seleccionarMes(mes: string) {
-    this.mesSeleccionado = mes;
-    const [year, month] = mes.split('-').map(Number);
-    const dias = new Date(year, month, 0).getDate();
-    this.diasDelMes = Array.from({ length: dias }, (_, i) => i + 1);
-
-    this.totalPaginasDias = Math.ceil(this.diasDelMes.length / this.diasPorPagina);
-    this.paginaDias = 1;
-    this.diaSeleccionado = 1;
-    this.actualizarVentasDelDia();
-  }
-
-  get diasVisibles(): number[] {
-    const start = (this.paginaDias - 1) * this.diasPorPagina;
-    return this.diasDelMes.slice(start, start + this.diasPorPagina);
-  }
-
-  cambiarPaginaDias(direccion: number): void {
-    this.paginaDias = Math.min(this.totalPaginasDias, Math.max(1, this.paginaDias + direccion));
-  }
-
-  seleccionarDia(dia: number) {
-    this.diaSeleccionado = dia;
-    this.actualizarVentasDelDia();
-  }
-
-  actualizarVentasDelDia() {
-    const fechaFiltro = `${this.mesSeleccionado}-${this.diaSeleccionado.toString().padStart(2, '0')}`;
-    this.ventasDelDia = this.ventasOriginal.filter(v => v.fecha_pago.startsWith(fechaFiltro));
-    this.totalMostrado = this.ventasDelDia.reduce((acc, venta) => acc + Number(venta.total_pagado), 0);
-  }
-
- async descargarExcel() {
-  const data: any[] = [];
-
-  for (const venta of this.ventasDelDia) {
-    let productosTexto = 'Sin productos';
-    let meseroNombre = 'Desconocido';
-    let numeroMesa = 'N/D';
-    let tipoCliente = '';
-    let metodoPago = venta.metodo_pago || '';
-    const totalPagado = venta.total_pagado;
-
-    try {
-      const orden = await this.ordersService.getOrderById(venta.id_orden).toPromise();
-
-      if (orden) {
-        const mesero = this.empleados.find(e => e.id === orden.id_mesero);
-        meseroNombre = mesero ? `${mesero.nombre} ${mesero.appaterno}` : 'Desconocido';
-
-        const mesa = this.mesas.find(m => m.id === orden.id_mesa);
-        numeroMesa = mesa ? mesa.numero : 'N/D';
-
-        tipoCliente = orden.tipo_cliente || '';
-      }
-
-      const detalles = await this.orderDetailsService.getByOrderId(venta.id_orden).toPromise();
-
-      if (detalles && detalles.length > 0) {
-        productosTexto = detalles.map(p => {
-          const nombre = p.nombre_producto || 'Producto';
-          const precio = parseFloat(p.subtotal) || 0;
-          return `${nombre} x${p.cantidad} ($${precio.toFixed(2)})`;
-        }).join(', ');
-      }
-    } catch (error) {
-      console.error(`Error al obtener datos de orden ${venta.id_orden}:`, error);
-    }
-
-    data.push({
-      ID_Venta: venta.id,
-      ID_Orden: venta.id_orden,
-      Método_Pago: metodoPago,
-      Fecha_Pago: venta.fecha_pago,
-      Productos: productosTexto,
-      Mesero: meseroNombre,
-      Mesa: numeroMesa,
-      Tipo_Cliente: tipoCliente,
-      Total_Pagado: totalPagado
+    this.salesService.getAllSales().subscribe(data => {
+      this.ventasOriginal = data;
+      this.fechaFiltro = this.obtenerFechaLocalISO();
+      this.aplicarFiltroFecha();
     });
   }
-const ws = XLSX.utils.json_to_sheet(data, { header: [
-  'ID_Venta',
-  'ID_Orden',
-  'Método_Pago',
-  'Fecha_Pago',
-  'Productos',
-  'Mesero',
-  'Mesa',
-  'Tipo_Cliente',
-  'Total_Pagado'
-] });
 
-ws['!cols'] = [
-  { wpx: 60 },   
-  { wpx: 60 },   
-  { wpx: 100 },  
-  { wpx: 120 }, 
-  { wpx: 350 },  
-  { wpx: 120 },  
-  { wpx: 50 },   
-  { wpx: 100 },  
-  { wpx: 80 }    
-];
-
-for (let i = 1; i <= data.length; i++) { 
-  const cellRef = `I${i + 1}`; 
-  if (ws[cellRef]) {
-    ws[cellRef].z = '$#,##0.00';  
+  obtenerFechaLocalISO(): string {
+    const ahora = new Date();
+    const yyyy = ahora.getFullYear();
+    const mm = (ahora.getMonth() + 1).toString().padStart(2, '0');
+    const dd = ahora.getDate().toString().padStart(2, '0');
+    return `${yyyy}-${mm}-${dd}`;
   }
-}
 
-const wb = XLSX.utils.book_new();
-XLSX.utils.book_append_sheet(wb, ws, 'Reporte_Ventas');
-XLSX.writeFile(wb, `reporte_ventas_${this.mesSeleccionado}_${this.diaSeleccionado}.xlsx`);
- }
+  aplicarFiltroFecha() {
+    if (!this.fechaFiltro) {
+      this.ventasFiltradas = [...this.ventasOriginal];
+    } else {
+      this.ventasFiltradas = this.ventasOriginal.filter(v => {
+        const fechaSolo = v.fecha_pago.split('T')[0];
+        return fechaSolo === this.fechaFiltro;
+      });
+    }
+    this.totalMostrado = this.ventasFiltradas.reduce((acc, v) => acc + Number(v.total_pagado), 0);
+  }
+
+  formatearFecha(fechaISO: string): string {
+    if (!fechaISO) return '';
+    const partes = fechaISO.split('T')[0].split('-');
+    return `${partes[2]}/${partes[1]}/${partes[0]}`;
+  }
+
+  async descargarExcel() {
+    const data: any[] = [];
+
+    for (const venta of this.ventasFiltradas) {
+      let productosTexto = 'Sin productos';
+      let meseroNombre = 'Desconocido';
+      let numeroMesa = 'N/D';
+      let tipoCliente = '';
+      let metodoPago = venta.metodo_pago || '';
+      const totalPagado = Number(venta.total_pagado);
+      const fechaSolo = venta.fecha_pago.split('T')[0];
+      let descuento = 0;
+      let totalOrden = 0;
+
+      try {
+        const orden = await this.ordersService.getOrderById(venta.id_orden).toPromise();
+
+        if (orden) {
+          descuento = Number(orden.descuento || 0);
+          totalOrden = Number(orden.total || 0);
+
+          const mesero = this.empleados.find(e => e.id === orden.id_mesero);
+          meseroNombre = mesero ? `${mesero.nombre} ${mesero.appaterno}` : 'Desconocido';
+
+          const mesa = this.mesas.find(m => m.id === orden.id_mesa);
+          numeroMesa = mesa ? mesa.numero : 'N/D';
+
+          tipoCliente = orden.tipo_cliente || '';
+        }
+
+        const detalles = await this.orderDetailsService.getByOrderId(venta.id_orden).toPromise();
+
+        if (detalles && detalles.length > 0) {
+          productosTexto = detalles.map(p => {
+            const nombre = p.nombre_producto || 'Producto';
+            const precio = parseFloat(p.subtotal) || 0;
+            return `${nombre} x${p.cantidad} ($${precio.toFixed(2)})`;
+          }).join(', ');
+        }
+      } catch (error) {
+        console.error(`Error al obtener datos de orden ${venta.id_orden}:`, error);
+      }
+
+      const descuentoTexto = (descuento > 0 && totalOrden > 0)
+        ? `$${descuento.toFixed(2)} (${((descuento / totalOrden) * 100).toFixed(2)}%)`
+        : `$0.00`;
+
+      data.push({
+        ID_Venta: venta.id,
+        ID_Orden: venta.id_orden,
+        Método_Pago: metodoPago,
+        Fecha_Pago: fechaSolo,
+        Productos: productosTexto,
+        Mesero: meseroNombre,
+        Mesa: numeroMesa,
+        Tipo_Cliente: tipoCliente,
+        Total: totalOrden,
+        Descuento: descuentoTexto,
+        Total_Pagado: totalPagado
+      });
+    }
+
+    const sumaTotalPagado = data.reduce((sum, r) => sum + (r.Total_Pagado || 0), 0);
+
+    data.push({});
+    data.push({
+      Tipo_Cliente: 'TOTALES:',
+      Total_Pagado: sumaTotalPagado
+    });
+
+    const ws = XLSX.utils.json_to_sheet(data, {
+      header: [
+        'ID_Venta',
+        'ID_Orden',
+        'Método_Pago',
+        'Fecha_Pago',
+        'Productos',
+        'Mesero',
+        'Mesa',
+        'Tipo_Cliente',
+        'Total',
+        'Descuento',
+        'Total_Pagado'
+      ]
+    });
+
+    ws['!cols'] = [
+      { wpx: 60 },
+      { wpx: 60 },
+      { wpx: 100 },
+      { wpx: 120 },
+      { wpx: 350 },
+      { wpx: 120 },
+      { wpx: 50 },
+      { wpx: 100 },
+      { wpx: 80 },
+      { wpx: 120 },  
+      { wpx: 80 }
+    ];
+
+    for (let i = 1; i <= data.length; i++) {
+      const cellOrden = `I${i + 1}`;
+      const cellTotal = `K${i + 1}`;
+      if (ws[cellOrden]) ws[cellOrden].z = '$#,##0.00';
+      if (ws[cellTotal]) ws[cellTotal].z = '$#,##0.00';
+    }
+
+    const wb = XLSX.utils.book_new();
+    XLSX.utils.book_append_sheet(wb, ws, 'Reporte_Ventas');
+    XLSX.writeFile(wb, `reporte_ventas_${this.fechaFiltro}.xlsx`);
+  }
 }

@@ -38,46 +38,46 @@ mat-nav-list a {
 .profile-section {
   display: flex;
   align-items: center;
-  margin-left: -10px;
-  margin-top: 5px;
-  padding: 20px;
+  padding: 10px 12px;
   background-color: #121212;
+  gap: 8px;
 }
 
 .profile-image {
-  width: 30px;       
-  height: 30px;
-  border-radius: 50%; 
+  width: 26px;
+  height: 26px;
+  border-radius: 50%;
   object-fit: cover;
-  margin-right: 8px;  
   flex-shrink: 0;
 }
 
 .profile-info {
   display: flex;
   flex-direction: column;
+  overflow: hidden;
 
   h3 {
     margin: 0;
-    font-size: 13px;
+    font-size: 12px;
     color: white;
     font-weight: 500;
-    line-height: 1.1;
-    overflow: hidden;
-    text-overflow: ellipsis;
+    line-height: 1.2;
     white-space: nowrap;
+    text-overflow: ellipsis;
+    overflow: hidden;
   }
 
   p {
     margin: 0;
-    font-size: 11px;
+    font-size: 10px;
     color: #ccc;
     line-height: 1.1;
-    overflow: hidden;
-    text-overflow: ellipsis;
     white-space: nowrap;
+    text-overflow: ellipsis;
+    overflow: hidden;
   }
 }
+
 
 .btn-config {
   background-color: transparent;
@@ -287,18 +287,22 @@ mat-sidenav {
   .toolbar-profile-button {
     max-width: 100%;
     padding: 4px 8px;
-    gap: 6px;
+    gap: 4px;
 
     .profile-image {
       width: 28px;
+      margin-right: 100px;
       height: 28px;
     }
 
     .profile-info h3 {
+      margin-right: -30px;
       font-size: 12px;
     }
 
     .profile-info p {
+      margin-top: 0px;
+      margin-right: -30px;
       font-size: 10px;
     }
 

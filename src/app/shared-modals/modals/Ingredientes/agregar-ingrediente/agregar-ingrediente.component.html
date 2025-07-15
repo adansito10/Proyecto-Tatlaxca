@@ -17,7 +17,7 @@
       <mat-select formControlName="unidad" required>
         <mat-option value="g">Gramos (gr)</mat-option>
         <mat-option value="ml">Mililitros (ml)</mat-option>
-        <mat-option value="unidades">Unidades</mat-option>
+        <mat-option value="unidades">piezas (pzs)</mat-option>
       </mat-select>
       <mat-error *ngIf="ingredienteForm.get('unidad')?.hasError('required')">
         La unidad es obligatoria

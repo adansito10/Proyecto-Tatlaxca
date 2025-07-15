@@ -15,8 +15,8 @@
     <mat-form-field appearance="fill" class="full-width">
       <mat-label>Unidad de Medida</mat-label>
       <mat-select formControlName="unidad" required>
-        <mat-option value="Unidad">Unidades</mat-option>
-        <mat-option value="Paquete">Paquetes</mat-option>
+        <mat-option value="Unidad">unidades</mat-option>
+        <mat-option value="Paquete">paquete</mat-option>
       </mat-select>
       <mat-error *ngIf="suministroForm.get('unidad')?.hasError('required')">Seleccione una unidad</mat-error>
     </mat-form-field>
