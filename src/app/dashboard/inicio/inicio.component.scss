@@ -3,48 +3,48 @@
   max-width: 100%;
   padding: 2rem;
   margin: 0 auto;
-  background-color: #121212;
-  color: #ffffff;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.6);
+  background-color: #f5f5f5;
+  color: #4e342e;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
   box-sizing: border-box;
 }
 
-
 mat-card {
-  background-color: #1a1818;
-  color: #f5f5f5;
+  background-color: #fffaf5;
+  color: #3e2723;
   border-radius: 6px;
-  box-shadow: 0 2px 8px rgba(0,0,0,0.5);
+  box-shadow: 0 2px 6px rgba(254, 143, 38, 0.1);
 }
 
 mat-card-header {
-  color: #ffffff;
+  color: #3e2723;
 }
 
 table {
   width: 100%;
   border-collapse: collapse;
-  color: #e0e0e0;
-  background-color: transparent;
+  color: #3e2723;
+  background-color: white;
+  border: 1px solid #e0e0e0;
 }
 
 thead {
-  background-color: #2c2c2c;
-  color: #bb86fc; 
+  background-color: #fe8f26;
+  color: white;
 }
 
 thead th {
   padding: 0.75rem;
-  border-bottom: 1px solid #444;
+  border-bottom: 1px solid #ffa64d;
 }
 
 tbody tr {
-  background-color: #1e1e1e;
-  border-bottom: 1px solid #333;
+  background-color: #ffffff;
+  border-bottom: 1px solid #eee3d9;
 }
 
 tbody tr:hover {
-  background-color: #333;
+  background-color: #fff2e0;
 }
 
 tbody td {
@@ -52,23 +52,23 @@ tbody td {
 }
 
 .badge.bg-danger {
-  background-color: #cf6679 !important;
+  background-color: #ef5350 !important;
   color: white;
 }
 
 .badge.bg-success {
-  background-color: #03dac5 !important;
-  color: #000;
+  background-color: #81c784 !important;
+  color: #1b5e20;
 }
 
 .badge.bg-primary {
-  background-color: #2196f3 !important;
+  background-color: #fe8f26 !important;
   color: white;
 }
 
 .badge.bg-warning {
-  background-color: #ffb300 !important;
-  color: black;
+  background-color: #ffca28 !important;
+  color: #4e342e;
 }
 
 canvas {
@@ -97,12 +97,14 @@ canvas {
   padding: 8px;
   cursor: default;
   transition: transform 0.25s ease, box-shadow 0.25s ease;
-  color: #f5f5f5;
+  color: #3e2723;
+  background-color: #ffffff;
+  border: 1px solid #ffe0c1;
 }
 
 .ranking-card:hover {
   transform: translateY(-3px);
-
+  box-shadow: 0 4px 12px rgba(254, 143, 38, 0.2);
 }
 
 .ranking-img {
@@ -115,13 +117,13 @@ canvas {
 }
 
 .ranking-card:hover .ranking-img {
-  filter: brightness(1.1);
+  filter: brightness(1.05);
 }
 
 .ranking-info h5 {
   font-size: 0.85rem;
   font-weight: 600;
-  color: #d1d1f0;
+  color: #fe8f26;
   margin-bottom: 4px;
   white-space: nowrap;
   overflow: hidden;
@@ -141,13 +143,6 @@ canvas {
   padding: 3px 7px;
 }
 
-
-
-
-
-
-
-
 .productos-grid {
   display: flex;
   flex-wrap: wrap;
@@ -157,16 +152,15 @@ canvas {
 }
 
 .producto-card {
-  flex: 1 1 calc(20% - 1rem); /* 5 tarjetas por fila con espacio */
+  flex: 1 1 calc(20% - 1rem);
   max-width: calc(20% - 1rem);
-  box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+  box-shadow: 0 2px 6px rgba(0,0,0,0.05);
   border-radius: 10px;
   overflow: hidden;
-  background-color: #1e1e1e;
-  color: white;
+background-color: #ffe0b2; /* un poco más vivo */
+  color: #000000;
+  border: 1px solid #000000;
 }
-
-
 
 .producto-card img {
   height: 150px;
@@ -177,7 +171,7 @@ canvas {
   font-size: 1.1rem;
   text-align: center;
   margin: 0.5rem 0;
-  color: #fff;
+  color: #3e2723;
 }
 
 .producto-ventas {
@@ -186,51 +180,41 @@ canvas {
 }
 
 .badge.bg-primary {
-  background-color: #3f51b5; /* Azul Material */
+  background-color: #fe8f26;
   padding: 0.4em 0.8em;
   border-radius: 1em;
   font-size: 0.85rem;
+  color: white;
 }
 
-
-
-
+/* Responsive */
 @media (max-width: 1200px) {
   .producto-card {
-    flex: 1 1 calc(25% - 1rem); /* 4 por fila */
+    flex: 1 1 calc(25% - 1rem);
     max-width: calc(25% - 1rem);
   }
 }
 
 @media (max-width: 992px) {
   .producto-card {
-    flex: 1 1 calc(33.33% - 1rem); /* 3 por fila */
+    flex: 1 1 calc(33.33% - 1rem);
     max-width: calc(33.33% - 1rem);
   }
 }
 
 @media (max-width: 768px) {
   .producto-card {
-    flex: 1 1 calc(50% - 1rem); /* 2 por fila */
+    flex: 1 1 calc(50% - 1rem);
     max-width: calc(50% - 1rem);
   }
 }
 
 @media (max-width: 480px) {
   .producto-card {
-    flex: 1 1 100%; /* 1 por fila */
+    flex: 1 1 100%;
     max-width: 100%;
   }
 }
-
-
-
-
-
-
-
-
-
 
 .graficas-row {
   display: flex;
@@ -245,9 +229,8 @@ canvas {
   min-width: 260px;
 }
 
-/* Asegura que los gráficos se vean más pequeños */
 .grafica-col mat-card-content canvas {
-  height:280px !important;
+  height: 280px !important;
   max-height: 240px;
   width: 100% !important;
   display: block;
@@ -255,7 +238,6 @@ canvas {
   object-fit: contain;
 }
 
-/* Responsivo */
 @media (max-width: 992px) {
   .grafica-col {
     flex: 1 1 100%;
@@ -265,3 +247,18 @@ canvas {
 
 
 
+mat-card-title {
+  color: #000000;         /* Color cálido tipo cafetería */
+  font-weight: 700;       /* Negrita */
+}
+
+
+.producto-mas-vendido {
+  background-color: #ffe0b2; /* Naranja claro */
+  border: 1px solid #ffcc80;
+}
+
+.producto-menos-vendido {
+  background-color: #ffcdd2; /* Rojo claro */
+  border: 1px solid #ef9a9a;
+}

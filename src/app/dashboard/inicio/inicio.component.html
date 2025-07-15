@@ -1,6 +1,6 @@
 <div class="container py-4">
   <h2 class="fw-bold mb-4">Bienvenido Al Panel Administrativo {{ nombreUsuario }}</h2>
-  <h5 style="color: rgb(255, 255, 255);" class="mb-4">
+  <h5 style="color: rgb(0, 0, 0);" class="mb-4">
     Datos del mes actual: {{ mesActual | titlecase }}
   </h5>
 
@@ -18,19 +18,20 @@
       </mat-card>
     </div>
 
-    <!-- Horas Pico -->
-    <div class="grafica-col">
+
+         <div class="grafica-col">
       <mat-card>
         <mat-card-header>
           <mat-card-title>
-            <mat-icon>schedule</mat-icon> Horas Pico
+            <mat-icon>timeline</mat-icon> Tendencia de Ganancias Semanales
           </mat-card-title>
         </mat-card-header>
         <mat-card-content>
-          <canvas baseChart [data]="ventasHoraData" [type]="'bar'"></canvas>
+          <canvas baseChart [data]="ventasSemanaData" [type]="'line'"></canvas>
         </mat-card-content>
       </mat-card>
     </div>
+
 
    
 
@@ -48,7 +49,7 @@
                   #{{ i + 1 }} - {{ p.nombre }}
                 </h5>
                 <p class="producto-ventas">
-                  <span class="badge">{{ p.ventas }} ventas</span>
+               <span class="badge" style="color: black;">{{ p.ventas }} ventas</span>
                 </p>
               </mat-card-content>
             </mat-card>
@@ -58,15 +59,15 @@
     </div>
 
 
-     <div class="grafica-col">
+      <div class="grafica-col">
       <mat-card>
         <mat-card-header>
           <mat-card-title>
-            <mat-icon>timeline</mat-icon> Tendencia de Ganancias Semanales
+            <mat-icon>schedule</mat-icon> Horas Pico
           </mat-card-title>
         </mat-card-header>
         <mat-card-content>
-          <canvas baseChart [data]="ventasSemanaData" [type]="'line'"></canvas>
+          <canvas baseChart [data]="ventasHoraData" [type]="'bar'"></canvas>
         </mat-card-content>
       </mat-card>
     </div>
@@ -102,7 +103,7 @@
                   {{ p.nombre }}
                 </h5>
                 <p class="producto-ventas">
-                  <span class="badge">{{ p.ventas }} ventas</span>
+                <span class="badge" style="color: black;">{{ p.ventas }} ventas</span>
                 </p>
               </mat-card-content>
             </mat-card>
