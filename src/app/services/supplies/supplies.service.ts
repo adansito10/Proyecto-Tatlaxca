@@ -1,29 +1,43 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
-import { environment } from '../../enviroments/environment';
+
+export interface Insumo {
+  id: number;
+  nombre: string;
+  cantidad: number;
+  unidad: string;
+  stock: number;
+  created_at?: string;
+  updated_at?: string;
+  deleted_at?: string;
+}
+
+export interface InsumoSeleccionado extends Insumo {
+  cantidad: number;
+}
 
 @Injectable({
   providedIn: 'root'
 })
 export class InsumosService {
-   private apiUrl = 'http://194.163.44.12:3010/api/supplies'; // Cambia la URL según tu configuración
+   private apiUrl = 'http://194.163.44.12:3010/api/supplies'; 
 
   constructor(private http: HttpClient) {}
 
-  obtenerInsumos(): Observable<any[]> {
-    return this.http.get<any[]>(this.apiUrl);
+  obtenerInsumos(): Observable<Insumo[]> {
+    return this.http.get<Insumo[]>(this.apiUrl);
   }
 
-  crearInsumo(insumo: any): Observable<any> {
-    return this.http.post<any>(this.apiUrl, insumo);
+  crearInsumo(insumo: Insumo): Observable<Insumo> {
+    return this.http.post<Insumo>(this.apiUrl, insumo);
   }
 
-  actualizarInsumo(id: string, insumo: any): Observable<any> {
-    return this.http.put<any>(`${this.apiUrl}/${id}`, insumo);
+  actualizarInsumo(id: number, insumo: Insumo): Observable<Insumo> {
+    return this.http.put<Insumo>(`${this.apiUrl}/${id}`, insumo);
   }
 
-  eliminarInsumo(id: number): Observable<any> {
-    return this.http.delete<any>(`${this.apiUrl}/${id}`);
+  eliminarInsumo(id: number): Observable<void> {
+    return this.http.delete<void>(`${this.apiUrl}/${id}`);
   }
- }
+}

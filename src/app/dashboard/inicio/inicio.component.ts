@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { ChartData } from 'chart.js';
 import { DashboardService } from '../../services/dashboard/dashboard.service';
-import { AuthService } from '../../services/auth.service/auth.service';
+import { AuthService } from '../../services/auth/auth.service';
 import { EmployeesService } from '../../services/employees/employees-service';
 
 @Component({

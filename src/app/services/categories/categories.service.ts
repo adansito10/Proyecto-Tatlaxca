@@ -1,13 +1,15 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
-import { environment } from '../../enviroments/environment';
 
-export interface Category {
+export interface Categoria {
   id: number;
   nombre: string;
   descripcion: string;
 }
+
+
+
 @Injectable({ providedIn: 'root' })
 
 export class CategoriesService {
@@ -15,19 +17,19 @@ export class CategoriesService {
 
   constructor(private http: HttpClient) {}
 
-  obtenerCategories(): Observable<Category[]> {
-    return this.http.get<Category[]>(this.apiUrl);
+  obtenerCategories(): Observable<Categoria[]> {
+    return this.http.get<Categoria[]>(this.apiUrl);
   }
 
-  crearCategory(data: Partial<Category>): Observable<Category> {
-    return this.http.post<Category>(this.apiUrl, data);
+  crearCategory(data: Partial<Categoria>): Observable<Categoria> {
+    return this.http.post<Categoria>(this.apiUrl, data);
   }
 
-  actualizarCategory(id: number, data: Partial<Category>): Observable<Category> {
-    return this.http.put<Category>(`${this.apiUrl}/${id}`, data);
+  actualizarCategory(id: number, data: Partial<Categoria>): Observable<Categoria> {
+    return this.http.put<Categoria>(`${this.apiUrl}/${id}`, data);
   }
 
-  eliminarCategory(id: number): Observable<Category> {
-    return this.http.delete<Category>(`${this.apiUrl}/${id}`);
+  eliminarCategory(id: number): Observable<Categoria> {
+    return this.http.delete<Categoria>(`${this.apiUrl}/${id}`);
   }
 }

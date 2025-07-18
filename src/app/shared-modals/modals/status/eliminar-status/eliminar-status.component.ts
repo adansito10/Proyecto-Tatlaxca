@@ -4,7 +4,9 @@ import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 @Component({
   selector: 'app-eliminar-status',
   standalone: false,
-  templateUrl: './eliminar-status.component.html'
+  templateUrl: './eliminar-status.component.html',
+  styleUrls: ['./eliminar-status.component.scss']
+
 })
 export class EliminarStatusComponent {
   constructor(

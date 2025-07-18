@@ -1,4 +1,4 @@
-<h2 mat-dialog-title>{{ modo === 'agregar' ? 'Agregar Mesa' : 'Editar Mesa' }}</h2>
+<h2  class="titulo-negrita" mat-dialog-title>{{ modo === 'agregar' ? 'Agregar Mesa' : 'Editar Mesa' }}</h2>
 
 <mat-dialog-content>
   <form [formGroup]="mesaForm">
@@ -25,7 +25,11 @@
           {{ estado.estado }}
         </mat-option>
       </mat-select>
+        <mat-hint *ngIf="modo === 'agregar'">
+  ⚠️ Seleccione si esta ocupada o desocupada
+  </mat-hint>
     </mat-form-field>
+
   </form>
 </mat-dialog-content>
 

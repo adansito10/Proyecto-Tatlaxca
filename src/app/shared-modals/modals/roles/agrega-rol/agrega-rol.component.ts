@@ -6,6 +6,8 @@ import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
   selector: 'app-rol-form',
   standalone: false,
   templateUrl: './agregar-rol.component.html',
+  styleUrls: ['./agregar-rol.component.scss'] 
+
 })
 export class AgregarRolComponent implements OnInit {
   rolForm!: FormGroup;

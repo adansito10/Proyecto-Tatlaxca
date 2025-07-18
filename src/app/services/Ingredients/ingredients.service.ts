@@ -1,7 +1,16 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
-import { environment } from '../../enviroments/environment';
+
+export interface Ingrediente {
+  id: number;
+  nombre: string;
+  cantidad: number;
+  unidad: string;
+  stock: number;
+  created_at?: string; 
+  updated_at?: string;
+}
 
 @Injectable({
   providedIn: 'root'
@@ -11,19 +20,19 @@ export class IngredientsService {
 
   constructor(private http: HttpClient) {}
 
-  obtenerIngredientes(): Observable<any[]> {
-    return this.http.get<any[]>(this.apiUrl);
+  obtenerIngredientes(): Observable<Ingrediente[]> {
+    return this.http.get<Ingrediente[]>(this.apiUrl);
   }
 
-  crearIngrediente(ingrediente: any): Observable<any> {
-    return this.http.post<any>(this.apiUrl, ingrediente);
+  crearIngrediente(ingrediente: Partial<Ingrediente>): Observable<Ingrediente> {
+    return this.http.post<Ingrediente>(this.apiUrl, ingrediente);
   }
 
-  actualizarIngrediente(id: string, ingrediente: any): Observable<any> {
-    return this.http.put<any>(`${this.apiUrl}/${id}`, ingrediente);
+  actualizarIngrediente(id: number, ingrediente: Partial<Ingrediente>): Observable<Ingrediente> {
+    return this.http.put<Ingrediente>(`${this.apiUrl}/${id}`, ingrediente);
   }
 
- eliminarIngrediente(id: number): Observable<any> {
-    return this.http.delete<any>(`${this.apiUrl}/${id}`);
+  eliminarIngrediente(id: number): Observable<Ingrediente> {
+    return this.http.delete<Ingrediente>(`${this.apiUrl}/${id}`);
   }
 }

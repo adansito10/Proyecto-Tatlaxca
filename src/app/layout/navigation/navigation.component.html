@@ -22,7 +22,7 @@
   <mat-divider></mat-divider>
 
   <h4 class="menu-section">Gestión de Menú</h4>
-  <a mat-list-item routerLink="/dashboard/products">
+  <a mat-list-item routerLink="/dashboard/menu">
     <mat-icon matListIcon>inventory_2</mat-icon>
     <span>Menú</span>
   </a>
@@ -30,7 +30,7 @@
     <mat-icon matListIcon>restaurant_menu</mat-icon>
     <span>Ingredientes</span>
   </a>
-  <a mat-list-item routerLink="/dashboard/inventory">
+  <a mat-list-item routerLink="/dashboard/supplies">
     <mat-icon matListIcon>warehouse</mat-icon>
     <span>Insumos</span>
   </a>
@@ -66,7 +66,7 @@
     <mat-icon matListIcon>receipt_long</mat-icon>
     <span>Órdenes</span>
   </a>
-  <a mat-list-item routerLink="/dashboard/reports">
+  <a mat-list-item routerLink="/dashboard/sales">
     <mat-icon matListIcon>bar_chart</mat-icon>
     <span>Ventas</span>
   </a>
@@ -96,6 +96,42 @@
 
   <span class="spacer"></span>
 
+
+
+
+<div class="dropdown notification-dropdown">
+  <button
+    class="btn btn-dark position-relative"
+    type="button"
+    id="dropdownNotifButton"
+    data-bs-toggle="dropdown"
+    aria-expanded="false">
+    <i class="bi bi-bell fs-5"></i>
+    <span *ngIf="cantidadNotificaciones > 0"
+          class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger">
+      {{ cantidadNotificaciones }}
+    </span>
+  </button>
+
+  <ul class="dropdown-menu dropdown-menu-end shadow-lg" aria-labelledby="dropdownNotifButton" style="width: 350px; max-height: 400px; overflow-y: auto;">
+    <li class="dropdown-header fw-bold px-3 py-2 border-bottom">Notificaciones</li>
+
+    <ng-container *ngIf="notificaciones.length > 0; else noNotifs">
+      <li *ngFor="let notif of notificaciones" class="px-3 py-2 border-bottom">
+        <div class="fw-semibold">{{ notif }}</div>
+      </li>
+    </ng-container>
+
+    <ng-template #noNotifs>
+      <li class="px-3 py-3 text-center text-muted">No tienes notificaciones nuevas</li>
+    </ng-template>
+  </ul>
+</div>
+
+
+
+
+
   <button mat-button [matMenuTriggerFor]="perfilMenu" class="toolbar-profile-button">
     <img src="/perfil.jpg" alt="Perfil" class="profile-image" />
     <div class="profile-info">
@@ -107,7 +143,7 @@
   </button>
 
   <mat-menu #perfilMenu="matMenu">
-    <button mat-menu-item [routerLink]="['/dashboard/configuration']">
+    <button mat-menu-item [routerLink]="['/dashboard/perfil']">
 <mat-icon>account_circle</mat-icon>
       <span>Perfil</span>
     </button>

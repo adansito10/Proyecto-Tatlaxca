@@ -6,6 +6,8 @@ import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
   selector: 'app-status-form',
   standalone: false,
   templateUrl: './agregar-status.component.html',
+  styleUrls: ['./agregar-status.component.scss']
+
 })
 export class AgregarStatusComponent implements OnInit {
   statusForm!: FormGroup;

@@ -1,4 +1,4 @@
-<h2 mat-dialog-title>
+<h2 class="titulo-negrita" mat-dialog-title>
   {{ data.modo === 'agregar' ? 'Agregar Usuario' : (data.modo === 'editar' ? 'Editar Usuario' : 'Eliminar Usuario') }}
 </h2>
 
@@ -72,5 +72,4 @@
 <mat-dialog-actions align="end">
   <button mat-button (click)="cancelar()">Cancelar</button>
   <button mat-flat-button color="primary" *ngIf="data.modo !== 'eliminar'" [disabled]="usuarioForm.invalid" (click)="guardar()">Guardar</button>
-  <button mat-flat-button color="warn" *ngIf="data.modo === 'eliminar'" (click)="eliminar()">Eliminar</button>
 </mat-dialog-actions>

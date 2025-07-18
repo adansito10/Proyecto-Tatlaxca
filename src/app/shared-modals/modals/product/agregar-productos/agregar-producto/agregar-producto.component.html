@@ -1,0 +1,99 @@
+<h2 class="titulo-negrita"   mat-dialog-title>Agregar Producto</h2>
+
+<mat-dialog-content>
+  <form [formGroup]="productoForm">
+    <mat-form-field appearance="fill" class="full-width">
+      <mat-label>Nombre</mat-label>
+  <input matInput formControlName="nombre" maxlength="40" required appCapitalize>
+  <mat-hint align="end">{{ productoForm.get('nombre')?.value?.length || 0 }}/40</mat-hint>    
+</mat-form-field>
+
+   
+   <mat-form-field appearance="fill" class="full-width">
+  <mat-label>Categoría</mat-label>
+  <mat-select formControlName="categoria">
+    <mat-option *ngFor="let cat of categorias" [value]="cat.id">{{ cat.nombre }}</mat-option>
+  </mat-select>
+</mat-form-field>
+
+    <mat-form-field appearance="fill" class="full-width">
+      <mat-label>Precio</mat-label>
+  <input matInput type="number" formControlName="precio" placeholder="Ej. 45.50" min="1" required>
+    </mat-form-field>
+
+    <mat-form-field appearance="fill" class="full-width">
+      <mat-label>Descripción</mat-label>
+        <mat-hint align="end">{{ productoForm.get('descripcion')?.value?.length || 0 }}/125</mat-hint>
+  <textarea matInput formControlName="descripcion" maxlength="125" required appCapitalize ></textarea>
+    </mat-form-field>
+
+ <div class="grid-container">
+
+  <div class="detalle-box">
+    <h4>Ingredientes</h4>
+    <div class="lista-header">
+      <span class="nombre">Nombre</span>
+      <span class="cantidad">Cantidad</span>
+    </div>
+    <div class="scrollable-list">
+      <div *ngIf="ingredientesSeleccionados.length; else sinIngredientes">
+        <div class="item" *ngFor="let ing of ingredientesSeleccionados">
+          <span class="nombre">{{ ing.nombre }}</span>
+          <span class="cantidad">{{ ing.cantidad }}{{ ing.unidad }} </span>
+        </div>
+      </div>
+      <ng-template #sinIngredientes>
+        <p>No hay ingredientes seleccionados.</p>
+      </ng-template>
+    </div>
+    <button mat-stroked-button color="primary" class="full-width-btn mt-2" (click)="abrirModalIngredientes()">
+      Seleccionar Ingredientes
+    </button>
+  </div>
+
+  <div class="detalle-box">
+    <h4>Insumos</h4>
+    <div class="lista-header">
+      <span class="nombre">Nombre</span>
+      <span class="cantidad">Cantidad</span>
+    </div>
+    <div class="scrollable-list">
+      <div *ngIf="insumosSeleccionados.length; else sinInsumos">
+        <div class="item" *ngFor="let ins of insumosSeleccionados">
+          <span class="nombre">{{ ins.nombre }}</span>
+          <span class="cantidad">{{ ins.cantidad }} {{ ins.unidad }} </span>
+        </div>
+      </div>
+      <ng-template #sinInsumos>
+        <p>No hay insumos seleccionados.</p>
+      </ng-template>
+    </div>
+    <button mat-stroked-button color="primary" class="full-width-btn mt-2" (click)="abrirModalInsumos()">
+      Seleccionar Insumos
+    </button>
+  </div>
+
+</div>
+
+
+
+    <div style="margin: 16px 0; text-align: center;">
+      <button mat-stroked-button color="accent" (click)="fileInput.click()" style="width: 100%;">
+        <mat-icon>add_a_photo</mat-icon>
+        Subir Foto del Producto
+      </button>
+      <input #fileInput type="file" accept="image/*" style="display: none" (change)="onFileSelected($event)">
+      
+      <div *ngIf="imagenProducto" style="margin-top: 16px;">
+        <img [src]="imagenProducto" alt="Vista previa" style="max-width: 200px; max-height: 150px; border-radius: 4px;">
+      </div>
+    </div>
+  </form>
+</mat-dialog-content>
+
+<mat-dialog-actions align="end">
+  <button mat-button mat-dialog-close>Cancelar</button>
+  <button mat-flat-button color="primary" (click)="guardarProducto()" [disabled]="productoForm.invalid">
+    Guardar
+  </button>
+</mat-dialog-actions>

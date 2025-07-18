@@ -9,20 +9,19 @@ import { MatIconModule } from '@angular/material/icon';
 import { FormsModule } from '@angular/forms';
 import { ReactiveFormsModule } from '@angular/forms';
 
-import { AgregarProductoComponent } from './Productos/agregar-productos/agregar-producto/agregar-producto.component';
-import { EditarProductoComponent } from './Productos/editar-producto/editar-producto/editar-producto.component';
-import { EliminarProductoComponent } from './Productos/eliminar-producto/eliminar-producto/eliminar-producto.component';
-import { VerProductoComponent } from './Productos/ver-producto/ver-producto/ver-producto.component';
-import { MostrarIngredientesComponent } from './Ingredientes/Mostrar-ingredientes/mostrar-ingredientes.component';
+import { AgregarProductoComponent } from './product/agregar-productos/agregar-producto/agregar-producto.component';
+import { EditarProductoComponent } from './product/editar-producto/editar-producto/editar-producto.component';
+import { EliminarProductoComponent } from './product/eliminar-producto/eliminar-producto/eliminar-producto.component';
+import { VerProductoComponent } from './product/ver-producto/ver-producto/ver-producto.component';
+import { MostrarIngredientesComponent } from './ingredients/Mostrar-ingredientes/mostrar-ingredientes.component';
 import { RouterModule } from '@angular/router';
 import { MatDivider } from '@angular/material/divider';
 import { MatListModule } from '@angular/material/list';
-import { AgregarIngredienteComponent } from './Ingredientes/agregar-ingrediente/agregar-ingrediente.component';
-import { EditarIngredienteComponent } from './Ingredientes/editar-ingrediente/editar-ingrediente.component';
-import { EliminarIngredienteComponent } from './Ingredientes/eliminar-ingrediente/eliminar-ingrediente.component';
-import { AgregarSuministroComponent } from './Inventario/agregar-suministro/agregar-suministro.component';
-import { EditarSuministroComponent } from './Inventario/editar-suministro/editar-suministro.component';
-import { EliminarSuministroComponent } from './Inventario/eliminar-suministro/eliminar-suministro.component';
+import { AgregarIngredienteComponent } from './ingredients/agregar-ingrediente/agregar-ingrediente.component';
+import { EditarIngredienteComponent } from './ingredients/editar-ingrediente/editar-ingrediente.component';
+import { EliminarIngredienteComponent } from './ingredients/eliminar-ingrediente/eliminar-ingrediente.component';
+import { AgregarSuministroComponent } from './supplies/agregar-suministro/agregar-suministro.component';
+import { EliminarSuministroComponent } from './supplies/eliminar-suministro/eliminar-suministro.component';
 
 
 import { MatDatepickerModule } from '@angular/material/datepicker';
@@ -32,7 +31,7 @@ import { EditarUsuarioComponent } from './users/editar-usuario/editar-usuario.co
 import { EliminarUsuarioComponent } from './users/eliminar-usuario/eliminar-usuario.component';
 import { ConfirmLogoutDialogComponent } from './confirm-logout-login/confirmLogoutDialogComponent';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
-import { MostrarInsumosComponent } from './Inventario/mostrar-insumos/mostrar.insumos.component';
+import { MostrarInsumosComponent } from './supplies/mostrar-insumos/mostrar.insumos.component';
 import { AgregarCategoriesComponent } from './categories/agregar-categoria/agregar-categoria.component';
 import { EliminarCategoryComponent } from './categories/eliminar-categoria/eliminar-categoria-component';
 import { AgregarMesaComponent } from './tables/agregar-tables/agregar-mesa.component';
@@ -55,7 +54,6 @@ import { CapitalizeDirective } from '../../directive/capitalize.directive';
   EditarIngredienteComponent,
   EliminarIngredienteComponent,
   AgregarSuministroComponent,
-  EditarSuministroComponent,
   EliminarSuministroComponent,
   AgregarUsuarioComponent,
   EditarUsuarioComponent,

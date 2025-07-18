@@ -1,14 +1,12 @@
 
 .custom-agregar-btn {
-  background-color: #fe8f26; /* color café */
+  background-color: #fe8f26; 
   border-color: #fe8f26;
   color: white;
   padding: 10px 19px;
   font-size: 1rem;
   border-radius: 8px;
-    font-weight: 1000;      
-
-
+  font-weight: 1000;      
 }
 
 
@@ -23,23 +21,21 @@
     position: absolute;
     left: 10px;
     margin-top: 3px;
-    color: black; /* Cambia a negro o al color que quieras */
-    pointer-events: none; /* Para que el click pase al input */
+    color: black; 
+    pointer-events: none; 
     font-size: 20px;
     z-index: 2;
   }
 
   input.buscador-custom {
-    padding-left: 35px !important; /* Para que el texto no se monte en el icono */
+    padding-left: 35px !important; 
   }
 }
 
-
-
 .buscador-custom {
-  background-color: #f9f9f9; /* Ejemplo: color claro tipo café */
-  color: #3e2c1c;             /* Texto en marrón oscuro */
-  border: 1px solid #000000;  /* Borde café */
+  background-color: #f9f9f9; 
+  color: #3e2c1c;           
+  border: 1px solid #000000;  
   font-weight: 500;
 }
 
@@ -85,7 +81,7 @@
 .table, 
 .table th, 
 .table td {
-  border-width: 1px; /* aumenta el grosor */
-  border-style: solid; /* asegúrate que el borde sea sólido */
-  border-color: rgb(128, 128, 128); /* color negro para más contraste */
+  border-width: 1px; 
+  border-style: solid; 
+  border-color: rgb(128, 128, 128); 
 }

@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
-import { TablesService } from '../../services/tables/tables.service';
+import { Table, TablesService } from '../../services/tables/tables.service';
 import { AgregarMesaComponent } from '../../shared-modals/modals/tables/agregar-tables/agregar-mesa.component';
 import { EliminarMesaComponent } from '../../shared-modals/modals/tables/eliminar-tables/eliminar-mesa.component';
 
@@ -11,7 +11,7 @@ import { EliminarMesaComponent } from '../../shared-modals/modals/tables/elimina
   styleUrls: ['./tables.component.scss']
 })
 export class TablesComponent implements OnInit {
-  mesas: any[] = [];
+  mesas: Table[] = [];
   filtro: string = '';
 
   constructor(
@@ -26,14 +26,14 @@ export class TablesComponent implements OnInit {
   obtenerMesas(): void {
     this.tablesService.obtenerMesas().subscribe({
       next: data => {
-        this.mesas = data.filter(m => m.deleted_at === null);
+         this.mesas = data;
       },
       error: err => console.error('Error al obtener mesas:', err)
     });
   }
 
-  get mesasFiltradas(): any[] {
-    const texto = this.filtro.toLowerCase().trim();
+  get mesasFiltradas(): Table[] {
+    const texto = this.filtro.trim().toLowerCase();
     return this.mesas.filter(m =>
       m.numero.toString().includes(texto) ||
       m.ubicacion.toLowerCase().includes(texto)
@@ -43,7 +43,9 @@ export class TablesComponent implements OnInit {
   abrirModalAgregar(): void {
     const dialogRef = this.dialog.open(AgregarMesaComponent, {
       width: '500px',
-      data: { modo: 'agregar' }
+      data: {
+        modo: 'agregar' as 'agregar'
+      }
     });
 
     dialogRef.afterClosed().subscribe(result => {
@@ -56,15 +58,18 @@ export class TablesComponent implements OnInit {
     });
   }
 
-  abrirModalEditar(mesa: any): void {
+  abrirModalEditar(mesa: Table): void {
     const dialogRef = this.dialog.open(AgregarMesaComponent, {
       width: '500px',
-      data: { modo: 'editar', entidad: mesa }
+      data: {
+        modo: 'editar' as 'editar',
+        entidad: mesa
+      }
     });
 
     dialogRef.afterClosed().subscribe(result => {
       if (result) {
-        this.tablesService.actualizarMesa(mesa.id, result).subscribe({
+        this.tablesService.actualizarMesa(mesa.id!, result).subscribe({
           next: () => this.obtenerMesas(),
           error: err => console.error('Error al actualizar mesa:', err)
         });
@@ -72,15 +77,18 @@ export class TablesComponent implements OnInit {
     });
   }
 
-  abrirModalEliminar(mesa: any): void {
+  abrirModalEliminar(mesa: Table): void {
     const dialogRef = this.dialog.open(EliminarMesaComponent, {
       width: '400px',
-      data: { numero: mesa.numero, id: mesa.id }
+      data: {
+        numero: mesa.numero,
+        id: mesa.id
+      }
     });
 
     dialogRef.afterClosed().subscribe(confirmado => {
       if (confirmado) {
-        this.tablesService.eliminarMesa(mesa.id).subscribe({
+        this.tablesService.eliminarMesa(mesa.id!).subscribe({
           next: () => this.obtenerMesas(),
           error: err => console.error('Error al eliminar mesa:', err)
         });

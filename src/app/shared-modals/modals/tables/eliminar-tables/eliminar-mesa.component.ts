@@ -5,7 +5,9 @@ import { TablesService } from '../../../../services/tables/tables.service';
 @Component({
   selector: 'app-eliminar-mesa',
   standalone: false,
-  templateUrl: './eliminar-mesa.component.html'
+  templateUrl: './eliminar-mesa.component.html',
+    styleUrls: ['./eliminar-mesa.component.scss']
+
 })
 export class EliminarMesaComponent {
   constructor(

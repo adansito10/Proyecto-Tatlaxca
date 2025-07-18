@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
-import { CategoriesService, Category } from '../../services/categories/categories.service';
+import { CategoriesService, Categoria } from '../../services/categories/categories.service';
 import { AgregarCategoriesComponent } from '../../shared-modals/modals/categories/agregar-categoria/agregar-categoria.component';
 import { EliminarCategoryComponent } from '../../shared-modals/modals/categories/eliminar-categoria/eliminar-categoria-component';
 
@@ -11,7 +11,7 @@ import { EliminarCategoryComponent } from '../../shared-modals/modals/categories
   styleUrls: ['./categories.component.scss']
 })
 export class CategoriesComponent implements OnInit {
-  categories: Category[] = [];
+  categories: Categoria[] = [];
   filtroNombre = '';
 
   constructor(private dialog: MatDialog, private categoriesService: CategoriesService) {}
@@ -23,11 +23,11 @@ export class CategoriesComponent implements OnInit {
   loadCategories(): void {
     this.categoriesService.obtenerCategories().subscribe({
       next: data => this.categories = data,
-      error: err => console.error('Error cargando categorías:', err)
+      error: err => console.error('Error cargando categorías', err)
     });
   }
 
-  get filteredCategories(): Category[] {
+  get filteredCategories(): Categoria[] {
     const txt = this.filtroNombre.toLowerCase().trim();
     return this.categories.filter(c => c.nombre.toLowerCase().includes(txt));
   }
@@ -42,7 +42,7 @@ export class CategoriesComponent implements OnInit {
     });
   }
 
-  openEdit(category: Category): void {
+  openEdit(category: Categoria): void {
     const dialogRef = this.dialog.open(AgregarCategoriesComponent, {
       width: '500px',
       data: { modo: 'editar', category }
@@ -52,7 +52,7 @@ export class CategoriesComponent implements OnInit {
     });
   }
 
-  openDelete(category: Category): void {
+  openDelete(category: Categoria): void {
     const dialogRef = this.dialog.open(EliminarCategoryComponent, {
       width: '400px',
       data: category

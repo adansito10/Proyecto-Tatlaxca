@@ -4,7 +4,9 @@ import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 @Component({
   selector: 'app-eliminar-rol',
   standalone: false,
-  templateUrl: './eliminar-rol.component.html'
+  templateUrl: './eliminar-rol.component.html',
+  styleUrls: ['./eliminar-rol.component.scss']
+
 })
 export class EliminarRolComponent {
   constructor(

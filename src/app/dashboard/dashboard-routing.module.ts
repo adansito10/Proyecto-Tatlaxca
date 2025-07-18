@@ -1,16 +1,16 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 
-import { NavigationComponent } from '../layout/navigation/navigation.component'; // layout principal
+import { NavigationComponent } from '../layout/navigation/navigation.component'; 
 
 import { InicioComponent } from './inicio/inicio.component';
-import { ProductsComponent } from './Products/productos.component';
+import { ProductsComponent } from './menu/productos.component';
 import { IngredientsComponent } from './Ingredients/ingredients.component';
-import { UsersComponent } from './Users/users.component';
-import { ReportsComponent } from './Reports/reports.component';
-import { InventoryComponent } from './Inventory/inventory.component';
-import { ConfigurationComponent } from './Configuration/configuration.component';
-import { OrdersComponent } from './Orders/orders.component';
+import { UsersComponent } from './users/users.component';
+import { ReportsComponent } from './sales/sales.component';
+import { SuppliesComponent } from './supplies/supplies.component';
+import { ConfigurationComponent } from './configuration/configuration.component';
+import { OrdersComponent } from './orders/orders.component';
 import { CategoriesComponent } from './categories/categories.component';
 import { TablesComponent } from './tables/tables.component';
 import { RolesComponent } from './roles/roles.component';
@@ -23,17 +23,17 @@ const routes: Routes = [
     children: [
       { path: '', redirectTo: 'inicio', pathMatch: 'full' },
       { path: 'inicio', component: InicioComponent },
-      { path: 'products', component: ProductsComponent },
+      { path: 'menu', component: ProductsComponent },
       { path: 'ingredients', component: IngredientsComponent },
       { path: 'users', component: UsersComponent },
       { path: 'tables', component: TablesComponent },
       { path: 'roles', component: RolesComponent },
       { path: 'status', component: StatusComponent },
       { path: 'categories', component: CategoriesComponent },
-      { path: 'reports', component: ReportsComponent },
+      { path: 'sales', component: ReportsComponent },
       { path: 'orders', component: OrdersComponent },
-      { path: 'inventory', component: InventoryComponent },
-      { path: 'configuration', component: ConfigurationComponent }
+      { path: 'supplies', component: SuppliesComponent },
+      { path: 'perfil', component: ConfigurationComponent }
     ]
   }
 ];

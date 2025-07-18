@@ -3,6 +3,7 @@ import { MatDialog } from '@angular/material/dialog';
 import { RolesService } from '../../services/roles/roles.service';
 import { AgregarRolComponent } from '../../shared-modals/modals/roles/agrega-rol/agrega-rol.component';
 import { EliminarRolComponent } from '../../shared-modals/modals/roles/eliminar-rol/eliminar-rol.component';
+import { Role } from '../../services/roles/roles.service';
 
 @Component({
   selector: 'app-roles',
@@ -11,7 +12,7 @@ standalone: false,
   styleUrls: ['./roles.component.scss']
 })
 export class RolesComponent implements OnInit {
-  roles: any[] = [];
+  roles: Role[] = [];
   filtro: string = '';
 
   constructor(
@@ -32,7 +33,7 @@ export class RolesComponent implements OnInit {
     });
   }
 
-  get rolesFiltrados(): any[] {
+  get rolesFiltrados(): Role[] {
     const texto = this.filtro.toLowerCase().trim();
     return this.roles.filter(r =>
       r.rol.toLowerCase().includes(texto) ||
@@ -56,7 +57,7 @@ export class RolesComponent implements OnInit {
     });
   }
 
-  abrirModalEditar(rol: any): void {
+  abrirModalEditar(rol: Role): void {
     const dialogRef = this.dialog.open(AgregarRolComponent, {
       width: '500px',
       data: { modo: 'editar', entidad: rol }
@@ -72,7 +73,7 @@ export class RolesComponent implements OnInit {
     });
   }
 
-  abrirModalEliminar(rol: any): void {
+  abrirModalEliminar(rol: Role): void {
     const dialogRef = this.dialog.open(EliminarRolComponent, {
       width: '400px',
       data: { nombre: `Rol ${rol.rol}`, id: rol.id }
@@ -82,7 +83,7 @@ export class RolesComponent implements OnInit {
       if (confirmado) {
         this.rolesService.eliminarRol(rol.id).subscribe({
           next: () => this.obtenerRoles(),
-          error: err => console.error('Error al eliminar rol:', err)
+          error: err => console.error('Error al eliminar rol', err)
         });
       }
     });

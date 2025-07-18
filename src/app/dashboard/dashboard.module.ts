@@ -5,15 +5,15 @@ import { SharedModule } from '../shared-modals/shared.module';
 import { MatOptionModule } from '@angular/material/core';
 
 import { InicioComponent } from './inicio/inicio.component';
-import { ProductsComponent } from './Products/productos.component';
+import { ProductsComponent } from './menu/productos.component';
 import { IngredientsComponent } from './Ingredients/ingredients.component';
-import { UsersComponent } from './Users/users.component';
-import { ReportsComponent } from './Reports/reports.component';
-import { InventoryComponent } from './Inventory/inventory.component';
-import { ConfigurationComponent } from './Configuration/configuration.component';
+import { UsersComponent } from './users/users.component';
+import { ReportsComponent } from './sales/sales.component';
+import { SuppliesComponent } from './supplies/supplies.component';
+import { ConfigurationComponent } from './configuration/configuration.component';
 
 
-import { OrdersComponent } from './Orders/orders.component';
+import { OrdersComponent } from './orders/orders.component';
 import { MatSelectModule } from '@angular/material/select';
 import { ModalModule } from '../shared-modals/modals/modal.module';
 import { HttpClientJsonpModule } from '@angular/common/http';
@@ -44,7 +44,7 @@ import { MatPaginatorModule } from '@angular/material/paginator';
     IngredientsComponent,
     UsersComponent,
     ReportsComponent,
-    InventoryComponent,
+    SuppliesComponent,
     ConfigurationComponent,
     OrdersComponent,
     CategoriesComponent,

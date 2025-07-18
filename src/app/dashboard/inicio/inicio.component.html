@@ -1,6 +1,6 @@
 <div class="container py-4">
   <h2 class="fw-bold mb-4">Bienvenido Al Panel Administrativo {{ nombreUsuario }}</h2>
-  <h5 style="color: rgb(0, 0, 0);" class="mb-4">
+  <h5 style="color: rgb(255, 255, 255);" class="mb-4">
     Datos del mes actual: {{ mesActual | titlecase }}
   </h5>
 
@@ -8,8 +8,8 @@
     <div class="grafica-col">
       <mat-card>
         <mat-card-header>
-          <mat-card-title>
-            <mat-icon>calendar_today</mat-icon> Ganancias por Día
+          <mat-card-title class="titulo">
+            <mat-icon >calendar_today</mat-icon >  Ganancias por Día
           </mat-card-title>
         </mat-card-header>
         <mat-card-content>
@@ -22,7 +22,7 @@
          <div class="grafica-col">
       <mat-card>
         <mat-card-header>
-          <mat-card-title>
+          <mat-card-title class="titulo">
             <mat-icon>timeline</mat-icon> Tendencia de Ganancias Semanales
           </mat-card-title>
         </mat-card-header>
@@ -35,10 +35,10 @@
 
    
 
-    <div class="col-12 mb-4">
+    <div  class="col-12 mb-4">
       <mat-card>
         <mat-card-header>
-          <mat-card-title>Productos Más Vendidos</mat-card-title>
+          <mat-card-title class="titulo">Productos Más Vendidos</mat-card-title>
         </mat-card-header>
         <mat-card-content>
           <div class="productos-grid">
@@ -49,7 +49,7 @@
                   #{{ i + 1 }} - {{ p.nombre }}
                 </h5>
                 <p class="producto-ventas">
-               <span class="badge" style="color: black;">{{ p.ventas }} ventas</span>
+               <span class="badge" style="color: rgb(255, 255, 255);">{{ p.ventas }} ventas</span>
                 </p>
               </mat-card-content>
             </mat-card>
@@ -62,7 +62,7 @@
       <div class="grafica-col">
       <mat-card>
         <mat-card-header>
-          <mat-card-title>
+          <mat-card-title class="titulo">
             <mat-icon>schedule</mat-icon> Horas Pico
           </mat-card-title>
         </mat-card-header>
@@ -75,7 +75,7 @@
     <div class="grafica-col">
   <mat-card>
     <mat-card-header>
-      <mat-card-title>
+      <mat-card-title class="titulo">
         <mat-icon>assignment_turned_in</mat-icon> Órdenes Atendidas por Día
       </mat-card-title>
     </mat-card-header>
@@ -92,7 +92,7 @@
     <div class="col-12 mb-4">
       <mat-card>
         <mat-card-header>
-          <mat-card-title> Productos con Menor Movimiento</mat-card-title>
+          <mat-card-title class="titulo"> Productos con Menor Movimiento</mat-card-title>
         </mat-card-header>
         <mat-card-content>
           <div class="productos-grid">
@@ -103,7 +103,7 @@
                   {{ p.nombre }}
                 </h5>
                 <p class="producto-ventas">
-                <span class="badge" style="color: black;">{{ p.ventas }} ventas</span>
+                <span class="badge" style="color: rgb(255, 255, 255);">{{ p.ventas }} ventas</span>
                 </p>
               </mat-card-content>
             </mat-card>
@@ -115,7 +115,7 @@
     <div class="col-md-6 mb-4">
       <mat-card>
         <mat-card-header>
-          <mat-card-title>Ventas por Mesero</mat-card-title>
+          <mat-card-title class="titulo">Ventas por Mesero</mat-card-title>
         </mat-card-header>
         <mat-card-content>
           <canvas baseChart [data]="ventasMeseroData" [type]="'doughnut'"></canvas>
@@ -128,7 +128,7 @@
     <div class="col-md-6 mb-4">
       <mat-card>
         <mat-card-header>
-          <mat-card-title>Categorías Populares</mat-card-title>
+          <mat-card-title class="titulo">Categorías Populares</mat-card-title>
         </mat-card-header>
         <mat-card-content>
           <canvas baseChart [data]="categoriasData" [type]="'pie'"></canvas>

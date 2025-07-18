@@ -5,6 +5,8 @@ import { map, shareReplay } from 'rxjs/operators';
 import { Router } from '@angular/router';
 import { MatDialog } from '@angular/material/dialog';
 import { ConfirmLogoutDialogComponent } from '../../shared-modals/modals/confirm-logout-login/confirmLogoutDialogComponent';
+import { NotificacionesService } from '../../services/notificaciones/notificaciones.service';
+import { InsumosService } from '../../services/supplies/supplies.service';
 
 @Component({
   selector: 'app-navigation',
@@ -13,9 +15,17 @@ import { ConfirmLogoutDialogComponent } from '../../shared-modals/modals/confirm
   styleUrl: './navigation.component.scss',
 })
 export class NavigationComponent {
+  notificaciones: string[] = [];
+cantidadNotificaciones = 0;
+
+
   private breakpointObserver = inject(BreakpointObserver);
   private router = inject(Router);
   private dialog = inject(MatDialog);
+  private notificacionesService = inject(NotificacionesService);
+  private insumosService = inject(InsumosService);
+
+
 
   isHandset$: Observable<boolean> = this.breakpointObserver
     .observe(Breakpoints.Handset)
@@ -30,7 +40,7 @@ export class NavigationComponent {
 
   user: { correo: string; rol: string } | null = null;
 
-  constructor() {
+   constructor() {
     this.isHandset$.subscribe(isHandset => {
       this.isSideMode = !isHandset;
       this.sidenavOpened = this.isSideMode;
@@ -45,7 +55,45 @@ export class NavigationComponent {
         this.user = null;
       }
     }
+
+    this.notificacionesService.notificaciones$.subscribe(nots => {
+      this.notificaciones = nots;
+      this.revisarStockBajo();
+
+      this.cantidadNotificaciones = nots.length;
+    });
   }
+
+  limpiarNotificaciones() {
+    this.notificacionesService.limpiarNotificaciones();
+  }
+
+
+  revisarStockBajo() {
+  this.insumosService.obtenerInsumos().subscribe({
+    next: (data) => {
+      const inventario = data.filter(i => i.stock !== -1);
+      const bajos = inventario.filter(i => i.stock < 10);
+
+      bajos.forEach(i => {
+        const mensaje = `Stock bajo de ${i.nombre} - ${i.stock} unidades`;
+        if (!this.notificacionesService.contiene(mensaje)) {
+          this.notificacionesService.agregarNotificacion(mensaje);
+        }
+      });
+    },
+    error: (err) => {
+      console.error('Error al obtener insumos desde Navigation', err);
+    }
+  });
+}
+
+
+
+
+
+
+
 
   onSidenavToggle(opened: boolean) {
     this.sidenavOpened = opened;

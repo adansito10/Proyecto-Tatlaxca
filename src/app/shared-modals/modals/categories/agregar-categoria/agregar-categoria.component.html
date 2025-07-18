@@ -1,17 +1,22 @@
-<h2 mat-dialog-title>{{ modo === 'agregar' ? 'Agregar' : 'Editar' }} Categoría</h2>
+<h2 class="titulo-negrita"  mat-dialog-title>{{ modo === 'agregar' ? 'Agregar' : 'Editar' }} Categoría</h2>
+
 <mat-dialog-content [formGroup]="form">
   <mat-form-field appearance="fill" class="full-width mb-3">
     <mat-label>Nombre</mat-label>
     <input matInput formControlName="nombre" required maxlength="20" appCapitalize />
-    <mat-hint align="end">{{ form.get('nombre')?.value?.length || 0 }}/20</mat-hint>  </mat-form-field>
+    <mat-hint align="end">{{ form.get('nombre')?.value?.length || 0 }}/20</mat-hint> 
+   </mat-form-field>
+
   <mat-form-field appearance="fill" class="full-width mb-3">
     <mat-label>Descripción</mat-label>
     <textarea matInput formControlName="descripcion" maxlength="60"  appCapitalize></textarea>
     <mat-hint align="end">{{ form.get('descripcion')?.value?.length || 0 }}/60</mat-hint>  </mat-form-field>
 </mat-dialog-content>
+
+
 <mat-dialog-actions align="end">
   <button mat-button (click)="cancelar()">Cancelar</button>
   <button mat-flat-button color="primary" (click)="guardar()" [disabled]="form.invalid">
-    {{ modo === 'agregar' ? 'Agregar' : 'Guardar' }}
+    {{ modo === 'agregar' ? 'Guardar' : 'Actualizar' }}
   </button>
 </mat-dialog-actions>

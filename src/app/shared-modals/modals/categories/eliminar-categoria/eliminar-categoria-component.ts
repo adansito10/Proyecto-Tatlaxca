@@ -4,7 +4,9 @@ import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 @Component({
   selector: 'app-eliminar-categories',
   standalone: false,
-templateUrl: './eliminar-categoria.component.html',
+  templateUrl: './eliminar-categoria.component.html',
+  styleUrls: ['./eliminar-categoria.component.scss'] 
+
 })
 export class EliminarCategoryComponent {
   constructor(

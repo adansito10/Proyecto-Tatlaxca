@@ -1,9 +1,9 @@
-import { Component, OnInit } from '@angular/core';
+ import { Component, OnInit } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
-import { AgregarIngredienteComponent } from '../../shared-modals/modals/Ingredientes/agregar-ingrediente/agregar-ingrediente.component';
-import { EditarIngredienteComponent } from '../../shared-modals/modals/Ingredientes/editar-ingrediente/editar-ingrediente.component';
-import { EliminarIngredienteComponent } from '../../shared-modals/modals/Ingredientes/eliminar-ingrediente/eliminar-ingrediente.component';
-import { IngredientsService } from '../../services/Ingredients/ingredients.service';
+import { AgregarIngredienteComponent } from '../../shared-modals/modals/ingredients/agregar-ingrediente/agregar-ingrediente.component';
+import { EditarIngredienteComponent } from '../../shared-modals/modals/ingredients/editar-ingrediente/editar-ingrediente.component';
+import { EliminarIngredienteComponent } from '../../shared-modals/modals/ingredients/eliminar-ingrediente/eliminar-ingrediente.component';
+import { IngredientsService, Ingrediente } from '../../services/Ingredients/ingredients.service';
 
 @Component({
   selector: 'app-ingredients',
@@ -12,7 +12,7 @@ import { IngredientsService } from '../../services/Ingredients/ingredients.servi
   styleUrls: ['./ingredients.component.scss']
 })
 export class IngredientsComponent implements OnInit {
-  ingredientes: any[] = [];
+  ingredientes: Ingrediente[] = [];
   filtroNombre: string = '';
 
   constructor(
@@ -30,12 +30,12 @@ export class IngredientsComponent implements OnInit {
         this.ingredientes = data.filter(i => i.stock !== -1);
       },
       error: error => {
-        console.error('Error al obtener ingredientes:', error);
+        console.error('Error al obtener ingredientes', error);
       }
     });
   }
 
-  get ingredientesFiltrados(): any[] {
+  get ingredientesFiltrados(): Ingrediente[] {
     const texto = this.filtroNombre.toLowerCase().trim();
     return this.ingredientes.filter(ing =>
       ing.nombre.toLowerCase().includes(texto)
@@ -58,7 +58,7 @@ export class IngredientsComponent implements OnInit {
     });
   }
 
-  abrirModalEditar(ingrediente: any): void {
+  abrirModalEditar(ingrediente: Ingrediente): void {
     const dialogRef = this.dialog.open(EditarIngredienteComponent, {
       width: '500px',
       data: { modo: 'editar', entidad: ingrediente }
@@ -74,7 +74,7 @@ export class IngredientsComponent implements OnInit {
     });
   }
 
-  abrirModalEliminar(ingrediente: any): void {
+  abrirModalEliminar(ingrediente: Ingrediente): void {
     const dialogRef = this.dialog.open(EliminarIngredienteComponent, {
       width: '400px',
       data: {
