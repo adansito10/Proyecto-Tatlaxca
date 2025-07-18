@@ -31,7 +31,7 @@
         <tr *ngFor="let ingrediente of ingredientesFiltrados">
           <td>{{ ingrediente.nombre }}</td>
           <td>{{ ingrediente.unidad }}</td>
-          <td>{{ ingrediente.stock }}</td>
+          <td class="align-middle" [ngClass]="{'text-danger fw-bold': esStockBajo(ingrediente), 'text-success fw-semibold': !esStockBajo(ingrediente) }">{{ ingrediente.stock }}</td>
           <td>{{ (ingrediente.updated_at || ingrediente.created_at) | date:'short' }}</td>
           <td>
             <div class="d-flex justify-content-center gap-2">

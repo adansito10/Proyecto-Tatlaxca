@@ -35,13 +35,7 @@
         <tr *ngFor="let item of inventarioFiltrado">
          <td class="align-middle">{{ item.nombre }}</td>
              <td class="align-middle">{{ item.unidad }}</td>
-<td class="align-middle" 
-    [ngClass]="{
-      'text-danger fw-bold': item.stock < 10, 
-      'text-success fw-semibold': item.stock >= 10
-    }">
-  {{ item.stock }}
-</td>
+             <td class="align-middle" [ngClass]="{'text-danger fw-bold': item.stock < 10,  'text-success fw-semibold': item.stock >= 10}"> {{ item.stock }}</td>
           <td>{{ (item.updated_at || item.created_at) | date:'short' }}</td>
           <td class="align-middle">
             

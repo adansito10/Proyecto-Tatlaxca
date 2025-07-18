@@ -7,7 +7,7 @@ import { Insumo } from '../../services/supplies/supplies.service';
 import { NotificacionesService } from '../../services/notificaciones/notificaciones.service';
 
 @Component({
-  selector: 'app-inventory',
+  selector: 'app-supplies',
   standalone: false,
   templateUrl: './supplies.component.html',
   styleUrls: ['./supplies.component.scss']
@@ -87,6 +87,7 @@ obtenerInsumos(): void {
     if (resultado) {
       this.insumosService.actualizarInsumo(item.id!, resultado).subscribe({
         next: () => this.obtenerInsumos(),
+        
         error: err => console.error('Error al actualizar insumo', err)
       });
     }

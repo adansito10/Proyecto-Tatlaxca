@@ -34,7 +34,8 @@ import { MatNativeDateModule } from '@angular/material/core';
 import { MatInputModule } from '@angular/material/input';
 import { MatButtonModule } from '@angular/material/button';
 import { MatPaginatorModule } from '@angular/material/paginator';
-
+import { FormsModule } from '@angular/forms';
+import { MatIconModule } from '@angular/material/icon';
 
 
 @NgModule({
@@ -69,12 +70,14 @@ import { MatPaginatorModule } from '@angular/material/paginator';
     MatTableModule,
     MatSortModule,
     MatProgressBarModule,
+    MatIconModule,
     MatTableModule,
     MatFormFieldModule,
     MatDatepickerModule,
     MatNativeDateModule,
     MatInputModule,
     MatButtonModule,
+    FormsModule,
     MatPaginatorModule
 
         
