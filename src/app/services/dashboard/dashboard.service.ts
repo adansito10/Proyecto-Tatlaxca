@@ -43,6 +43,7 @@ export class DashboardService {
     ordenes: any[],
     detalles: any[]
   }> {
+    
     return forkJoin({
       ventas: this.getVentas(),
       productos: this.getProductos(),

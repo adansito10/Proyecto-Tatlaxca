@@ -7,7 +7,7 @@ import { MatDialog } from '@angular/material/dialog';
 import { ConfirmLogoutDialogComponent } from '../../shared-modals/modals/confirm-logout-login/confirmLogoutDialogComponent';
 import { NotificacionesService } from '../../services/notificaciones/notificaciones.service';
 import { InsumosService } from '../../services/supplies/supplies.service';
-import { IngredientsService } from '../../services/Ingredients/ingredients.service'; // ✅ importa el servicio
+import { IngredientsService } from '../../services/Ingredients/ingredients.service';
 
 @Component({
   selector: 'app-navigation',
@@ -24,7 +24,7 @@ export class NavigationComponent {
   private dialog = inject(MatDialog);
   private notificacionesService = inject(NotificacionesService);
   private insumosService = inject(InsumosService);
-  private ingredientsService = inject(IngredientsService); // ✅ injectado correctamente
+  private ingredientsService = inject(IngredientsService); 
 
   isHandset$: Observable<boolean> = this.breakpointObserver
     .observe(Breakpoints.Handset)

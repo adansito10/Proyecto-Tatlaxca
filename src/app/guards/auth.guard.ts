@@ -14,7 +14,7 @@ export class AuthGuard implements CanActivate, CanMatch {
     return this.authService.checkAuthentication().pipe(
       tap(isAdmin => {
         if (!isAdmin) {
-          console.warn('Acceso denegado: No es administrador');
+          console.warn('Acceso denegado: Solo personal authorizada');
           this.router.navigate(['/auth/login']);
         }
       }),

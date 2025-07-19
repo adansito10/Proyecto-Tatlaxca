@@ -8,8 +8,6 @@ export interface Categoria {
   descripcion: string;
 }
 
-
-
 @Injectable({ providedIn: 'root' })
 
 export class CategoriesService {

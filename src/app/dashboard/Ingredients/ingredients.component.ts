@@ -93,7 +93,7 @@ const umbral = UMBRAL[unidad] ?? 10;
       if (resultado) {
         this.ingredientsService.crearIngrediente(resultado).subscribe({
           next: () => this.obtenerIngredientes(),
-          error: err => console.error('Error al crear ingrediente:', err)
+          error: err => console.error('Error al crear ingrediente', err)
         });
       }
     });
