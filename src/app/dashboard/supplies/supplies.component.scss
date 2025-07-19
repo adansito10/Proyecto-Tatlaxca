@@ -1,6 +1,6 @@
 
 .custom-agregar-btn {
-  background-color: #fe8f26; /* color café */
+  background-color: #fe8f26; 
   border-color: #fe8f26;
   color: white;
   padding: 10px 19px;
@@ -12,10 +12,9 @@
 }
 
 .buscador-custom {
-  background-color: #f9f9f9; /* Ejemplo: color claro tipo café */
+  background-color: #f9f9f9; 
   color: #3e2c1c;      
-         /* Texto en marrón oscuro */
-  border: 1px solid #000000;  /* Borde café */
+  border: 1px solid #000000;  
   font-weight: 500;
 }
 
@@ -35,7 +34,7 @@
   }
 
   .buscador-custom {
-    padding-left: 36px !important; // espacio para el icono
+    padding-left: 36px !important; 
   }
 }
 
@@ -48,6 +47,7 @@
   color: black;
   pointer-events: none;
 }
+
 
 
 
@@ -84,7 +84,7 @@
 .table, 
 .table th, 
 .table td {
-  border-width: 1px; /* aumenta el grosor */
-  border-style: solid; /* asegúrate que el borde sea sólido */
-  border-color: rgb(128, 128, 128); /* color negro para más contraste */
+  border-width: 1px; 
+  border-style: solid; 
+  border-color: rgb(128, 128, 128);
 }

@@ -69,7 +69,7 @@ export class NavigationComponent {
       next: (data) => {
         const inventario = data.filter(i => i.stock !== -1);
         inventario.forEach(i => {
-          const mensaje = `Stock bajo de ${i.nombre} - ${i.stock} unidades`;
+         const mensaje = `Insumo: ${i.nombre}\nStock bajo: ${i.stock} unidades`;
           if (i.stock < 10) {
             if (!this.notificacionesService.contiene(mensaje)) {
               this.notificacionesService.agregarNotificacion(mensaje);
@@ -98,7 +98,7 @@ export class NavigationComponent {
           const unidad = i.unidad?.toLowerCase();
           const umbral = UMBRALES_POR_UNIDAD[unidad] ?? 10;
 
-          const mensaje = `Stock bajo de ${i.nombre} (${i.stock} ${i.unidad})`;
+         const mensaje = `Ingrediente: ${i.nombre}\nStock bajo: ${i.stock} ${i.unidad}`;
 
           if (i.stock < umbral) {
             if (!this.notificacionesService.contiene(mensaje)) {

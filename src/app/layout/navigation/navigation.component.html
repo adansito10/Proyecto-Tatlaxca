@@ -117,9 +117,15 @@
     <li class="dropdown-header fw-bold px-3 py-2 border-bottom">Notificaciones</li>
 
     <ng-container *ngIf="notificaciones.length > 0; else noNotifs">
-      <li *ngFor="let notif of notificaciones" class="px-3 py-2 border-bottom">
-        <div class="fw-semibold">{{ notif }}</div>
-      </li>
+    <li *ngFor="let notif of notificaciones" class="px-3 py-2 border-bottom">
+  <div class="fw-semibold text-secundary">
+    {{ notif.split('\n')[0] }} 
+  </div>
+  <div class="text-muted small">
+    {{ notif.split('\n')[1] }} Disponibles
+  </div>
+</li>
+
     </ng-container>
 
     <ng-template #noNotifs>
