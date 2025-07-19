@@ -13,7 +13,7 @@
           </mat-card-title>
         </mat-card-header>
         <mat-card-content>
-          <canvas baseChart [data]="ventasDiaData" [type]="'line'"></canvas>
+          <canvas [options]="chartOptions" baseChart [data]="ventasDiaData" [type]="'line'"></canvas>
         </mat-card-content>
       </mat-card>
     </div>
@@ -27,7 +27,7 @@
           </mat-card-title>
         </mat-card-header>
         <mat-card-content>
-          <canvas baseChart [data]="ventasSemanaData" [type]="'line'"></canvas>
+          <canvas [options]="chartOptions" baseChart [data]="ventasSemanaData" [type]="'line'"></canvas>
         </mat-card-content>
       </mat-card>
     </div>
@@ -67,7 +67,7 @@
           </mat-card-title>
         </mat-card-header>
         <mat-card-content>
-          <canvas baseChart [data]="ventasHoraData" [type]="'bar'"></canvas>
+          <canvas [options]="chartOptions" baseChart [data]="ventasHoraData" [type]="'bar'"></canvas>
         </mat-card-content>
       </mat-card>
     </div>
@@ -80,7 +80,7 @@
       </mat-card-title>
     </mat-card-header>
     <mat-card-content>
-      <canvas baseChart
+      <canvas [options]="chartOptions" baseChart
               [data]="ordenesDiaData"
               [type]="'bar'">
       </canvas>
@@ -118,7 +118,7 @@
           <mat-card-title class="titulo">Ventas por Mesero</mat-card-title>
         </mat-card-header>
         <mat-card-content>
-          <canvas baseChart [data]="ventasMeseroData" [type]="'doughnut'"></canvas>
+          <canvas [options]="chartOptions" baseChart [data]="ventasMeseroData" [type]="'doughnut'"></canvas>
         </mat-card-content>
       </mat-card>
     </div>
@@ -128,10 +128,10 @@
     <div class="col-md-6 mb-4">
       <mat-card>
         <mat-card-header>
-          <mat-card-title class="titulo">Categorías Populares</mat-card-title>
+          <mat-card-title  class="titulo">Categorías Populares</mat-card-title>
         </mat-card-header>
         <mat-card-content>
-          <canvas baseChart [data]="categoriasData" [type]="'pie'"></canvas>
+          <canvas [options]="chartOptions" baseChart [data]="categoriasData" [type]="'pie'"></canvas>
         </mat-card-content>
       </mat-card>
     </div>

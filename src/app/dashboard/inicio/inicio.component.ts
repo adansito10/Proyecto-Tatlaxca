@@ -3,6 +3,8 @@ import { ChartData } from 'chart.js';
 import { DashboardService } from '../../services/dashboard/dashboard.service';
 import { AuthService } from '../../services/auth/auth.service';
 import { EmployeesService } from '../../services/employees/employees-service';
+import { ChartOptions } from 'chart.js';
+
 
 @Component({
   selector: 'app-inicio',
@@ -295,7 +297,28 @@ export class InicioComponent implements OnInit {
       labels: this.ventasPorMesero.map(m => m.mesero),
       datasets: [{
         data: this.ventasPorMesero.map(m => m.total),
-        backgroundColor: ['#FF6384', '#36A2EB', '#FFCE56']
+backgroundColor: [
+  '#FF6384',  
+  '#36A2EB', 
+  '#FFCE56',
+  '#b53f88ff', 
+  '#4BC0C0', 
+  '#9966FF',  
+  '#FF9F40',  
+  '#8BC34A', 
+  '#C2185B',  
+  '#00BCD4', 
+  '#F44336', 
+  '#CDDC39', 
+  '#3F51B5',  
+  '#FFEB3B', 
+  '#009688',
+  '#E91E63',  
+  '#795548', 
+  '#9C27B0',  
+  '#607D8B',  
+  '#00E676'  
+]
       }]
     };
 
@@ -303,7 +326,30 @@ export class InicioComponent implements OnInit {
       labels: this.categoriasMasVendidas.map(c => c.nombre),
       datasets: [{
         data: this.categoriasMasVendidas.map(c => c.cantidad),
-        backgroundColor: ['#4caf50', '#2196f3', '#ff9800', '#9c27b0']
+backgroundColor: [
+  '#00ae06ff',  
+  '#2196f3',    
+  '#ff9800',    
+  '#9027b0ff',  
+  '#f44336',   
+  '#00ffd9ff',  
+  '#f7ff11ff', 
+  '#e91e63',    
+  '#ffc107',    
+  '#3f51b5',    
+  '#795548ff', 
+  '#607d8bff',  
+  '#8bc34aff',  
+  '#ff5722ff',  
+  '#673ab7ff',  
+  '#cddc39ff', 
+  '#009688ff',  
+  '#d32f2fff',  
+  '#00bcd4ff',  
+  '#9e9e9eff'   
+]
+
+
       }]
     };
 
@@ -316,6 +362,37 @@ export class InicioComponent implements OnInit {
       }]
     };
   }
+
+
+  public chartOptions: ChartOptions = {
+  responsive: true,
+  maintainAspectRatio: false, 
+  plugins: {
+    legend: {
+      labels: {
+        color: 'white' 
+      }
+    }
+  },
+  scales: {
+    x: {
+      ticks: {
+        color: 'white'
+      },
+      grid: {
+        color: 'rgba(255,255,255,0.1)'
+      }
+    },
+    y: {
+      ticks: {
+        color: 'white'
+      },
+      grid: {
+        color: 'rgba(255,255,255,0.1)'
+      }
+    }
+  }
+};
 
   getNumeroSemana(fecha: Date): number {
     const temp = new Date(fecha.getFullYear(), 0, 1);

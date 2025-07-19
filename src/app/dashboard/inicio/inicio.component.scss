@@ -71,11 +71,7 @@ tbody td {
   color: black;
 }
 
-canvas {
-  width: 100% !important;
-  height: auto !important;
-  max-width: 100%;
-}
+
 
 .row {
   display: flex;
@@ -245,15 +241,13 @@ canvas {
   min-width: 260px;
 }
 
-/* Asegura que los gráficos se vean más pequeños */
 .grafica-col mat-card-content canvas {
-  height:280px !important;
-  max-height: 240px;
   width: 100% !important;
+  height: 280px !important; /* O el valor que desees */
   display: block;
   margin: 0 auto;
-  object-fit: contain;
 }
+
 
 @media (max-width: 992px) {
   .grafica-col {
@@ -275,4 +269,10 @@ canvas {
 }
 
 
+
+
+canvas {
+  width: 100% !important;    // Largo (horizontal)
+  height: 450px !important;  // Alto (vertical)
+}
 
