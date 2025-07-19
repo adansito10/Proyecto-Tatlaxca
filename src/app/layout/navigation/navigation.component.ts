@@ -115,6 +115,24 @@ export class NavigationComponent {
     });
   }
 
+  navegarAProducto(mensaje: string) {
+  const esIngrediente = mensaje.includes('Ingrediente:');
+  const esInsumo = mensaje.includes('Insumo:');
+
+  const nombre = mensaje.split('\n')[0].split(':')[1]?.trim();
+
+  if (esIngrediente) {
+    this.router.navigate(['/dashboard/ingredients'], {
+      queryParams: { nombre }
+    });
+  } else if (esInsumo) {
+    this.router.navigate(['/dashboard/supplies'], {
+      queryParams: { nombre }
+    });
+  }
+}
+
+
   onSidenavToggle(opened: boolean) {
     this.sidenavOpened = opened;
   }

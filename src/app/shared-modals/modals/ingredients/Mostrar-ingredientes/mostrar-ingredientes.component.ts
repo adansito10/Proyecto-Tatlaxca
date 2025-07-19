@@ -21,6 +21,8 @@ export class MostrarIngredientesComponent implements OnInit {
     private dialogRef: MatDialogRef<MostrarIngredientesComponent>,
     private ingredientsService: IngredientsService,
     @Inject(MAT_DIALOG_DATA) public data: { ingredientesActuales: Ingrediente[] }
+
+
   ) {
     const group: any = {};
     this.controlNombres.forEach(name => {
@@ -90,19 +92,25 @@ export class MostrarIngredientesComponent implements OnInit {
     return ing?.stock ?? Infinity;
   }
 
-  puedeGuardar(): boolean {
-    let valido = false;
-    for (const name of this.controlNombres) {
-      const ing = this.ingredientesForm.get(name + '_nombre')?.value;
-      const cantidad = this.ingredientesForm.get(name + '_cantidad')?.value;
-      const cantidadControl = this.ingredientesForm.get(name + '_cantidad');
+puedeGuardar(): boolean {
+  let hayAlgunoValido = false;
 
-      if (ing && cantidadControl?.enabled && cantidad > 0 && cantidad <= ing.stock && !cantidadControl.errors) {
-        valido = true;
-      }
+  for (const name of this.controlNombres) {
+    const ing = this.ingredientesForm.get(name + '_nombre')?.value;
+    const cantidad = this.ingredientesForm.get(name + '_cantidad')?.value;
+    const cantidadControl = this.ingredientesForm.get(name + '_cantidad');
+
+    if (ing && cantidadControl?.enabled && cantidad > 0 && cantidad <= ing.stock && !cantidadControl.errors) {
+      hayAlgunoValido = true;
     }
-    return this.ingredientesForm.valid && valido;
+
+    if (!ing && (!cantidad || cantidad <= 0)) {
+      cantidadControl?.setErrors(null);
+    }
   }
+
+  return this.ingredientesForm.valid;
+}
 
   guardarIngredientes(): void {
     const values = this.ingredientesForm.value;
@@ -146,7 +154,7 @@ export class MostrarIngredientesComponent implements OnInit {
       }
     });
 
-    if (hayError || seleccionados.length === 0 || this.ingredientesForm.invalid) return;
+   if (hayError) return;
 
     this.mensajeStockExcedido = false;
     this.dialogRef.close(seleccionados);

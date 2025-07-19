@@ -67,19 +67,24 @@ export class MostrarInsumosComponent implements OnInit {
     });
   }
 
-  puedeGuardar(): boolean {
-    let valido = false;
-    for (const name of this.controlNombres) {
-      const ins = this.insumosForm.get(name + '_nombre')?.value as Insumo | null;
-      const cantidad = this.insumosForm.get(name + '_cantidad')?.value;
-      const cantidadControl = this.insumosForm.get(name + '_cantidad');
+ puedeGuardar(): boolean {
+  for (const name of this.controlNombres) {
+    const ins = this.insumosForm.get(name + '_nombre')?.value as Insumo | null;
+    const cantidad = this.insumosForm.get(name + '_cantidad')?.value;
+    const cantidadControl = this.insumosForm.get(name + '_cantidad');
 
-      if (ins && cantidadControl?.enabled && cantidad > 0 && !cantidadControl.errors) {
-        valido = true;
-      }
+    if (ins && cantidadControl?.enabled && cantidad > 0 && !cantidadControl.errors) {
+      return true; 
     }
-    return this.insumosForm.valid && valido;
+
+    if (!ins && (!cantidad || cantidad <= 0)) {
+      cantidadControl?.setErrors(null); 
+    }
   }
+
+  return this.insumosForm.valid; 
+}
+
 
   guardarInsumos(): void {
     const values = this.insumosForm.value;
@@ -114,10 +119,10 @@ export class MostrarInsumosComponent implements OnInit {
       }
     });
 
-    if (hayError || seleccionados.length === 0 || this.insumosForm.invalid) {
-      this.mensajeCantidadInvalida = true;
-      return;
-    }
+if (hayError) {
+  this.mensajeCantidadInvalida = true;
+  return;
+}
 
     this.mensajeCantidadInvalida = false;
     this.dialogRef.close(seleccionados);

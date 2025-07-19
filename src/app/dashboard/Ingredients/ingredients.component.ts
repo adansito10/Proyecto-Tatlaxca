@@ -1,5 +1,8 @@
  import { Component, OnInit } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
+import { ActivatedRoute } from '@angular/router';
+import { ViewportScroller } from '@angular/common'; // para hacer scroll
+import { ElementRef } from '@angular/core';
 import { AgregarIngredienteComponent } from '../../shared-modals/modals/ingredients/agregar-ingrediente/agregar-ingrediente.component';
 import { EditarIngredienteComponent } from '../../shared-modals/modals/ingredients/editar-ingrediente/editar-ingrediente.component';
 import { EliminarIngredienteComponent } from '../../shared-modals/modals/ingredients/eliminar-ingrediente/eliminar-ingrediente.component';
@@ -24,17 +27,29 @@ export class IngredientsComponent implements OnInit {
 
 
   constructor(
+    private route: ActivatedRoute,
     private dialog: MatDialog,
     private ingredientsService: IngredientsService, 
-    private notificacionesService: NotificacionesService
-
+    private scroller: ViewportScroller
   ) {}
 
   ngOnInit(): void {
     this.obtenerIngredientes();
+    this.route.queryParams.subscribe(params => {
+       const nombre = params['nombre'];
+       if (nombre) {
+        this.filtroNombre = nombre; 
+         setTimeout(() => {
+         this.scrollYResaltar(nombre);
+        }, 300);
+  }
+});
+
   }
 
-obtenerIngredientes(): void {
+
+
+  obtenerIngredientes(): void {
   this.ingredientsService.obtenerIngredientes().subscribe({
     next: data => {
       this.ingredientes = data.filter(i => i.stock !== -1);
@@ -45,20 +60,6 @@ obtenerIngredientes(): void {
         'u': 10
       };
 
-      this.ingredientes.forEach(i => {
-       const unidad = (i.unidad ?? 'u').toLowerCase() as 'g' | 'ml' | 'u';
-const umbral = UMBRAL[unidad] ?? 10;
-
-        const mensaje = `Stock bajo de ${i.nombre} (${i.stock} ${i.unidad})`;
-
-        if (i.stock < umbral) {
-          if (!this.notificacionesService.contiene(mensaje)) {
-            this.notificacionesService.agregarNotificacion(mensaje);
-          }
-        } else {
-          this.notificacionesService.eliminarNotificacionPorNombre(i.nombre);
-        }
-      });
     },
     error: error => {
       console.error('Error al obtener ingredientes', error);
@@ -134,5 +135,18 @@ const umbral = UMBRAL[unidad] ?? 10;
         });
       }
     });
+    
   }
+
+  scrollYResaltar(nombre: string) {
+  const el = document.getElementById(nombre);
+  if (el) {
+    el.scrollIntoView({ behavior: 'smooth', block: 'center' });
+    el.classList.add('highlight-temp');
+    setTimeout(() => {
+      el.classList.remove('highlight-temp');
+    }, 3000);
+  }
+}
+
 }

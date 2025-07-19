@@ -196,7 +196,7 @@ export class InicioComponent implements OnInit {
     this.ventasSemanaData = {
       labels: clavesOrdenadas.map(([, v]) => `Semana ${v.semana}`),
       datasets: [{
-        label: 'Ganancias Semanales',
+        label: 'Ganancias de la Semana',
         data: clavesOrdenadas.map(([, v]) => v.total),
         borderColor: '#ff9800',
         backgroundColor: 'rgba(255, 152, 0, 0.3)',

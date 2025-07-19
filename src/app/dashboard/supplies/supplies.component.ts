@@ -1,5 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
+import { ActivatedRoute } from '@angular/router';
+import { ViewportScroller } from '@angular/common'; // para hacer scroll
+import { ElementRef } from '@angular/core';
 import { AgregarSuministroComponent } from '../../shared-modals/modals/supplies/agregar-suministro/agregar-suministro.component';
 import { EliminarSuministroComponent } from '../../shared-modals/modals/supplies/eliminar-suministro/eliminar-suministro.component';
 import { InsumosService } from '../../services/supplies/supplies.service';
@@ -17,26 +20,30 @@ export class SuppliesComponent implements OnInit {
   inventario: Insumo[] = [];
 
   constructor(
+    private route: ActivatedRoute,
     private dialog: MatDialog,
     private insumosService: InsumosService,
-    private notificacionesService: NotificacionesService
-
+    private scroller: ViewportScroller
   ) {}
 
   ngOnInit(): void {
     this.obtenerInsumos();
+    this.route.queryParams.subscribe(params => {
+    const nombre = params['nombre'];
+  if (nombre) {
+    this.filtroTexto = nombre; 
+    setTimeout(() => {
+      this.scrollYResaltar(nombre);
+    }, 300);
+  }
+});
+
   }
 
 obtenerInsumos(): void {
   this.insumosService.obtenerInsumos().subscribe({
     next: (data) => {
       this.inventario = data.filter(i => i.stock !== -1);
-
-      this.inventario.forEach(i => {
-        if (i.stock >= 10) {
-          this.notificacionesService.eliminarNotificacionPorNombre(i.nombre);
-        }
-      });
     },
     error: (err) => {
       console.error('Error al cargar insumos', err);
@@ -112,4 +119,16 @@ obtenerInsumos(): void {
       }
     });
   }
+
+  scrollYResaltar(nombre: string) {
+  const el = document.getElementById(nombre);
+  if (el) {
+    el.scrollIntoView({ behavior: 'smooth', block: 'center' });
+    el.classList.add('highlight-temp');
+    setTimeout(() => {
+      el.classList.remove('highlight-temp');
+    }, 3000);
+  }
+}
+
 }

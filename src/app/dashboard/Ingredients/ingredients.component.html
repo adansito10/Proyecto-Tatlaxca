@@ -28,7 +28,7 @@
         </tr>
       </thead>
       <tbody>
-        <tr *ngFor="let ingrediente of ingredientesFiltrados">
+        <tr *ngFor="let ingrediente of ingredientesFiltrados" [attr.id]="ingrediente.nombre">
           <td>{{ ingrediente.nombre }}</td>
           <td>{{ ingrediente.unidad }}</td>
           <td class="align-middle" [ngClass]="{'text-danger fw-bold': esStockBajo(ingrediente), 'text-success fw-semibold': !esStockBajo(ingrediente) }">{{ ingrediente.stock }}</td>

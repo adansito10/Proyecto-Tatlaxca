@@ -3,7 +3,7 @@
 html {
   color-scheme: light;
   @include mat.theme((
-    color: mat.$azure-palette
+    color: mat.$orange-palette
 ,
 
   ));
