@@ -9,8 +9,8 @@ import * as XLSX from 'xlsx';
 @Component({
   selector: 'app-reports',
   standalone: false,
-  templateUrl: './sales.component.html',
-  styleUrls: ['./sales.component.scss']
+  templateUrl: './reports.component.html',
+  styleUrls: ['./reports.component.scss']
 })
 export class ReportsComponent implements OnInit {
   ventasOriginal: any[] = [];

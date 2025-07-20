@@ -4,13 +4,13 @@ import { RouterModule, Routes } from '@angular/router';
 import { NavigationComponent } from '../layout/navigation/navigation.component'; 
 
 import { InicioComponent } from './inicio/inicio.component';
-import { ProductsComponent } from './menu/productos.component';
+import { ProductsComponent } from './Products/productos.component';
 import { IngredientsComponent } from './Ingredients/ingredients.component';
-import { UsersComponent } from './users/users.component';
-import { ReportsComponent } from './sales/sales.component';
-import { SuppliesComponent } from './supplies/supplies.component';
-import { ConfigurationComponent } from './configuration/configuration.component';
-import { OrdersComponent } from './orders/orders.component';
+import { UsersComponent } from './Users/users.component';
+import { ReportsComponent } from './Reports/reports.component';
+import { InventoryComponent } from './Inventory/inventory.component';
+import { ConfigurationComponent } from './Configuration/configuration.component';
+import { OrdersComponent } from './Orders/orders.component';
 import { CategoriesComponent } from './categories/categories.component';
 import { TablesComponent } from './tables/tables.component';
 import { RolesComponent } from './roles/roles.component';
@@ -32,7 +32,7 @@ const routes: Routes = [
       { path: 'categories', component: CategoriesComponent },
       { path: 'sales', component: ReportsComponent },
       { path: 'orders', component: OrdersComponent },
-      { path: 'supplies', component: SuppliesComponent },
+      { path: 'supplies', component: InventoryComponent },
       { path: 'perfil', component: ConfigurationComponent }
     ]
   }

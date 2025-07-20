@@ -5,15 +5,15 @@ import { SharedModule } from '../shared-modals/shared.module';
 import { MatOptionModule } from '@angular/material/core';
 
 import { InicioComponent } from './inicio/inicio.component';
-import { ProductsComponent } from './menu/productos.component';
+import { ProductsComponent } from './Products/productos.component';
 import { IngredientsComponent } from './Ingredients/ingredients.component';
-import { UsersComponent } from './users/users.component';
-import { ReportsComponent } from './sales/sales.component';
-import { SuppliesComponent } from './supplies/supplies.component';
-import { ConfigurationComponent } from './configuration/configuration.component';
+import { UsersComponent } from './Users/users.component';
+import { ReportsComponent } from './Reports/reports.component';
+import { InventoryComponent } from './Inventory/inventory.component';
+import { ConfigurationComponent } from './Configuration/configuration.component';
 
 
-import { OrdersComponent } from './orders/orders.component';
+import { OrdersComponent } from './Orders/orders.component';
 import { MatSelectModule } from '@angular/material/select';
 import { ModalModule } from '../shared-modals/modals/modal.module';
 import { HttpClientJsonpModule } from '@angular/common/http';
@@ -34,8 +34,7 @@ import { MatNativeDateModule } from '@angular/material/core';
 import { MatInputModule } from '@angular/material/input';
 import { MatButtonModule } from '@angular/material/button';
 import { MatPaginatorModule } from '@angular/material/paginator';
-import { FormsModule } from '@angular/forms';
-import { MatIconModule } from '@angular/material/icon';
+
 
 
 @NgModule({
@@ -45,7 +44,7 @@ import { MatIconModule } from '@angular/material/icon';
     IngredientsComponent,
     UsersComponent,
     ReportsComponent,
-    SuppliesComponent,
+    InventoryComponent,
     ConfigurationComponent,
     OrdersComponent,
     CategoriesComponent,
@@ -70,14 +69,12 @@ import { MatIconModule } from '@angular/material/icon';
     MatTableModule,
     MatSortModule,
     MatProgressBarModule,
-    MatIconModule,
     MatTableModule,
     MatFormFieldModule,
     MatDatepickerModule,
     MatNativeDateModule,
     MatInputModule,
     MatButtonModule,
-    FormsModule,
     MatPaginatorModule
 
         

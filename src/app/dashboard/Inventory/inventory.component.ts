@@ -10,12 +10,12 @@ import { Insumo } from '../../services/supplies/supplies.service';
 import { NotificacionesService } from '../../services/notificaciones/notificaciones.service';
 
 @Component({
-  selector: 'app-supplies',
+  selector: 'app-inventory',
   standalone: false,
-  templateUrl: './supplies.component.html',
-  styleUrls: ['./supplies.component.scss']
+  templateUrl: './inventory.component.html',
+  styleUrls: ['./inventory.component.scss']
 })
-export class SuppliesComponent implements OnInit {
+export class InventoryComponent implements OnInit {
   filtroTexto = '';
   inventario: Insumo[] = [];
 
