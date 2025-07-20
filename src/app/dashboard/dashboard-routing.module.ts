@@ -1,7 +1,7 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 
-import { NavigationComponent } from '../layout/navigation/navigation.component'; 
+import { NavigationComponent } from '../layout/navigation/navigation.component'; // layout principal
 
 import { InicioComponent } from './inicio/inicio.component';
 import { ProductsComponent } from './Products/productos.component';
@@ -23,7 +23,7 @@ const routes: Routes = [
     children: [
       { path: '', redirectTo: 'inicio', pathMatch: 'full' },
       { path: 'inicio', component: InicioComponent },
-      { path: 'menu', component: ProductsComponent },
+      { path: 'products', component: ProductsComponent },
       { path: 'ingredients', component: IngredientsComponent },
       { path: 'users', component: UsersComponent },
       { path: 'tables', component: TablesComponent },
@@ -33,7 +33,7 @@ const routes: Routes = [
       { path: 'sales', component: ReportsComponent },
       { path: 'orders', component: OrdersComponent },
       { path: 'supplies', component: InventoryComponent },
-      { path: 'perfil', component: ConfigurationComponent }
+      { path: 'configuration', component: ConfigurationComponent }
     ]
   }
 ];
