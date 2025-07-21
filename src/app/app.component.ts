@@ -35,13 +35,13 @@ export class AppComponent implements OnInit {
          pageTitle = 'Usuarios - Cafetería Tatiaxca';
         } else if (path.includes('/dashboard/inicio')) {
          pageTitle = 'inicio - Cafetería Tatiaxca';
-        } else if (path.includes('/dashboard/inventory')) {
+        } else if (path.includes('/dashboard/supplies')) {
          pageTitle = 'Insumos - Cafetería Tatiaxca';
         } else if (path.includes('/dashboard/configuration')) {
          pageTitle = 'Perfil - Cafetería Tatiaxca';
         } else if (path.includes('/dashboard/orders')) {
          pageTitle = 'Ordenes - Cafetería Tatiaxca';
-        } else if (path.includes('/dashboard/reports')) {
+        } else if (path.includes('/dashboard/sales')) {
          pageTitle = 'Ventas - Cafetería Tatiaxca';
         } else if (path.includes('/dashboard/products')) {
           pageTitle = 'Menu - Cafetería Tatiaxca';
