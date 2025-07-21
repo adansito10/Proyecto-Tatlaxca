@@ -1,7 +1,7 @@
 // users.component.ts
 import { Component, OnInit } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
-import { UsersService } from '../../services/users/users.service';
+import { UsersService } from '../../services/Users/users.service';
 import { RolesService } from '../../services/roles/roles.service';
 import { ChangeDetectorRef } from '@angular/core';
 import { AgregarUsuarioComponent } from '../../shared-modals/modals/users/agregar-usuario/agregar-usuario.component';
