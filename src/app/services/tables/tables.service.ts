@@ -34,4 +34,10 @@ actualizarMesa(id: number, mesa: Table): Observable<Table> {
 eliminarMesa(id: number): Observable<void> {
   return this.http.delete<void>(`${this.apiUrl}/${id}`);
 }
+
+restaurarMesa(id: number): Observable<any> {
+  return this.http.put(`${this.apiUrl}/${id}/restore`, {});
+}
+
+
 }

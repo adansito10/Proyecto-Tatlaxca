@@ -40,6 +40,29 @@ export class TablesComponent implements OnInit {
     );
   }
 
+  restaurarMesa(mesa: Table): void {
+  this.tablesService.restaurarMesa(mesa.id!).subscribe({
+    next: () => this.obtenerMesas(),
+    error: err => console.error('Error al restaurar mesa', err)
+  });
+}
+
+alternarEstadoMesa(mesa: Table): void {
+  if (mesa.deleted_at) {
+    this.tablesService.restaurarMesa(mesa.id!).subscribe({
+      next: () => this.obtenerMesas(),
+      error: err => console.error('Error al restaurar mesa', err)
+    });
+  } else {
+    this.tablesService.eliminarMesa(mesa.id!).subscribe({
+      next: () => this.obtenerMesas(),
+      error: err => console.error('Error al inactivar mesa', err)
+    });
+  }
+}
+
+
+
   abrirModalAgregar(): void {
     const dialogRef = this.dialog.open(AgregarMesaComponent, {
       width: '500px',

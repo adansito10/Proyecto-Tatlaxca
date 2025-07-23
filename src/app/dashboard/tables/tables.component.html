@@ -16,7 +16,8 @@
         <tr>
           <th>Número</th>
           <th>Ubicación</th>
-          <th>Estado</th>
+          <th>Ocupacion</th>
+          <th>Ocupacion</th>
           <th>Acciones</th>
         </tr>
       </thead>
@@ -25,16 +26,26 @@
           <td>{{ mesa.numero }}</td>
           <td>{{ mesa.ubicacion }}</td>
           <td>{{ mesa.estado }}</td>
+            <td>
+      <span [ngClass]="{'text-success': !mesa.deleted_at, 'text-danger': mesa.deleted_at}">
+        {{ mesa.deleted_at ? 'Inactiva' : 'Activa' }}
+      </span>
+    </td>
           <td>
-            <div class="d-flex justify-content-center gap-2">
-              <button class="btn btn-sm btn-success" (click)="abrirModalEditar(mesa)">
-                <i class="bi bi-pencil"></i>
-              </button>
-              <button class="btn btn-sm btn-danger" (click)="abrirModalEliminar(mesa)">
-                <i class="bi bi-trash"></i>
-              </button>
-            </div>
-          </td>
+          <div class="d-flex justify-content-center gap-2">
+          <button class="btn btn-sm btn-success" (click)="abrirModalEditar(mesa)" *ngIf="!mesa.deleted_at">
+          <i class="bi bi-pencil"></i>
+          </button>
+
+           <button class="btn btn-sm" 
+            [ngClass]="mesa.deleted_at ? 'btn-warning' : 'btn-danger'"
+            (click)="alternarEstadoMesa(mesa)"><i class="bi" 
+         [ngClass]="mesa.deleted_at ? 'bi-arrow-clockwise' : 'bi-trash'">
+      </i>
+    </button>
+  </div>
+</td>
+
         </tr>
       </tbody>
     </table>
