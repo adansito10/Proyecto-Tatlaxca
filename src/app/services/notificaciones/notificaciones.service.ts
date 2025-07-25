@@ -1,34 +1,40 @@
 import { Injectable } from '@angular/core';
 import { BehaviorSubject} from 'rxjs';
 
+
+interface Notificacion {
+  id: string;
+  mensaje: string;
+}
+
 @Injectable({
   providedIn: 'root'
 })
 export class NotificacionesService {
-  private notificacionesSource = new BehaviorSubject<string[]>([]);
+  private notificaciones: Map<string, Notificacion> = new Map();
+  private notificacionesSource = new BehaviorSubject<Notificacion[]>([]);
   notificaciones$ = this.notificacionesSource.asObservable();
 
-  private notificaciones: string[] = [];
+  agregarNotificacion(id: string, mensaje: string) {
+    if (!this.notificaciones.has(id)) {
+      this.notificaciones.set(id, { id, mensaje });
+      this.actualizar();
+    }
+  }
 
-
-  agregarNotificacion(mensaje: string) {
-    this.notificaciones.push(mensaje);
-    this.notificacionesSource.next(this.notificaciones);
+  eliminarNotificacionPorId(id: string) {
+    if (this.notificaciones.has(id)) {
+      this.notificaciones.delete(id);
+      this.actualizar();
+    }
   }
 
   limpiarNotificaciones() {
-    this.notificaciones = [];
-    this.notificacionesSource.next(this.notificaciones);
+    this.notificaciones.clear();
+    this.actualizar();
   }
 
-  contiene(mensaje: string): boolean {
-  return this.notificaciones.includes(mensaje);
-}
-
-eliminarNotificacionPorNombre(nombre: string) {
-  this.notificaciones = this.notificaciones.filter(msg => !msg.includes(nombre));
-  this.notificacionesSource.next(this.notificaciones);
-}
-
-
+  private actualizar() {
+    this.notificacionesSource.next(Array.from(this.notificaciones.values()));
+  }
 }

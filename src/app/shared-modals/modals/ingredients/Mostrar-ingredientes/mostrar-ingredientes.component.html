@@ -17,10 +17,6 @@
           </mat-select>
         </mat-form-field>
 
-        <div *ngIf="ingredientesForm.get(controlName + '_cantidad')?.hasError('excedeStock')"
-             style="color: red; font-size: 13px; margin-left: 14px; margin-top: 2px;">
-          La cantidad supera el stock disponible ({{ getStockMaximo(controlName) }})
-        </div>
       </div>
 
       <mat-form-field appearance="fill" style="width: 120px;">
@@ -38,16 +34,12 @@
         </mat-error>
       </mat-form-field>
     </div>
-
-    <p *ngIf="mensajeStockExcedido" style="color: red; font-size: 14px; font-weight: 500; text-align: center; margin-top: 8px;">
-      superan el stock disponible. Por favor revisa las cantidades.
-    </p>
   </form>
 </mat-dialog-content>
 
 <mat-dialog-actions align="end">
   <button mat-button mat-dialog-close>Cancelar</button>
-  <button mat-flat-button color="primary" [disabled]="!puedeGuardar()" (click)="guardarIngredientes()">
-    Guardar
-  </button>
+ <button mat-flat-button color="primary" (click)="guardarIngredientes()">
+  Guardar
+</button>
 </mat-dialog-actions>

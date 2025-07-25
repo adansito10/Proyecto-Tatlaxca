@@ -49,6 +49,7 @@
           <th>Categoría</th>
           <th>Ing/Ins</th>
           <th>Precio</th>
+          <th>Disponible</th>
           <th>Acciones</th>
         </tr>
       </thead>
@@ -68,6 +69,14 @@
             </button>
           </td>
           <td class="align-middle">${{ producto.precio | number: '1.2-2' }}</td>
+          <td class="align-middle">
+  <span 
+    class="badge" 
+    [ngClass]="producto.disponible ? 'bg-success' : 'bg-secondary'"
+  >
+    {{ producto.disponible ? 'Sí' : 'No' }}
+  </span>
+</td>
           <td class="align-middle">
             <div class="d-flex justify-content-center gap-2">
               <button

@@ -1,53 +1,89 @@
 <div class="container-fluid py-4">
   <div class="d-flex justify-content-between align-items-center mb-3 flex-wrap">
-    <h2  class="fw-bold mb-2 ms-2 text-dark" >Gestión de Insumos</h2>
+    <h2 class="fw-bold mb-2 ms-2 text-dark">Gestión de Insumos</h2>
 
-    <div class="d-flex align-items-center mb-2 position-relative buscador-wrapper">
-  <input
-    type="text"
-    class="form-control me-2 buscador-custom"
-    placeholder="Buscar Insumo..."
-    style="width: 300px"
-     [(ngModel)]="filtroTexto"
-  />
+    <div
+      class="d-flex align-items-center mb-2 position-relative buscador-wrapper"
+    >
+      <input
+        type="text"
+        class="form-control me-2 buscador-custom"
+        placeholder="Buscar Insumo..."
+        style="width: 300px"
+        [(ngModel)]="filtroTexto"
+      />
 
+      <mat-icon class="icono-busqueda">search</mat-icon>
+    </div>
 
-  <mat-icon class="icono-busqueda">search</mat-icon>
-</div>
-
-     <button class="btn custom-agregar-btn mb-2" (click)="abrirModalAgregar()">
+    <button class="btn custom-agregar-btn mb-2" (click)="abrirModalAgregar()">
       <mat-icon>add</mat-icon> Agregar
     </button>
   </div>
 
   <div class="table-responsive">
-<table class="table table-bordered table-hover text-center align-middle w-100">
-  <thead class="custom-header">
+    <table
+      class="table table-bordered table-hover text-center align-middle w-100"
+    >
+      <thead class="custom-header">
         <tr>
           <th>Nombre del Insumo</th>
           <th>Unidad</th>
           <th>Stock</th>
           <th>Última actualización</th>
+          <th>Estado</th>
           <th>Acciones</th>
         </tr>
       </thead>
       <tbody>
         <tr *ngFor="let item of inventarioFiltrado" [attr.id]="item.nombre">
-         <td class="align-middle">{{ item.nombre }}</td>
-             <td class="align-middle">{{ item.unidad }}</td>
-             <td class="align-middle" [ngClass]="{'text-danger fw-bold': item.stock < 10,  'text-success fw-semibold': item.stock >= 10}"> {{ item.stock }}</td>
-          <td>{{ (item.updated_at || item.created_at) | date:'short' }}</td>
-          <td class="align-middle">
-            
-            <div class="d-flex justify-content-center gap-2">
-              <button class="btn btn-sm btn-success" (click)="abrirModalEditar(item)">
-                <i class="bi bi-pencil"></i>
-              </button>
-              <button class="btn btn-sm btn-danger" (click)="abrirModalEliminar(item)">
-                <i class="bi bi-trash"></i>
-              </button>
-            </div>
+          <td class="align-middle">{{ item.nombre }}</td>
+          <td class="align-middle">{{ item.unidad }}</td>
+          <td
+            class="align-middle"
+            [ngClass]="{
+              'text-danger fw-bold': item.stock < 10,
+              'text-success fw-semibold': item.stock >= 10
+            }"
+          >
+            {{ item.stock }}
           </td>
+          <td>{{ item.updated_at || item.created_at | date : "short" }}</td>
+          <td>
+            <span
+              [ngClass]="{
+                'text-success': !item.deleted_at,
+                'text-danger': item.deleted_at
+              }"
+            >
+              {{ item.deleted_at ? "Inactivo" : "Activo" }}
+            </span>
+          </td>
+        <td>
+  <div class="d-flex justify-content-center gap-2">
+    <button
+      class="btn btn-sm btn-success"
+      (click)="abrirModalEditar(item)"
+      *ngIf="!item.deleted_at"
+      title="Editar"
+    >
+      <i class="bi bi-pencil"></i>
+    </button>
+
+    <button
+      class="btn btn-sm"
+      [ngClass]="item.deleted_at ? 'btn-warning' : 'btn-danger'"
+      (click)="activarInsumo(item)"
+      [title]="item.deleted_at ? 'Activar' : 'Eliminar'"
+    >
+      <i
+        class="bi"
+        [ngClass]="item.deleted_at ? 'bi-arrow-clockwise' : 'bi-trash'"
+      ></i>
+    </button>
+  </div>
+</td>
+
         </tr>
       </tbody>
     </table>

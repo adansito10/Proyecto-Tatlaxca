@@ -1,161 +1,180 @@
 <mat-sidenav-container class="sidenav-container">
-
-  <mat-sidenav #drawer class="sidenav" fixedInViewport
+  <mat-sidenav
+    #drawer
+    class="sidenav"
+    fixedInViewport
     [attr.role]="(isHandset$ | async) ? 'dialog' : 'navigation'"
     [mode]="(isHandset$ | async) ? 'over' : 'side'"
     [opened]="sidenavOpened"
-    (openedChange)="onSidenavToggle($event)">
-
+    (openedChange)="onSidenavToggle($event)"
+  >
     <div class="company-section">
-      <img src="/logocafeteria.jpg" alt="Logo de la empresa" class="company-logo">
+      <img
+        src="/logocafeteria.jpg"
+        alt="Logo de la empresa"
+        class="company-logo"
+      />
       <h3 class="company-name">Cafetería Tatiaxca</h3>
     </div>
 
-   <mat-nav-list>
+    <mat-nav-list>
+      <h4 class="menu-section">Inicio</h4>
+      <a mat-list-item routerLink="/dashboard/inicio">
+        <mat-icon matListIcon>home</mat-icon>
+        <span>Inicio</span>
+      </a>
 
-  <h4 class="menu-section">Inicio</h4>
-  <a mat-list-item routerLink="/dashboard/inicio">
-    <mat-icon matListIcon>home</mat-icon>
-    <span>Inicio</span>
-  </a>
+      <mat-divider></mat-divider>
 
-  <mat-divider></mat-divider>
+      <h4 class="menu-section">Gestión de Menú</h4>
+      <a mat-list-item routerLink="/dashboard/products">
+        <mat-icon matListIcon>inventory_2</mat-icon>
+        <span>Menú</span>
+      </a>
+      <a mat-list-item routerLink="/dashboard/ingredients">
+        <mat-icon matListIcon>restaurant_menu</mat-icon>
+        <span>Ingredientes</span>
+      </a>
+      <a mat-list-item routerLink="/dashboard/supplies">
+        <mat-icon matListIcon>warehouse</mat-icon>
+        <span>Insumos</span>
+      </a>
+      <a mat-list-item routerLink="/dashboard/categories">
+        <mat-icon matListIcon>category</mat-icon>
+        <span>Categorías</span>
+      </a>
 
-  <h4 class="menu-section">Gestión de Menú</h4>
-  <a mat-list-item routerLink="/dashboard/products">
-    <mat-icon matListIcon>inventory_2</mat-icon>
-    <span>Menú</span>
-  </a>
-  <a mat-list-item routerLink="/dashboard/ingredients">
-    <mat-icon matListIcon>restaurant_menu</mat-icon>
-    <span>Ingredientes</span>
-  </a>
-  <a mat-list-item routerLink="/dashboard/supplies">
-    <mat-icon matListIcon>warehouse</mat-icon>
-    <span>Insumos</span>
-  </a>
-  <a mat-list-item routerLink="/dashboard/categories">
-    <mat-icon matListIcon>category</mat-icon>
-    <span>Categorías</span>
-  </a>
+      <mat-divider></mat-divider>
 
-  <mat-divider></mat-divider>
+      <h4 class="menu-section">Administración</h4>
+      <a mat-list-item routerLink="/dashboard/users">
+        <mat-icon matListIcon>group</mat-icon>
+        <span>Usuarios</span>
+      </a>
+      <a mat-list-item routerLink="/dashboard/roles">
+        <mat-icon matListIcon>badge</mat-icon>
+        <span>Roles</span>
+      </a>
 
-  <h4 class="menu-section">Administración</h4>
-  <a mat-list-item routerLink="/dashboard/users">
-    <mat-icon matListIcon>group</mat-icon>
-    <span>Usuarios</span>
-  </a>
-  <a mat-list-item routerLink="/dashboard/roles">
-    <mat-icon matListIcon>badge</mat-icon>
-    <span>Roles</span>
-  </a>
+      <a mat-list-item routerLink="/dashboard/tables">
+        <mat-icon matListIcon>table_restaurant</mat-icon>
+        <span>Mesas</span>
+      </a>
 
-  <a mat-list-item routerLink="/dashboard/tables">
-    <mat-icon matListIcon>table_restaurant</mat-icon>
-    <span>Mesas</span>
-  </a>
+      <mat-divider></mat-divider>
 
-  <mat-divider></mat-divider>
-
-  <h4 class="menu-section">Reportes</h4>
-    <a mat-list-item routerLink="/dashboard/orders">
-    <mat-icon matListIcon>receipt_long</mat-icon>
-    <span>Órdenes</span>
-  </a>
-  <a mat-list-item routerLink="/dashboard/sales">
-    <mat-icon matListIcon>bar_chart</mat-icon>
-    <span>Ventas</span>
-  </a>
-
-
-</mat-nav-list>
-
-
-  
+      <h4 class="menu-section">Reportes</h4>
+      <a mat-list-item routerLink="/dashboard/orders">
+        <mat-icon matListIcon>receipt_long</mat-icon>
+        <span>Órdenes</span>
+      </a>
+      <a mat-list-item routerLink="/dashboard/sales">
+        <mat-icon matListIcon>bar_chart</mat-icon>
+        <span>Ventas</span>
+      </a>
+    </mat-nav-list>
 
     <div *ngIf="cerrandoSesion" class="overlay">
       <div class="spinner-container">
         <mat-spinner diameter="50"></mat-spinner>
-        <span style="margin-left: 15px; color: white; font-size: 1.2rem;">Cerrando sesión...</span>
+        <span style="margin-left: 15px; color: white; font-size: 1.2rem"
+          >Cerrando sesión...</span
+        >
       </div>
     </div>
   </mat-sidenav>
 
   <mat-sidenav-content [class.content-margin]="isSideMode && sidenavOpened">
-   <mat-toolbar color="primary">
-  <button type="button" mat-icon-button (click)="drawer.toggle()" aria-label="Abrir/cerrar menú">
-    <mat-icon>{{ sidenavOpened ? 'close' : 'menu' }}</mat-icon>
-  </button>
+    <mat-toolbar color="primary">
+      <button
+        type="button"
+        mat-icon-button
+        (click)="drawer.toggle()"
+        aria-label="Abrir/cerrar menú"
+      >
+        <mat-icon>{{ sidenavOpened ? "close" : "menu" }}</mat-icon>
+      </button>
 
-  <img src="/logocafeteria.jpg" alt="Logo" class="toolbar-logo">
-  <span class="titulo-app">Cafetería Tatiaxca</span>
+      <img src="/logocafeteria.jpg" alt="Logo" class="toolbar-logo" />
+      <span class="titulo-app">Cafetería Tatiaxca</span>
 
-  <span class="spacer"></span>
+      <span class="spacer"></span>
 
-
-
-
-<div class="dropdown notification-dropdown">
+     <div class="dropdown notification-dropdown">
   <button
     class="btn btn-dark position-relative"
     type="button"
     id="dropdownNotifButton"
     data-bs-toggle="dropdown"
-    aria-expanded="false">
+    aria-expanded="false"
+  >
     <i class="bi bi-bell fs-5"></i>
-    <span *ngIf="cantidadNotificaciones > 0"
-          class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger">
+    <span
+      *ngIf="cantidadNotificaciones > 0"
+      class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger"
+    >
       {{ cantidadNotificaciones }}
     </span>
   </button>
 
-  <ul class="dropdown-menu dropdown-menu-end shadow-lg" aria-labelledby="dropdownNotifButton" style="width: 350px; max-height: 400px; overflow-y: auto;">
-    <li class="dropdown-header fw-bold px-3 py-2 border-bottom">Notificaciones</li>
+  <ul
+    class="dropdown-menu dropdown-menu-end shadow-lg"
+    aria-labelledby="dropdownNotifButton"
+    style="width: 400px; max-height: 400px; overflow-y: auto"
+  >
+    <li class="dropdown-header fw-bold px-3 py-2 border-bottom">
+      Notificaciones
+    </li>
 
     <ng-container *ngIf="notificaciones.length > 0; else noNotifs">
-    <li *ngFor="let notif of notificaciones" class="px-3 py-2 border-bottom" (click)="navegarAProducto(notif)">
-  <div class="fw-semibold text-secundary">
-    {{ notif.split('\n')[0] }} 
-  </div>
-  <div class="text-muted small">
-    {{ notif.split('\n')[1] }} Disponibles
-  </div>
-</li>
-
+      <li
+        *ngFor="let notif of notificaciones"
+        class="px-3 py-2 border-bottom"
+        (click)="navegarAProducto(notif.mensaje)"
+        style="cursor: pointer"
+      >
+        <div class="fw-semibold text-secondary">
+          {{ notif.mensaje.split('\n')[0] }}
+        </div>
+        <div class="text-muted small" *ngIf="notif.mensaje.split('\n').length > 1">
+          {{ notif.mensaje.split('\n')[1] }}
+        </div>
+      </li>
     </ng-container>
 
     <ng-template #noNotifs>
-      <li class="px-3 py-3 text-center text-muted">No tienes notificaciones nuevas</li>
+      <li class="px-3 py-3 text-center text-muted">
+        No tienes notificaciones nuevas
+      </li>
     </ng-template>
   </ul>
 </div>
 
 
+      <button
+        mat-button
+        [matMenuTriggerFor]="perfilMenu"
+        class="toolbar-profile-button"
+      >
+        <img src="/perfil.jpg" alt="Perfil" class="profile-image" />
+        <div class="profile-info">
+          <h3>{{ user?.correo || "Usuario" }}</h3>
+          <p>{{ user?.rol || "Rol desconocido" }}</p>
+          <mat-icon>arrow_drop_down</mat-icon>
+        </div>
+      </button>
 
-
-
-  <button mat-button [matMenuTriggerFor]="perfilMenu" class="toolbar-profile-button">
-    <img src="/perfil.jpg" alt="Perfil" class="profile-image" />
-    <div class="profile-info">
-      <h3>{{ user?.correo || 'Usuario' }}</h3>
-      <p>{{ user?.rol || 'Rol desconocido' }}</p>
-        <mat-icon>arrow_drop_down</mat-icon>
-
-    </div>
-  </button>
-
-  <mat-menu #perfilMenu="matMenu">
-    <button mat-menu-item [routerLink]="['/dashboard/configuration']">
-<mat-icon>account_circle</mat-icon>
-      <span>Perfil</span>
-    </button>
-    <button mat-menu-item (click)="logout()">
-      <mat-icon>logout</mat-icon>
-      <span>Cerrar sesión</span>
-    </button>
-  </mat-menu>
-</mat-toolbar>
+      <mat-menu #perfilMenu="matMenu">
+        <button mat-menu-item [routerLink]="['/dashboard/configuration']">
+          <mat-icon>account_circle</mat-icon>
+          <span>Perfil</span>
+        </button>
+        <button mat-menu-item (click)="logout()">
+          <mat-icon>logout</mat-icon>
+          <span>Cerrar sesión</span>
+        </button>
+      </mat-menu>
+    </mat-toolbar>
 
     <router-outlet></router-outlet>
   </mat-sidenav-content>

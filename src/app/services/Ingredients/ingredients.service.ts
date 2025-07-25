@@ -10,6 +10,7 @@ export interface Ingrediente {
   stock: number;
   created_at?: string; 
   updated_at?: string;
+  deleted_at?: string;
 }
 
 @Injectable({
@@ -35,4 +36,9 @@ export class IngredientsService {
   eliminarIngrediente(id: number): Observable<Ingrediente> {
     return this.http.delete<Ingrediente>(`${this.apiUrl}/${id}`);
   }
+
+  activarIngrediente(id: number): Observable<Ingrediente> {
+  return this.http.put<Ingrediente>(`${this.apiUrl}/activate/${id}`, {});
+}
+
 }

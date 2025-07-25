@@ -20,8 +20,8 @@ export class IngredientsComponent implements OnInit {
   filtroNombre: string = '';
 
   UMBRAL_POR_UNIDAD: Record<string, number> = {
-  'g': 500,
-  'ml': 1000,
+  'g': 100,
+  'ml': 500,
   'u': 10
 };
 
@@ -55,8 +55,8 @@ export class IngredientsComponent implements OnInit {
       this.ingredientes = data.filter(i => i.stock !== -1);
 
       const UMBRAL = {
-        'g': 500,
-        'ml': 1000,
+        'g': 100,
+        'ml': 500,
         'u': 10
       };
 
@@ -69,12 +69,17 @@ export class IngredientsComponent implements OnInit {
 
 
 
-  get ingredientesFiltrados(): Ingrediente[] {
-    const texto = this.filtroNombre.toLowerCase().trim();
-    return this.ingredientes.filter(ing =>
-      ing.nombre.toLowerCase().includes(texto)
-    );
-  }
+get ingredientesFiltrados(): Ingrediente[] {
+  const texto = this.filtroNombre.toLowerCase().trim();
+
+  return this.ingredientes
+    .filter(ing => ing.nombre.toLowerCase().includes(texto))
+    .sort((a, b) => {
+      if (!a.deleted_at && b.deleted_at) return -1;
+      if (a.deleted_at && !b.deleted_at) return 1;
+      return 0;
+    });
+}
 
 
   esStockBajo(ingrediente: Ingrediente): boolean {
@@ -82,6 +87,21 @@ export class IngredientsComponent implements OnInit {
   const umbral = this.UMBRAL_POR_UNIDAD[unidad] ?? 10;
   return ingrediente.stock < umbral;
 }
+
+alternarEstadoIngrediente(ingrediente: Ingrediente): void {
+  if (ingrediente.deleted_at) {
+    this.ingredientsService.activarIngrediente(ingrediente.id).subscribe({
+      next: () => this.obtenerIngredientes(),
+      error: err => console.error('Error al activar ingrediente:', err)
+    });
+  } else {
+    this.ingredientsService.eliminarIngrediente(ingrediente.id).subscribe({
+      next: () => this.obtenerIngredientes(),
+      error: err => console.error('Error al eliminar ingrediente:', err)
+    });
+  }
+}
+
 
 
   abrirModalAgregar(): void {

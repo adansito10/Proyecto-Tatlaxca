@@ -3,6 +3,7 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { IngredientsService } from '../../../../services/Ingredients/ingredients.service';
 import { Ingrediente } from '../../../../services/Ingredients/ingredients.service';
+import { MatSnackBar } from '@angular/material/snack-bar';
 
 @Component({
   selector: 'app-mostrar-ingredientes',
@@ -20,6 +21,7 @@ export class MostrarIngredientesComponent implements OnInit {
     private fb: FormBuilder,
     private dialogRef: MatDialogRef<MostrarIngredientesComponent>,
     private ingredientsService: IngredientsService,
+    private snackBar: MatSnackBar, 
     @Inject(MAT_DIALOG_DATA) public data: { ingredientesActuales: Ingrediente[] }
 
 
@@ -32,28 +34,30 @@ export class MostrarIngredientesComponent implements OnInit {
     this.ingredientesForm = this.fb.group(group);
   }
 
-  ngOnInit(): void {
-    this.ingredientsService.obtenerIngredientes().subscribe({
-      next: (data) => {
-        this.ingredientesDisponibles = data;
+ ngOnInit(): void {
+  this.ingredientsService.obtenerIngredientes().subscribe({
+    next: (data) => {
+    
+      this.ingredientesDisponibles = data.filter(i => !i.deleted_at);
 
-        this.data.ingredientesActuales?.forEach((ing, index) => {
-          if (index < this.controlNombres.length) {
-            const control = this.controlNombres[index];
-            const encontrado = this.ingredientesDisponibles.find(i => i.id === ing.id);
-            if (encontrado) {
-              this.ingredientesForm.get(control + '_nombre')?.setValue(encontrado);
-              this.ingredientesForm.get(control + '_cantidad')?.setValue(ing.cantidad);
-              this.ingredientesForm.get(control + '_cantidad')?.enable();
-            }
+      this.data.ingredientesActuales?.forEach((ing, index) => {
+        if (index < this.controlNombres.length) {
+          const control = this.controlNombres[index];
+          const encontrado = this.ingredientesDisponibles.find(i => i.id === ing.id);
+          if (encontrado) {
+            this.ingredientesForm.get(control + '_nombre')?.setValue(encontrado);
+            this.ingredientesForm.get(control + '_cantidad')?.setValue(ing.cantidad);
+            this.ingredientesForm.get(control + '_cantidad')?.enable();
           }
-        });
+        }
+      });
 
-        this.escucharCambios();
-      },
-      error: err => console.error('Error al cargar ingredientes', err)
-    });
-  }
+      this.escucharCambios();
+    },
+    error: err => console.error('Error al cargar ingredientes', err)
+  });
+}
+
 
   escucharCambios(): void {
     this.controlNombres.forEach(control => {
@@ -112,51 +116,78 @@ puedeGuardar(): boolean {
   return this.ingredientesForm.valid;
 }
 
+
+mostrarError(mensaje: string): void {
+  console.log('MOSTRANDO ERROR:', mensaje); 
+  this.snackBar.open(mensaje, 'Cerrar', {
+    duration: 4000,
+    verticalPosition: 'top',
+    panelClass: ['error-snackbar']
+  });
+}
+
+
+
   guardarIngredientes(): void {
-    const values = this.ingredientesForm.value;
-    const seleccionados: any[] = [];
-    let hayError = false;
-    this.mensajeStockExcedido = false;
+  const values = this.ingredientesForm.value;
+  const seleccionados: any[] = [];
+  let hayError = false;
+  this.mensajeStockExcedido = false;
 
-    this.controlNombres.forEach(name => {
-      const ing = values[name + '_nombre'];
-      const cantidadControl = this.ingredientesForm.get(name + '_cantidad');
-      const cantidad = Number(values[name + '_cantidad']) || 0;
+  this.controlNombres.forEach(name => {
+    const ing = values[name + '_nombre'];
+    const cantidadControl = this.ingredientesForm.get(name + '_cantidad');
+    const cantidadRaw = values[name + '_cantidad'];
+    const cantidad = Number(cantidadRaw);
 
-      if (!ing && (!cantidad || cantidad <= 0)) {
-        cantidadControl?.setErrors(null);
-        return;
-      }
+    // 🛑 Ignorar campos vacíos
+    if (!ing && (!cantidad || cantidad <= 0)) {
+      cantidadControl?.setErrors(null);
+      return;
+    }
 
-      if (ing && (cantidad <= 0 || cantidad === null || isNaN(cantidad))) {
-        cantidadControl?.setErrors({ required: true });
-        hayError = true;
-        return;
-      }
+    // 🛑 Ceros iniciales (01, 002)
+    if (/^0[0-9]+/.test(cantidadRaw)) {
+      cantidadControl?.setErrors({ leadingZero: true });
+      hayError = true;
+      this.mostrarError(`La cantidad de "${ing?.nombre || 'un ingrediente'}" no puede comenzar con 0.`);
+      return;
+    }
 
-      if (cantidad > ing.stock) {
-        cantidadControl?.setErrors({ excedeStock: true });
-        hayError = true;
-        this.mensajeStockExcedido = true;
-      } else if (cantidadControl?.hasError('excedeStock')) {
-        const errors = { ...cantidadControl.errors };
-        delete errors['excedeStock'];
-        cantidadControl.setErrors(Object.keys(errors).length > 0 ? errors : null);
-      }
+    // 🛑 Valor inválido
+    if (ing && (cantidad <= 0 || isNaN(cantidad))) {
+      cantidadControl?.setErrors({ required: true });
+      hayError = true;
+      this.mostrarError(`La cantidad de "${ing.nombre}" debe ser mayor a cero.`);
+      return;
+    }
 
-      if (ing && cantidad > 0 && cantidad <= ing.stock) {
-        seleccionados.push({
-          id: ing.id,
-          nombre: ing.nombre,
-          unidad: ing.unidad,
-          cantidad
-        });
-      }
+    // 🛑 Excede stock
+    if (cantidad > ing.stock) {
+      cantidadControl?.setErrors({ excedeStock: true });
+      hayError = true;
+      this.mensajeStockExcedido = true;
+      this.mostrarError(`Stock insuficiente para "${ing.nombre}". Máximo disponible: ${ing.stock}`);
+      return;
+    }
+
+    // ✅ Sin errores → limpiar
+    cantidadControl?.setErrors(null);
+
+    // ✅ Agregar a seleccionados
+    seleccionados.push({
+      id: ing.id,
+      nombre: ing.nombre,
+      unidad: ing.unidad,
+      cantidad
     });
+  });
 
-   if (hayError) return;
-
-    this.mensajeStockExcedido = false;
-    this.dialogRef.close(seleccionados);
+  if (hayError) {
+    return;
   }
+
+  this.mensajeStockExcedido = false;
+  this.dialogRef.close(seleccionados);
+}
 }

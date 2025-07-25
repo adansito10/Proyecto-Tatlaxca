@@ -30,6 +30,8 @@ export class InicioComponent implements OnInit {
   mesActual: string = '';
   ordenesPorDia: { clave: string; cantidad: number }[] = [];
   nombreUsuario: string = '';
+  ingredientesBajoStock: any[] = [];
+  insumosBajoStock: any[] = [];
 
   public ventasDiaData: ChartData<'line'> = { labels: [], datasets: [] };
   public ventasSemanaData: ChartData<'line'> = { labels: [], datasets: [] };
@@ -266,9 +268,18 @@ export class InicioComponent implements OnInit {
     this.ordenesPorDia = ordenesPorDia.map(({ clave, cantidad }) => ({ clave, cantidad }));
   }
 
-  verificarStockBajo() {
-    this.productosConStockBajo = [...this.ingredientes, ...this.insumos].filter(i => i.stock < 5);
-  }
+verificarStockBajo() {
+  this.ingredientesBajoStock = this.ingredientes
+    .filter(i => i.stock < 5 && i.deleted_at === null)
+    .sort((a, b) => a.stock - b.stock)
+    .slice(0, 5);
+
+  this.insumosBajoStock = this.insumos
+    .filter(i => i.stock < 5 && i.deleted_at === null)
+    .sort((a, b) => a.stock - b.stock)
+    .slice(0, 5);
+}
+
 
   configurarGraficas() {
     this.ventasDiaData = {

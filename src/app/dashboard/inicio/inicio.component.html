@@ -33,30 +33,33 @@
     </div>
 
 
+
+
    
 
-    <div  class="col-12 mb-4">
-      <mat-card>
-        <mat-card-header>
-          <mat-card-title class="titulo">Productos Más Vendidos</mat-card-title>
-        </mat-card-header>
-        <mat-card-content>
-          <div class="productos-grid">
-            <mat-card class="producto-card" *ngFor="let p of topProductos; let i = index">
-              <img mat-card-image [src]="p.imagen" alt="{{ p.nombre }}" />
-              <mat-card-content>
-                <h5 class="producto-nombre" [title]="p.nombre">
-                  #{{ i + 1 }} - {{ p.nombre }}
-                </h5>
-                <p class="producto-ventas">
-               <span class="badge" style="color: rgb(255, 255, 255);">{{ p.ventas }} ventas</span>
-                </p>
-              </mat-card-content>
-            </mat-card>
-          </div>
-        </mat-card-content>
-      </mat-card>
-    </div>
+   <div class="col-12 mb-4">
+  <mat-card class="productos-container">
+    <mat-card-header>
+      <mat-card-title class="titulo">Productos Más Vendidos</mat-card-title>
+    </mat-card-header>
+
+    <mat-card-content>
+      <div class="productos-grid">
+        <mat-card class="producto-card" *ngFor="let p of topProductos; let i = index">
+          <img mat-card-image [src]="p.imagen" alt="{{ p.nombre }}" />
+          <mat-card-content>
+            <h5 class="producto-nombre" [title]="p.nombre">
+              #{{ i + 1 }} - {{ p.nombre }}
+            </h5>
+            <p class="producto-ventas">
+              <span class="badge">{{ p.ventas }} ventas</span>
+            </p>
+          </mat-card-content>
+        </mat-card>
+      </div>
+    </mat-card-content>
+  </mat-card>
+</div>
 
 
       <div class="grafica-col">

@@ -42,6 +42,7 @@ import { AgregarStatusComponent } from './status/agrega-status/agregar-status.co
 import { EliminarStatusComponent } from './status/eliminar-status/eliminar-status.component';
 import { OrderDetailComponent } from './orders-detail/orders-detail.component';
 import { CapitalizeDirective } from '../../directive/capitalize.directive';
+import { MatSnackBarModule } from '@angular/material/snack-bar';
 
 @NgModule({
   declarations: [
@@ -93,7 +94,9 @@ import { CapitalizeDirective } from '../../directive/capitalize.directive';
     MatInputModule,
     MatDialogModule,
     RouterModule,
-    ReactiveFormsModule
+    ReactiveFormsModule,
+   MatSnackBarModule, 
+
 
   ],
   exports: [

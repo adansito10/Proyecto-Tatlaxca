@@ -5,6 +5,7 @@ import { AgregarProductoComponent } from '../../shared-modals/modals/product/agr
 import { EditarProductoComponent } from '../../shared-modals/modals/product/editar-producto/editar-producto/editar-producto.component';
 import { EliminarProductoComponent } from '../../shared-modals/modals/product/eliminar-producto/eliminar-producto/eliminar-producto.component';
 import { VerProductoComponent } from '../../shared-modals/modals/product/ver-producto/ver-producto/ver-producto.component';
+import { MatSnackBar } from '@angular/material/snack-bar';
 
 interface Categoria {
   id: number;
@@ -18,6 +19,7 @@ interface Producto {
   descripcion?: string;
   imagen: string;
   categoria: Categoria | string;
+  disponible: boolean;
   eliminado?: boolean;
   [key: string]: any;
 }
@@ -36,6 +38,7 @@ export class ProductsComponent implements OnInit {
 
   constructor(
     private dialog: MatDialog,
+    private snackBar: MatSnackBar,
     private productosService: ProductosService
   ) {}
 
@@ -80,46 +83,74 @@ export class ProductsComponent implements OnInit {
     });
 
     dialogRef.afterClosed().subscribe((resultado) => {
-      if (resultado === true) {
-        this.cargarProductos();
-      }
+   if (resultado === true) {
+  this.cargarProductos();
+  this.snackBar.open('Producto creado exitosamente', 'Cerrar', {
+    duration: 3000,
+    panelClass: ['snackbar-success']
+  });
+}
     });
   }
 
-  abrirModalEditar(producto: Producto): void {
-    const dialogRef = this.dialog.open(EditarProductoComponent, {
-      width: '600px',
-      data: { modo: 'editar', producto, categorias: this.categorias }
-    });
+ abrirModalEditar(producto: Producto): void {
+  const dialogRef = this.dialog.open(EditarProductoComponent, {
+    width: '600px',
+    data: { modo: 'editar', producto, categorias: this.categorias }
+  });
 
-    dialogRef.afterClosed().subscribe((actualizado) => {
-      if (actualizado) {
-        const productoAEnviar = { ...actualizado, id: actualizado.id ?? producto.id };
-        this.productosService.actualizarProducto(String(producto.id), productoAEnviar).subscribe({
-          next: () => this.cargarProductos(),
-          error: (err) => this.logError('actualizar producto', err, true)
-        });
-      }
-    });
-  }
+  dialogRef.afterClosed().subscribe((actualizado) => {
+    if (actualizado) {
+      const productoAEnviar = { ...actualizado, id: actualizado.id ?? producto.id };
+      this.productosService.actualizarProducto(String(producto.id), productoAEnviar).subscribe({
+        next: () => {
+          this.cargarProductos();
+          this.snackBar.open('Producto actualizado exitosamente', 'Cerrar', {
+            duration: 3000,
+            panelClass: ['snackbar-success']
+          });
+        },
+        error: (error) => {
+          console.error('Error al actualizar el producto:', error);
+          this.snackBar.open('Error al actualizar el producto. Intenta de nuevo.', 'Cerrar', {
+            duration: 3000,
+            panelClass: ['snackbar-error']
+          });
+        }
+      });
+    }
+  });
+}
 
-  abrirModalEliminar(producto: Producto): void {
-    const dialogRef = this.dialog.open(EliminarProductoComponent, {
-      width: '400px',
-      data: { nombre: producto.nombre, id: String(producto.id) }
-    });
 
-    dialogRef.afterClosed().subscribe((confirmado) => {
-      if (confirmado) {
-        this.productosService.eliminarProducto(producto.id).subscribe({
-          next: () => {
-            this.productos = this.productos.filter(p => p.id !== producto.id);
-          },
-          error: (err) => this.logError('eliminar producto', err)
-        });
-      }
-    });
-  }
+ abrirModalEliminar(producto: Producto): void {
+  const dialogRef = this.dialog.open(EliminarProductoComponent, {
+    width: '400px',
+    data: { nombre: producto.nombre, id: String(producto.id) }
+  });
+
+  dialogRef.afterClosed().subscribe((confirmado) => {
+    if (confirmado) {
+      this.productosService.eliminarProducto(producto.id).subscribe({
+        next: () => {
+          this.productos = this.productos.filter(p => p.id !== producto.id);
+          this.snackBar.open('Producto eliminado exitosamente', 'Cerrar', {
+            duration: 3000,
+            panelClass: ['snackbar-success']
+          });
+        },
+        error: (err) => {
+          console.error('Error al eliminar producto:', err);
+          this.snackBar.open('Error al eliminar el producto', 'Cerrar', {
+            duration: 3000,
+            panelClass: ['snackbar-error']
+          });
+        }
+      });
+    }
+  });
+}
+
 
   abrirModalVer(producto: Producto): void {
     this.productosService.obtenerProductoPorId(producto.id).subscribe((detalle) => {

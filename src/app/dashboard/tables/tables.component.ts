@@ -32,13 +32,20 @@ export class TablesComponent implements OnInit {
     });
   }
 
-  get mesasFiltradas(): Table[] {
-    const texto = this.filtro.trim().toLowerCase();
-    return this.mesas.filter(m =>
+get mesasFiltradas(): Table[] {
+  const texto = this.filtro.trim().toLowerCase();
+
+  return this.mesas
+    .filter(m =>
       m.numero.toString().includes(texto) ||
       m.ubicacion.toLowerCase().includes(texto)
-    );
-  }
+    )
+    .sort((a, b) => {
+      if (!a.deleted_at && b.deleted_at) return -1;
+      if (a.deleted_at && !b.deleted_at) return 1;
+      return 0;
+    });
+}
 
   restaurarMesa(mesa: Table): void {
   this.tablesService.restaurarMesa(mesa.id!).subscribe({

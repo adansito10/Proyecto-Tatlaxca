@@ -7,13 +7,12 @@ import { AgregarSuministroComponent } from '../../shared-modals/modals/supplies/
 import { EliminarSuministroComponent } from '../../shared-modals/modals/supplies/eliminar-suministro/eliminar-suministro.component';
 import { InsumosService } from '../../services/supplies/supplies.service';
 import { Insumo } from '../../services/supplies/supplies.service';
-import { NotificacionesService } from '../../services/notificaciones/notificaciones.service';
 
 @Component({
   selector: 'app-inventory',
   standalone: false,
   templateUrl: './inventory.component.html',
-  styleUrls: ['./inventory.component.scss']
+  styleUrls: ['./inventory.component.scss'],
 })
 export class InventoryComponent implements OnInit {
   filtroTexto = '';
@@ -28,35 +27,52 @@ export class InventoryComponent implements OnInit {
 
   ngOnInit(): void {
     this.obtenerInsumos();
-    this.route.queryParams.subscribe(params => {
-    const nombre = params['nombre'];
-  if (nombre) {
-    this.filtroTexto = nombre; 
-    setTimeout(() => {
-      this.scrollYResaltar(nombre);
-    }, 300);
+    this.route.queryParams.subscribe((params) => {
+      const nombre = params['nombre'];
+      if (nombre) {
+        this.filtroTexto = nombre;
+        setTimeout(() => {
+          this.scrollYResaltar(nombre);
+        }, 300);
+      }
+    });
   }
-});
 
+  obtenerInsumos(): void {
+    this.insumosService.obtenerInsumos().subscribe({
+      next: (data) => {
+        this.inventario = data.filter((i) => i.stock !== -1);
+      },
+      error: (err) => {
+        console.error('Error al cargar insumos', err);
+      },
+    });
   }
-
-obtenerInsumos(): void {
-  this.insumosService.obtenerInsumos().subscribe({
-    next: (data) => {
-      this.inventario = data.filter(i => i.stock !== -1);
-    },
-    error: (err) => {
-      console.error('Error al cargar insumos', err);
-    }
-  });
-}
-
 
   get inventarioFiltrado(): Insumo[] {
     const texto = this.filtroTexto.trim().toLowerCase();
-    return this.inventario.filter(item =>
-      item.nombre.toLowerCase().includes(texto)
-    );
+
+    return this.inventario
+      .filter((item) => item.nombre.toLowerCase().includes(texto))
+      .sort((a, b) => {
+        if (!a.deleted_at && b.deleted_at) return -1;
+        if (a.deleted_at && !b.deleted_at) return 1;
+        return 0;
+      });
+  }
+
+  activarInsumo(item: Insumo): void {
+    if (item.deleted_at) {
+      this.insumosService.activarInsumo(item.id).subscribe({
+        next: () => this.obtenerInsumos(),
+        error: (err) => console.error('Error al activar insumo', err),
+      });
+    } else {
+      this.insumosService.eliminarInsumo(item.id).subscribe({
+        next: () => this.obtenerInsumos(),
+        error: (err) => console.error('Error al eliminar insumo', err),
+      });
+    }
   }
 
   abrirModalAgregar(): void {
@@ -66,69 +82,67 @@ obtenerInsumos(): void {
         suministro: {
           nombre: '',
           stock: 0,
-          unidad: ''
-        }
-      }
+          unidad: '',
+        },
+      },
     });
 
-    dialogRef.afterClosed().subscribe(resultado => {
+    dialogRef.afterClosed().subscribe((resultado) => {
       if (resultado) {
         this.insumosService.crearInsumo(resultado).subscribe({
           next: () => this.obtenerInsumos(),
-          error: err => console.error('Error al guardar insumo:', err)
+          error: (err) => console.error('Error al guardar insumo:', err),
         });
       }
     });
   }
 
   abrirModalEditar(item: Insumo): void {
-  const dialogRef = this.dialog.open(AgregarSuministroComponent, {
-    width: '600px',
-    data: {
-      modo: 'editar', 
-      suministro: item
-    }
-  });
+    const dialogRef = this.dialog.open(AgregarSuministroComponent, {
+      width: '600px',
+      data: {
+        modo: 'editar',
+        suministro: item,
+      },
+    });
 
-  dialogRef.afterClosed().subscribe(resultado => {
-    if (resultado) {
-      this.insumosService.actualizarInsumo(item.id!, resultado).subscribe({
-        next: () => this.obtenerInsumos(),
-        
-        error: err => console.error('Error al actualizar insumo', err)
-      });
-    }
-  });
-}
+    dialogRef.afterClosed().subscribe((resultado) => {
+      if (resultado) {
+        this.insumosService.actualizarInsumo(item.id!, resultado).subscribe({
+          next: () => this.obtenerInsumos(),
 
+          error: (err) => console.error('Error al actualizar insumo', err),
+        });
+      }
+    });
+  }
 
   abrirModalEliminar(item: Insumo): void {
     const dialogRef = this.dialog.open(EliminarSuministroComponent, {
       width: '400px',
       data: {
-        nombreProducto: item.nombre
-      }
+        nombreProducto: item.nombre,
+      },
     });
 
-    dialogRef.afterClosed().subscribe(confirmado => {
+    dialogRef.afterClosed().subscribe((confirmado) => {
       if (confirmado) {
         this.insumosService.eliminarInsumo(item.id!).subscribe({
           next: () => this.obtenerInsumos(),
-          error: err => console.error('Error al eliminar insumo', err)
+          error: (err) => console.error('Error al eliminar insumo', err),
         });
       }
     });
   }
 
   scrollYResaltar(nombre: string) {
-  const el = document.getElementById(nombre);
-  if (el) {
-    el.scrollIntoView({ behavior: 'smooth', block: 'center' });
-    el.classList.add('highlight-temp');
-    setTimeout(() => {
-      el.classList.remove('highlight-temp');
-    }, 3000);
+    const el = document.getElementById(nombre);
+    if (el) {
+      el.scrollIntoView({ behavior: 'smooth', block: 'center' });
+      el.classList.add('highlight-temp');
+      setTimeout(() => {
+        el.classList.remove('highlight-temp');
+      }, 3000);
+    }
   }
-}
-
 }

@@ -40,4 +40,8 @@ export class InsumosService {
   eliminarInsumo(id: number): Observable<void> {
     return this.http.delete<void>(`${this.apiUrl}/${id}`);
   }
+  activarInsumo(id: number): Observable<Insumo> {
+  return this.http.put<Insumo>(`${this.apiUrl}/activate/${id}`, {});
+}
+
 }

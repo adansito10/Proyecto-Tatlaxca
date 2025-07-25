@@ -2,6 +2,7 @@ import { Component, Inject, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { InsumosService, Insumo, InsumoSeleccionado } from '../../../../services/supplies/supplies.service';
+import { MatSnackBar } from '@angular/material/snack-bar';
 
 @Component({
   selector: 'app-mostrar-insumos',
@@ -18,6 +19,7 @@ export class MostrarInsumosComponent implements OnInit {
   constructor(
     private fb: FormBuilder,
     private dialogRef: MatDialogRef<MostrarInsumosComponent>,
+    private snackBar: MatSnackBar,
     @Inject(MAT_DIALOG_DATA) public data: { insumosActuales: InsumoSeleccionado[] },
     private insumosService: InsumosService
   ) {
@@ -32,7 +34,7 @@ export class MostrarInsumosComponent implements OnInit {
   ngOnInit(): void {
     this.insumosService.obtenerInsumos().subscribe({
       next: (data) => {
-        this.insumosDisponibles = data;
+        this.insumosDisponibles = data.filter(ins => !ins.deleted_at);
 
         this.data.insumosActuales?.forEach((insumo, index) => {
           if (index < this.controlNombres.length) {
@@ -52,6 +54,14 @@ export class MostrarInsumosComponent implements OnInit {
     });
   }
 
+  mostrarError(mensaje: string): void {
+  this.snackBar.open(mensaje, 'Cerrar', {
+    duration: 4000,
+    verticalPosition: 'top',
+    panelClass: ['error-snackbar']
+  });
+}
+
   escucharCambios(): void {
     this.controlNombres.forEach(control => {
       this.insumosForm.get(control + '_nombre')?.valueChanges.subscribe(value => {
@@ -67,66 +77,84 @@ export class MostrarInsumosComponent implements OnInit {
     });
   }
 
- puedeGuardar(): boolean {
-  for (const name of this.controlNombres) {
-    const ins = this.insumosForm.get(name + '_nombre')?.value as Insumo | null;
-    const cantidad = this.insumosForm.get(name + '_cantidad')?.value;
-    const cantidadControl = this.insumosForm.get(name + '_cantidad');
-
-    if (ins && cantidadControl?.enabled && cantidad > 0 && !cantidadControl.errors) {
-      return true; 
-    }
-
-    if (!ins && (!cantidad || cantidad <= 0)) {
-      cantidadControl?.setErrors(null); 
-    }
-  }
-
-  return this.insumosForm.valid; 
-}
-
-
-  guardarInsumos(): void {
-    const values = this.insumosForm.value;
-    const seleccionados: InsumoSeleccionado[] = [];
-    let hayError = false;
-    this.mensajeCantidadInvalida = false;
-
-    this.controlNombres.forEach(name => {
+  puedeGuardar(): boolean {
+    for (const name of this.controlNombres) {
       const ins = this.insumosForm.get(name + '_nombre')?.value as Insumo | null;
+      const cantidad = this.insumosForm.get(name + '_cantidad')?.value;
       const cantidadControl = this.insumosForm.get(name + '_cantidad');
-      const cantidad = Number(values[name + '_cantidad']) || 0;
+
+      if (ins && cantidadControl?.enabled && cantidad > 0 && !cantidadControl.errors) {
+        return true;
+      }
 
       if (!ins && (!cantidad || cantidad <= 0)) {
         cantidadControl?.setErrors(null);
-        return;
       }
+    }
 
-      if (ins && (cantidad <= 0 || cantidad === null || isNaN(cantidad))) {
+    return this.insumosForm.valid;
+  }
+
+ guardarInsumos(): void {
+  const values = this.insumosForm.value;
+  const seleccionados: InsumoSeleccionado[] = [];
+  let hayError = false;
+  this.mensajeCantidadInvalida = false;
+
+  this.controlNombres.forEach(name => {
+    const ins = this.insumosForm.get(name + '_nombre')?.value as Insumo | null;
+    const cantidadControl = this.insumosForm.get(name + '_cantidad');
+    const cantidadRaw = values[name + '_cantidad'];
+    const cantidad = Number(cantidadRaw);
+
+    // ✅ Limpiar ceros iniciales
+    if (/^0[0-9]+/.test(cantidadRaw)) {
+      cantidadControl?.setErrors({ leadingZero: true });
+      hayError = true;
+      this.mostrarError(`La cantidad ingresada para "${ins?.nombre || 'un insumo'}" no puede tener ceros iniciales.`);
+      return;
+    }
+
+    if (!ins && (!cantidad || cantidad <= 0)) {
+      cantidadControl?.setErrors(null);
+      return;
+    }
+
+    if (ins) {
+      if (cantidad <= 0 || isNaN(cantidad)) {
         cantidadControl?.setErrors({ required: true });
         hayError = true;
+        this.mostrarError(`La cantidad de "${ins.nombre}" debe ser mayor a cero.`);
         return;
       }
 
-      if (ins && cantidad > 0) {
-        seleccionados.push({
-          id: ins.id!,
-          nombre: ins.nombre,
-          unidad: ins.unidad,
-          stock: ins.stock,
-          cantidad
-        });
+      if (cantidad > ins.stock) {
+        cantidadControl?.setErrors({ excedeStock: true });
+        hayError = true;
+        this.mostrarError(`No hay suficiente stock de "${ins.nombre}". Máximo disponible: ${ins.stock}`);
+        return;
       }
-    });
 
-if (hayError) {
-  this.mensajeCantidadInvalida = true;
-  return;
-}
+      cantidadControl?.setErrors(null);
 
-    this.mensajeCantidadInvalida = false;
-    this.dialogRef.close(seleccionados);
+      seleccionados.push({
+        id: ins.id!,
+        nombre: ins.nombre,
+        unidad: ins.unidad,
+        stock: ins.stock,
+        cantidad
+      });
+    }
+  });
+
+  if (hayError) {
+    this.mensajeCantidadInvalida = true;
+    return;
   }
+
+  this.mensajeCantidadInvalida = false;
+  this.dialogRef.close(seleccionados);
+}
 
   getInsumosDisponiblesPara(controlActual: string): Insumo[] {
     const seleccionados = this.controlNombres
@@ -142,5 +170,10 @@ if (hayError) {
   getUnidad(control: string): string {
     const ins = this.insumosForm.get(control + '_nombre')?.value as Insumo | null;
     return ins?.unidad || '';
+  }
+
+  getStockMaximo(control: string): number {
+    const ins = this.insumosForm.get(control + '_nombre')?.value as Insumo | null;
+    return ins?.stock ?? Infinity;
   }
 }
