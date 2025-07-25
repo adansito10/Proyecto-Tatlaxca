@@ -42,21 +42,18 @@ export class AgregarMesaComponent implements OnInit {
     }
   }
 
-  guardar(): void {
-    if (this.mesaForm.invalid) {
-      this.mesaForm.markAllAsTouched();
-      return;
-    }
-
-    // getRawValue para incluir controles deshabilitados
-    let formValue = this.mesaForm.getRawValue();
-
-    if (this.modo === 'agregar') {
-      formValue.estado = 'Desocupada'; // asignar estado por defecto al crear
-    }
-
-    this.dialogRef.close(formValue);
+guardar(): void {
+  if (this.mesaForm.invalid) {
+    this.mesaForm.markAllAsTouched();
+    return;
   }
+
+  const formValue = this.mesaForm.getRawValue();
+
+  formValue.estado = 'Desocupado';
+
+  this.dialogRef.close(formValue);
+}
 
   cancelar(): void {
     this.dialogRef.close();

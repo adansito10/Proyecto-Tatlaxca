@@ -7,7 +7,8 @@ import { AgregarIngredienteComponent } from '../../shared-modals/modals/ingredie
 import { EditarIngredienteComponent } from '../../shared-modals/modals/ingredients/editar-ingrediente/editar-ingrediente.component';
 import { EliminarIngredienteComponent } from '../../shared-modals/modals/ingredients/eliminar-ingrediente/eliminar-ingrediente.component';
 import { IngredientsService, Ingrediente } from '../../services/Ingredients/ingredients.service';
-import { NotificacionesService } from '../../services/notificaciones/notificaciones.service';
+import { MatSnackBar } from '@angular/material/snack-bar';  
+
 
 @Component({
   selector: 'app-ingredients',
@@ -30,7 +31,8 @@ export class IngredientsComponent implements OnInit {
     private route: ActivatedRoute,
     private dialog: MatDialog,
     private ingredientsService: IngredientsService, 
-    private scroller: ViewportScroller
+    private scroller: ViewportScroller,
+    private snackBar: MatSnackBar
   ) {}
 
   ngOnInit(): void {
@@ -110,11 +112,18 @@ alternarEstadoIngrediente(ingrediente: Ingrediente): void {
       data: { modo: 'agregar' }
     });
 
-    dialogRef.afterClosed().subscribe(resultado => {
+
+   dialogRef.afterClosed().subscribe(resultado => {
       if (resultado) {
         this.ingredientsService.crearIngrediente(resultado).subscribe({
-          next: () => this.obtenerIngredientes(),
-          error: err => console.error('Error al crear ingrediente', err)
+          next: () => {
+            this.obtenerIngredientes();
+            this.snackBar.open('Ingrediente creado exitosamente', 'Cerrar', { duration: 3000, panelClass: ['snackbar-success'] });
+          },
+          error: err => {
+            console.error('Error al crear ingrediente', err);
+            this.snackBar.open('Error al crear ingrediente', 'Cerrar', { duration: 3000, panelClass: ['snackbar-error'] });
+          }
         });
       }
     });
@@ -126,11 +135,18 @@ alternarEstadoIngrediente(ingrediente: Ingrediente): void {
       data: { modo: 'editar', entidad: ingrediente }
     });
 
+   
     dialogRef.afterClosed().subscribe(resultado => {
       if (resultado) {
         this.ingredientsService.actualizarIngrediente(ingrediente.id, resultado).subscribe({
-          next: () => this.obtenerIngredientes(),
-          error: err => console.error('Error al actualizar ingrediente:', err)
+          next: () => {
+            this.obtenerIngredientes();
+            this.snackBar.open('Ingrediente actualizado exitosamente', 'Cerrar', { duration: 3000, panelClass: ['snackbar-success'] });
+          },
+          error: err => {
+            console.error('Error al actualizar ingrediente:', err);
+            this.snackBar.open('Error al actualizar ingrediente', 'Cerrar', { duration: 3000, panelClass: ['snackbar-error'] });
+          }
         });
       }
     });
@@ -145,17 +161,20 @@ alternarEstadoIngrediente(ingrediente: Ingrediente): void {
       }
     });
 
-    dialogRef.afterClosed().subscribe(confirmado => {
+      dialogRef.afterClosed().subscribe(confirmado => {
       if (confirmado) {
         this.ingredientsService.eliminarIngrediente(ingrediente.id).subscribe({
           next: () => {
             this.ingredientes = this.ingredientes.filter(i => i.id !== ingrediente.id);
+            this.snackBar.open('Ingrediente eliminado exitosamente', 'Cerrar', { duration: 3000, panelClass: ['snackbar-success'] });
           },
-          error: err => console.error('Error al eliminar ingrediente:', err)
+          error: err => {
+            console.error('Error al eliminar ingrediente:', err);
+            this.snackBar.open('Error al eliminar ingrediente', 'Cerrar', { duration: 3000, panelClass: ['snackbar-error'] });
+          }
         });
       }
     });
-    
   }
 
   scrollYResaltar(nombre: string) {

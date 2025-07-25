@@ -8,6 +8,7 @@ import { AgregarUsuarioComponent } from '../../shared-modals/modals/users/agrega
 import { EditarUsuarioComponent } from '../../shared-modals/modals/users/editar-usuario/editar-usuario.component';
 import { EliminarUsuarioComponent } from '../../shared-modals/modals/users/eliminar-usuario/eliminar-usuario.component';
 import { EmployeesService } from '../../services/employees/employees-service';
+import { MatSnackBar } from '@angular/material/snack-bar'; 
 
 @Component({
   selector: 'app-users',
@@ -28,6 +29,7 @@ export class UsersComponent implements OnInit {
     private empleadoService: EmployeesService,
     private rolesService: RolesService,
     private cdr: ChangeDetectorRef,
+    private snackBar: MatSnackBar 
 
   ) {}
 
@@ -80,11 +82,14 @@ export class UsersComponent implements OnInit {
       }
     });
 
-    dialogRef.afterClosed().subscribe(resultado => {
+   dialogRef.afterClosed().subscribe(resultado => {
       if (!resultado) return;
 
       this.empleadoService.crearEmpleado(resultado).subscribe({
-        next: () => this.cargarUsuarios(),
+        next: () => {
+          this.cargarUsuarios();
+          this.snackBar.open('Usuario creado exitosamente', 'Cerrar', { duration: 3000 });
+        },
         error: err => console.error('Error al crear empleado', err)
       });
     });
@@ -106,7 +111,7 @@ abrirModalEditar(usuario: any): void {
     width: '600px',
     data: {
       modo: 'editar',
-      usuario: { ...usuarioParaEditar }, // copiado para no afectar el original hasta guardar
+      usuario: { ...usuarioParaEditar }, 
       roles: this.roles
     }
   });
@@ -168,15 +173,16 @@ abrirModalEditar(usuario: any): void {
     }
   });
 
-  dialogRef.afterClosed().subscribe(resultado => {
-    if (resultado === true) {
-      this.empleadoService.eliminarEmpleado(usuario.id).subscribe({
-        next: () => this.cargarUsuarios(),
-        error: err => console.error('Error al eliminar usuario', err)
-      });
-
-
-    }
-  });
-}
+    dialogRef.afterClosed().subscribe(resultado => {
+      if (resultado === true) {
+        this.empleadoService.eliminarEmpleado(usuario.id).subscribe({
+          next: () => {
+            this.cargarUsuarios();
+            this.snackBar.open('Usuario eliminado exitosamente', 'Cerrar', { duration: 3000 }); // <--- NOTIFICACIÓN
+          },
+          error: err => console.error('Error al eliminar usuario', err)
+        });
+      }
+    });
+  }
 }

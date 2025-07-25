@@ -3,6 +3,7 @@ import { MatDialog } from '@angular/material/dialog';
 import { Table, TablesService } from '../../services/tables/tables.service';
 import { AgregarMesaComponent } from '../../shared-modals/modals/tables/agregar-tables/agregar-mesa.component';
 import { EliminarMesaComponent } from '../../shared-modals/modals/tables/eliminar-tables/eliminar-mesa.component';
+import { MatSnackBar } from '@angular/material/snack-bar'; 
 
 @Component({
   selector: 'app-tables',
@@ -16,7 +17,9 @@ export class TablesComponent implements OnInit {
 
   constructor(
     private dialog: MatDialog,
-    private tablesService: TablesService
+    private tablesService: TablesService,
+    private snackBar: MatSnackBar 
+
   ) {}
 
   ngOnInit(): void {
@@ -78,10 +81,13 @@ alternarEstadoMesa(mesa: Table): void {
       }
     });
 
-    dialogRef.afterClosed().subscribe(result => {
+      dialogRef.afterClosed().subscribe(result => {
       if (result) {
         this.tablesService.crearMesa(result).subscribe({
-          next: () => this.obtenerMesas(),
+          next: () => {
+            this.obtenerMesas();
+            this.snackBar.open('Mesa creada con éxito', 'Cerrar', { duration: 3000 });
+          },
           error: err => console.error('Error al crear mesa:', err)
         });
       }
@@ -97,10 +103,13 @@ alternarEstadoMesa(mesa: Table): void {
       }
     });
 
-    dialogRef.afterClosed().subscribe(result => {
+   dialogRef.afterClosed().subscribe(result => {
       if (result) {
         this.tablesService.actualizarMesa(mesa.id!, result).subscribe({
-          next: () => this.obtenerMesas(),
+          next: () => {
+            this.obtenerMesas();
+            this.snackBar.open('Mesa actualizada con éxito', 'Cerrar', { duration: 3000 }); 
+          },
           error: err => console.error('Error al actualizar mesa:', err)
         });
       }

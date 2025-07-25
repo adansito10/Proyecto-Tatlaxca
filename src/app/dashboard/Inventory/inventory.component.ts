@@ -7,6 +7,7 @@ import { AgregarSuministroComponent } from '../../shared-modals/modals/supplies/
 import { EliminarSuministroComponent } from '../../shared-modals/modals/supplies/eliminar-suministro/eliminar-suministro.component';
 import { InsumosService } from '../../services/supplies/supplies.service';
 import { Insumo } from '../../services/supplies/supplies.service';
+import { MatSnackBar } from '@angular/material/snack-bar';  
 
 @Component({
   selector: 'app-inventory',
@@ -22,7 +23,8 @@ export class InventoryComponent implements OnInit {
     private route: ActivatedRoute,
     private dialog: MatDialog,
     private insumosService: InsumosService,
-    private scroller: ViewportScroller
+    private scroller: ViewportScroller,
+    private snackBar: MatSnackBar
   ) {}
 
   ngOnInit(): void {
@@ -90,12 +92,25 @@ export class InventoryComponent implements OnInit {
     dialogRef.afterClosed().subscribe((resultado) => {
       if (resultado) {
         this.insumosService.crearInsumo(resultado).subscribe({
-          next: () => this.obtenerInsumos(),
-          error: (err) => console.error('Error al guardar insumo:', err),
+          next: () => {
+            this.obtenerInsumos();
+            this.snackBar.open('Insumo creado exitosamente', 'Cerrar', {
+              duration: 3000,
+              panelClass: ['snackbar-success'],
+            });
+          },
+          error: (err) => {
+            console.error('Error al guardar insumo:', err);
+            this.snackBar.open('Error al crear insumo', 'Cerrar', {
+              duration: 3000,
+              panelClass: ['snackbar-error'],
+            });
+          },
         });
       }
     });
   }
+
 
   abrirModalEditar(item: Insumo): void {
     const dialogRef = this.dialog.open(AgregarSuministroComponent, {
@@ -106,12 +121,24 @@ export class InventoryComponent implements OnInit {
       },
     });
 
+ 
     dialogRef.afterClosed().subscribe((resultado) => {
       if (resultado) {
         this.insumosService.actualizarInsumo(item.id!, resultado).subscribe({
-          next: () => this.obtenerInsumos(),
-
-          error: (err) => console.error('Error al actualizar insumo', err),
+          next: () => {
+            this.obtenerInsumos();
+            this.snackBar.open('Insumo actualizado exitosamente', 'Cerrar', {
+              duration: 3000,
+              panelClass: ['snackbar-success'],
+            });
+          },
+          error: (err) => {
+            console.error('Error al actualizar insumo', err);
+            this.snackBar.open('Error al actualizar insumo', 'Cerrar', {
+              duration: 3000,
+              panelClass: ['snackbar-error'],
+            });
+          },
         });
       }
     });
@@ -124,12 +151,23 @@ export class InventoryComponent implements OnInit {
         nombreProducto: item.nombre,
       },
     });
-
-    dialogRef.afterClosed().subscribe((confirmado) => {
+   dialogRef.afterClosed().subscribe((confirmado) => {
       if (confirmado) {
         this.insumosService.eliminarInsumo(item.id!).subscribe({
-          next: () => this.obtenerInsumos(),
-          error: (err) => console.error('Error al eliminar insumo', err),
+          next: () => {
+            this.obtenerInsumos();
+            this.snackBar.open('Insumo eliminado exitosamente', 'Cerrar', {
+              duration: 3000,
+              panelClass: ['snackbar-success'],
+            });
+          },
+          error: (err) => {
+            console.error('Error al eliminar insumo', err);
+            this.snackBar.open('Error al eliminar insumo', 'Cerrar', {
+              duration: 3000,
+              panelClass: ['snackbar-error'],
+         });
+          },
         });
       }
     });

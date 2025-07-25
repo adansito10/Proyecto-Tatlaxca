@@ -3,6 +3,7 @@ import { MatDialog } from '@angular/material/dialog';
 import { CategoriesService, Categoria } from '../../services/categories/categories.service';
 import { AgregarCategoriesComponent } from '../../shared-modals/modals/categories/agregar-categoria/agregar-categoria.component';
 import { EliminarCategoryComponent } from '../../shared-modals/modals/categories/eliminar-categoria/eliminar-categoria-component';
+import { MatSnackBar } from '@angular/material/snack-bar'; 
 
 @Component({
   selector: 'app-categories',
@@ -14,7 +15,7 @@ export class CategoriesComponent implements OnInit {
   categories: Categoria[] = [];
   filtroNombre = '';
 
-  constructor(private dialog: MatDialog, private categoriesService: CategoriesService) {}
+  constructor(private dialog: MatDialog, private categoriesService: CategoriesService, private snackBar: MatSnackBar) {}
 
   ngOnInit(): void {
     this.loadCategories();
@@ -37,8 +38,13 @@ export class CategoriesComponent implements OnInit {
       width: '500px',
       data: { modo: 'agregar' }
     });
-    dialogRef.afterClosed().subscribe(res => {
-      if (res) this.categoriesService.crearCategory(res).subscribe(() => this.loadCategories());
+   dialogRef.afterClosed().subscribe(res => {
+      if (res) {
+        this.categoriesService.crearCategory(res).subscribe(() => {
+          this.loadCategories();
+          this.snackBar.open('Categoría creada correctamente', 'Cerrar', { duration: 3000 });
+        });
+      }
     });
   }
 
@@ -47,8 +53,13 @@ export class CategoriesComponent implements OnInit {
       width: '500px',
       data: { modo: 'editar', category }
     });
-    dialogRef.afterClosed().subscribe(res => {
-      if (res) this.categoriesService.actualizarCategory(category.id, res).subscribe(() => this.loadCategories());
+      dialogRef.afterClosed().subscribe(res => {
+      if (res) {
+        this.categoriesService.actualizarCategory(category.id, res).subscribe(() => {
+          this.loadCategories();
+          this.snackBar.open('Categoría actualizada correctamente', 'Cerrar', { duration: 3000 });
+        });
+      }
     });
   }
 
@@ -57,8 +68,13 @@ export class CategoriesComponent implements OnInit {
       width: '400px',
       data: category
     });
-    dialogRef.afterClosed().subscribe(res => {
-      if (res) this.categoriesService.eliminarCategory(category.id).subscribe(() => this.loadCategories());
+     dialogRef.afterClosed().subscribe(res => {
+      if (res) {
+        this.categoriesService.eliminarCategory(category.id).subscribe(() => {
+          this.loadCategories();
+          this.snackBar.open('Categoría eliminada correctamente', 'Cerrar', { duration: 3000 });
+        });
+      }
     });
   }
 }
