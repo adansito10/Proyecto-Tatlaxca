@@ -26,11 +26,10 @@
           <th>ID Orden</th>
           <th>Mesa</th>
           <th>Mesero</th>
-          <th>Tipo de Cliente</th>
+          <th>Cliente</th>
           <th>Fecha</th>
           <th>Hora</th>
           <th>Productos</th>
-          <th>Descuento</th>
           <th>Total</th>
           <th>Estado</th>
         </tr>
@@ -46,7 +45,6 @@
           <td>
             <button class="btn btn-sm btn-outline-primary" (click)="verProductos(orden.id)">Ver</button>
           </td>
-          <td>${{ orden.descuento }}</td>
           <td>${{ orden.total }}</td>
           <td>{{ orden.status }}</td>
         </tr>

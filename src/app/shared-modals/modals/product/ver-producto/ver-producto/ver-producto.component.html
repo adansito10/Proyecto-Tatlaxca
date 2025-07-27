@@ -1,11 +1,11 @@
-<h2 mat-dialog-title>Detalles del Producto</h2>
+<h1 mat-dialog-title><strong>¿Qué lleva este producto?</strong></h1>
 
 <mat-dialog-content class="grid-container">
   <div class="detalle-box">
-    <h4>🧄 Ingredientes</h4>
+    <h4>🧄 <strong>Ingredientes</strong></h4>
     <div class="lista-header">
-      <span class="nombre">Nombre</span>
-      <span class="cantidad">Cantidad</span>
+      <span style="color: black" class="nombre">Nombre</span>
+      <span style="color: black" class="cantidad">Cantidad</span>
     </div>
     <ul *ngIf="data.ingredientes?.length; else sinIngredientes">
       <li *ngFor="let ing of data.ingredientes">
@@ -19,10 +19,10 @@
   </div>
 
   <div class="detalle-box">
-    <h4>📦 Insumos</h4>
+    <h4>📦 <strong>Insumos</strong></h4>
     <div class="lista-header">
-      <span class="nombre">Nombre</span>
-      <span class="cantidad">Cantidad</span>
+      <span style="color: black" class="nombre">Nombre</span>
+      <span style="color: black" class="cantidad">Cantidad</span>
     </div>
     <ul *ngIf="data.insumos?.length; else sinInsumos">
       <li *ngFor="let ins of data.insumos">

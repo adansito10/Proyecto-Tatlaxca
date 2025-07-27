@@ -133,8 +133,8 @@
         (click)="navegarAProducto(notif.mensaje)"
         style="cursor: pointer"
       >
-        <div class="fw-semibold text-secondary">
-          {{ notif.mensaje.split('\n')[0] }}
+        <div class="fw-semibold text-black">
+          {{ notif.mensaje.split('\n')[0] }} 
         </div>
         <div class="text-muted small" *ngIf="notif.mensaje.split('\n').length > 1">
           {{ notif.mensaje.split('\n')[1] }}

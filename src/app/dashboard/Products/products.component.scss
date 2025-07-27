@@ -1,29 +1,24 @@
-
 .custom-agregar-btn {
-  background-color: #fe8f26; /* color café */
+  background-color: #fe8f26;
   border-color: #fe8f26;
   color: white;
   padding: 10px 19px;
   font-size: 1rem;
   border-radius: 8px;
-    font-weight: 1000;      
-
-
+  font-weight: 1000;
 }
 
 .buscador-custom {
-  background-color: #f9f9f9; /* Ejemplo: color claro tipo café */
-  color: #3e2c1c;             /* Texto en marrón oscuro */
-  border: 1px solid #000000;  /* Borde café */
+  background-color: #f9f9f9;
+  color: #3e2c1c;
+  border: 1px solid #000000;
   font-weight: 500;
 }
 
 .buscador-custom::placeholder {
-  color: #5b5b5b; /* Color del texto de placeholder */
+  color: #5b5b5b;
   opacity: 1;
 }
-
-
 
 .icono-busqueda {
   position: absolute;
@@ -35,17 +30,8 @@
 }
 
 .con-icono {
-  padding-left: 35px !important; 
+  padding-left: 35px !important;
 }
-
-
-
-
-
-
-
-
-
 
 .custom-input {
   border: 2px solid rgb(177, 177, 177) !important;
@@ -59,20 +45,12 @@
   margin-top: -5px;
 }
 
-
-
-/* Imagen redondeada con borde suave */
 table img {
-  border-radius: 0.375rem; /* 6px */
-  border: 1px solid #dee2e6; /* borde gris claro */
+  border-radius: 0.375rem;
+  border: 1px solid #ffffff;
   padding: 2px;
-  background-color: #f8f9fa; /* opcional: fondo claro */
+  background-color: #ffffff;
 }
-
-
-
-
-
 
 .custom-header {
   color: white;
@@ -83,16 +61,10 @@ table img {
   }
 }
 
-
-
-.table, 
-.table th, 
+.table,
+.table th,
 .table td {
-  border-width: 1px; /* aumenta el grosor */
-  border-style: solid; /* asegúrate que el borde sea sólido */
-  border-color: rgb(128, 128, 128); /* color negro para más contraste */
+  border-width: 1px;
+  border-style: solid;
+  border-color: rgb(128, 128, 128);
 }
-
-
-
-

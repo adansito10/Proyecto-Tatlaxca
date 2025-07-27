@@ -1,4 +1,4 @@
-<h2 mat-dialog-title>Detalles de la Orden</h2>
+<h2 mat-dialog-title><strong>Productos órdenados</strong></h2>
 
 <mat-dialog-content>
   <div *ngFor="let item of detalles" class="detalle-item mb-3 p-3 rounded shadow-sm border">
@@ -10,7 +10,6 @@
       <div class="me-4"><strong>Categoria:</strong> {{ item.categoria }}</div>
       <div class="me-4"><strong>Cantidad:</strong> {{ item.cantidad }}</div>
       <div class="me-4"><strong>Precio:</strong> ${{ item.subtotal }}</div>
-      <div class="me-4"><strong>Estado:</strong> {{ item.estado_preparacion }}</div>
     </div>
 
     <div class="mt-2">

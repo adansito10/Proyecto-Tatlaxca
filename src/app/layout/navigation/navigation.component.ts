@@ -79,9 +79,8 @@ revisarStockBajo() {
   }).subscribe({
     next: ({ insumos, ingredientes }) => {
       insumos.forEach(i => {
-        console.log(`Insumo: ${i.nombre}, Stock: ${i.stock}, Deleted_at: ${i.deleted_at}`);
 
-        const id = `insumo_${i.id}`; // Usar ID único en vez del nombre
+        const id = `insumo_${i.id}`; 
 
         if (i.deleted_at) {
           this.notificacionesService.agregarNotificacion(
@@ -99,7 +98,6 @@ revisarStockBajo() {
       });
 
       ingredientes.forEach(i => {
-        console.log(`Ingrediente: ${i.nombre}, Stock: ${i.stock}, Deleted_at: ${i.deleted_at}`);
 
         const unidad = i.unidad?.toLowerCase();
         const umbral = UMBRALES_POR_UNIDAD[unidad] ?? 10;
