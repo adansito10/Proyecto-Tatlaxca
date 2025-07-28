@@ -30,6 +30,7 @@
           <th>Nombre del Insumo</th>
           <th>Unidad</th>
           <th>Stock</th>
+          <th>para llevar</th>
           <th>Última actualización</th>
           <th>Estado</th>
           <th>Acciones</th>
@@ -48,6 +49,21 @@
           >
             {{ item.stock }}
           </td>
+
+          <td>
+            <span
+              [ngClass]="{
+                'text-success': item.es_desechable,
+                'text-muted': !item.es_desechable
+              }"
+              title="{{
+                item.es_desechable ? 'Sí es para llevar' : 'No es para llevar'
+              }}"
+            >
+              {{ item.es_desechable ? "Sí" : "No" }}
+            </span>
+          </td>
+
           <td>{{ item.updated_at || item.created_at | date : "short" }}</td>
           <td>
             <span
@@ -59,31 +75,32 @@
               {{ item.deleted_at ? "Inactivo" : "Activo" }}
             </span>
           </td>
-        <td>
-  <div class="d-flex justify-content-center gap-2">
-    <button
-      class="btn btn-sm btn-success"
-      (click)="abrirModalEditar(item)"
-      *ngIf="!item.deleted_at"
-      title="Editar"
-    >
-      <i class="bi bi-pencil"></i>
-    </button>
+          <td>
+            <div class="d-flex justify-content-center gap-2">
+              <button
+                class="btn btn-sm btn-success"
+                (click)="abrirModalEditar(item)"
+                *ngIf="!item.deleted_at"
+                title="Editar"
+              >
+                <i class="bi bi-pencil"></i>
+              </button>
 
-    <button
-      class="btn btn-sm"
-      [ngClass]="item.deleted_at ? 'btn-warning' : 'btn-danger'"
-      (click)="activarInsumo(item)"
-      [title]="item.deleted_at ? 'Activar' : 'Eliminar'"
-    >
-      <i
-        class="bi"
-        [ngClass]="item.deleted_at ? 'bi-arrow-clockwise' : 'bi-trash'"
-      ></i>
-    </button>
-  </div>
-</td>
-
+              <button
+                class="btn btn-sm"
+                [ngClass]="item.deleted_at ? 'btn-warning' : 'btn-danger'"
+                (click)="activarInsumo(item)"
+                [title]="item.deleted_at ? 'Activar' : 'Eliminar'"
+              >
+                <i
+                  class="bi"
+                  [ngClass]="
+                    item.deleted_at ? 'bi-arrow-clockwise' : 'bi-trash'
+                  "
+                ></i>
+              </button>
+            </div>
+          </td>
         </tr>
       </tbody>
     </table>

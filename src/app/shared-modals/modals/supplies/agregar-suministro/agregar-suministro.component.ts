@@ -27,16 +27,22 @@ export class AgregarSuministroComponent implements OnInit {
       nombre: [this.data.suministro?.nombre || '', [Validators.required, Validators.maxLength(40)]],
       unidad: [this.data.suministro?.unidad || '', Validators.required],
       stock: [this.data.suministro?.stock ?? 0, [Validators.required, Validators.min(0.01)]],
+      es_desechable: [this.data.suministro?.es_desechable ?? false],  
+
     });
   }
 
-  guardar(): void {
-    if (this.suministroForm.invalid) {
-      this.suministroForm.markAllAsTouched();
-      return;
-    }
-    this.dialogRef.close(this.suministroForm.value);
+guardar(): void {
+  if (this.suministroForm.invalid) {
+    this.suministroForm.markAllAsTouched();
+    return;
   }
+
+  const formValue = this.suministroForm.value;
+
+  this.dialogRef.close(formValue);
+}
+
 
   cancelar(): void {
     this.dialogRef.close();

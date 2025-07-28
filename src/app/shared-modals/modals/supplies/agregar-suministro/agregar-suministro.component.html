@@ -28,8 +28,17 @@
         El stock debe ser mayor a 0
       </mat-error>
     </mat-form-field>
+
+<mat-label>¿Es para llevar (desechable)?</mat-label>
+<mat-radio-group formControlName="es_desechable" class="d-flex gap-3">
+  <mat-radio-button [value]="true">Sí</mat-radio-button>
+  <mat-radio-button [value]="false">No</mat-radio-button>
+</mat-radio-group>
+
   </form>
 </mat-dialog-content>
+
+
 
 <mat-dialog-actions align="end">
   <button mat-button (click)="cancelar()">Cancelar</button>

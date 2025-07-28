@@ -11,7 +11,8 @@ import { RouterModule } from '@angular/router';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { NgChartsModule } from 'ng2-charts';
 import { Title } from '@angular/platform-browser';
-
+import { HTTP_INTERCEPTORS } from '@angular/common/http';
+import { AuthInterceptor } from './services/auth/auth.interceptor';
 
 @NgModule({
   declarations: [
@@ -33,7 +34,13 @@ import { Title } from '@angular/platform-browser';
   ],
   providers: [
     Title,
-    provideClientHydration(withEventReplay())
+    provideClientHydration(withEventReplay()),
+
+     {
+      provide: HTTP_INTERCEPTORS,
+      useClass: AuthInterceptor,
+      multi: true
+    }
   ],
   bootstrap: [AppComponent]
 })

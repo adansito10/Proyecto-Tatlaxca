@@ -11,6 +11,7 @@ export interface Insumo {
   created_at?: string;
   updated_at?: string;
   deleted_at?: string;
+  es_desechable?: boolean;
 }
 
 export interface InsumoSeleccionado extends Insumo {

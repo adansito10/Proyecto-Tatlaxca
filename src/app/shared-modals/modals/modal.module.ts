@@ -43,6 +43,7 @@ import { EliminarStatusComponent } from './status/eliminar-status/eliminar-statu
 import { OrderDetailComponent } from './orders-detail/orders-detail.component';
 import { CapitalizeDirective } from '../../directive/capitalize.directive';
 import { MatSnackBarModule } from '@angular/material/snack-bar';
+import { MatRadioModule } from '@angular/material/radio';
 
 @NgModule({
   declarations: [
@@ -95,7 +96,9 @@ import { MatSnackBarModule } from '@angular/material/snack-bar';
     MatDialogModule,
     RouterModule,
     ReactiveFormsModule,
-   MatSnackBarModule, 
+    MatSnackBarModule, 
+    MatRadioModule,
+
 
 
   ],
