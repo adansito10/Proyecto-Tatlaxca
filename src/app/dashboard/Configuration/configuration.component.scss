@@ -11,7 +11,7 @@
   background-color: #121212;
   color: #fff;
   border-radius: 20px;
-  box-shadow: 0 4px 16px rgba(0,0,0,0.4);
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.4);
   padding: 1.5rem;
 }
 
@@ -86,7 +86,6 @@
   color: #ccc;
 }
 
-/* Móvil (menor a 768px) */
 @media (max-width: 767px) {
   .perfil-layout {
     flex-direction: column;
@@ -100,7 +99,7 @@
   }
 
   .perfil-grid {
-    display: block; /* Desactiva grid */
+    display: block;
     margin-top: 1.5rem;
   }
 
@@ -120,7 +119,6 @@
   }
 }
 
-/* Tablet (768px a 1439px), incluyendo iPad Pro */
 @media (min-width: 768px) and (max-width: 1439px) {
   .perfil-container {
     padding-left: 4rem;
@@ -152,7 +150,6 @@
   }
 }
 
-/* Pantallas muy grandes (1440px en adelante) */
 @media (min-width: 1440px) {
   .perfil-container {
     padding-left: 6rem;

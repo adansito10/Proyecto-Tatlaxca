@@ -8,13 +8,13 @@ import { AgregarUsuarioComponent } from '../../shared-modals/modals/users/agrega
 import { EditarUsuarioComponent } from '../../shared-modals/modals/users/editar-usuario/editar-usuario.component';
 import { EliminarUsuarioComponent } from '../../shared-modals/modals/users/eliminar-usuario/eliminar-usuario.component';
 import { EmployeesService } from '../../services/employees/employees-service';
-import { MatSnackBar } from '@angular/material/snack-bar'; 
+import { MatSnackBar } from '@angular/material/snack-bar';
 
 @Component({
   selector: 'app-users',
   standalone: false,
   templateUrl: './users.component.html',
-  styleUrls: ['./users.component.scss']
+  styleUrls: ['./users.component.scss'],
 })
 export class UsersComponent implements OnInit {
   usuarios: any[] = [];
@@ -29,8 +29,7 @@ export class UsersComponent implements OnInit {
     private empleadoService: EmployeesService,
     private rolesService: RolesService,
     private cdr: ChangeDetectorRef,
-    private snackBar: MatSnackBar 
-
+    private snackBar: MatSnackBar
   ) {}
 
   ngOnInit(): void {
@@ -39,36 +38,40 @@ export class UsersComponent implements OnInit {
   }
 
   get usuariosFiltrados() {
-    return this.usuarios.filter(usuario =>
-      (this.filtroCargo === '' || usuario.cargo === this.filtroCargo) &&
-      (this.busquedaNombre === '' || usuario.nombre.toLowerCase().includes(this.busquedaNombre.toLowerCase()))
+    return this.usuarios.filter(
+      (usuario) =>
+        (this.filtroCargo === '' || usuario.cargo === this.filtroCargo) &&
+        (this.busquedaNombre === '' ||
+          usuario.nombre
+            .toLowerCase()
+            .includes(this.busquedaNombre.toLowerCase()))
     );
   }
 
   cargarRoles(): void {
     this.rolesService.getRoles().subscribe({
-      next: data => {
+      next: (data) => {
         this.roles = data;
         this.cargos = data.map((r: any) => r.rol);
       },
-      error: err => console.error('Error al obtener roles', err)
+      error: (err) => console.error('Error al obtener roles', err),
     });
   }
 
   cargarUsuarios(): void {
     this.empleadoService.getEmpleados().subscribe({
-      next: empleados => {
-        this.usuarios = empleados.map(empleado => ({
+      next: (empleados) => {
+        this.usuarios = empleados.map((empleado) => ({
           ...empleado,
           idEmpleado: empleado.id,
           idUsuario: empleado.id_usuario,
           apellidoPaterno: empleado.appaterno,
           apellidoMaterno: empleado.apmaterno,
           correo: empleado.correo,
-          cargo: empleado.rol
+          cargo: empleado.rol,
         }));
       },
-      error: err => console.error('Error al obtener empleados', err)
+      error: (err) => console.error('Error al obtener empleados', err),
     });
   }
 
@@ -78,109 +81,118 @@ export class UsersComponent implements OnInit {
       data: {
         modo: 'agregar',
         usuario: {},
-        roles: this.roles
-      }
+        roles: this.roles,
+      },
     });
 
-   dialogRef.afterClosed().subscribe(resultado => {
+    dialogRef.afterClosed().subscribe((resultado) => {
       if (!resultado) return;
 
       this.empleadoService.crearEmpleado(resultado).subscribe({
         next: () => {
           this.cargarUsuarios();
-          this.snackBar.open('Usuario creado exitosamente', 'Cerrar', { duration: 3000 });
+          this.snackBar.open('Usuario creado exitosamente', 'Cerrar', {
+            duration: 3000,
+          });
         },
-        error: err => console.error('Error al crear empleado', err)
+        error: (err) => console.error('Error al crear empleado', err),
       });
     });
   }
 
-abrirModalEditar(usuario: any): void {
-  const usuarioParaEditar = {
-    idEmpleado: usuario.idEmpleado,
-    idUsuario: usuario.idUsuario,
-    nombre: usuario.nombre,
-    apellidoPaterno: usuario.apellidoPaterno,
-    apellidoMaterno: usuario.apellidoMaterno,
-    telefono: usuario.telefono,
-    correo: usuario.correo,
-    cargo: usuario.cargo
-  };
+  abrirModalEditar(usuario: any): void {
+    const usuarioParaEditar = {
+      idEmpleado: usuario.idEmpleado,
+      idUsuario: usuario.idUsuario,
+      nombre: usuario.nombre,
+      apellidoPaterno: usuario.apellidoPaterno,
+      apellidoMaterno: usuario.apellidoMaterno,
+      telefono: usuario.telefono,
+      correo: usuario.correo,
+      cargo: usuario.cargo,
+    };
 
-  const dialogRef = this.dialog.open(EditarUsuarioComponent, {
-    width: '600px',
-    data: {
-      modo: 'editar',
-      usuario: { ...usuarioParaEditar }, 
-      roles: this.roles
-    }
-  });
+    const dialogRef = this.dialog.open(EditarUsuarioComponent, {
+      width: '600px',
+      data: {
+        modo: 'editar',
+        usuario: { ...usuarioParaEditar },
+        roles: this.roles,
+      },
+    });
 
-  dialogRef.afterClosed().subscribe(resultado => {
-    if (resultado) {
-      const { user, employee } = resultado;
+    dialogRef.afterClosed().subscribe((resultado) => {
+      if (resultado) {
+        const { user, employee } = resultado;
 
-      if (!user.id) {
-        console.error('ID de usuario faltante, cancelando edición');
-        return;
+        if (!user.id) {
+          console.error('ID de usuario faltante, cancelando edición');
+          return;
+        }
+
+        const empleadoPayload = {
+          id_usuario: user.id,
+          nombre: employee.nombre,
+          appaterno: employee.appaterno,
+          apmaterno: employee.apmaterno,
+          telefono: employee.telefono,
+        };
+
+        this.empleadoService
+          .editarEmpleado(usuarioParaEditar.idEmpleado, empleadoPayload, user)
+          .subscribe({
+            next: (respuesta) => {
+              const { employee: empActualizado, user: userActualizado } =
+                respuesta;
+
+              const rol =
+                this.roles.find((r) => r.id === userActualizado.id_rol)?.rol ||
+                'Sin rol';
+
+              const index = this.usuarios.findIndex(
+                (u) => u.idEmpleado === empActualizado.id
+              );
+
+              if (index !== -1) {
+                this.usuarios[index] = {
+                  ...this.usuarios[index],
+                  nombre: empActualizado.nombre,
+                  apellidoPaterno: empActualizado.appaterno,
+                  apellidoMaterno: empActualizado.apmaterno,
+                  telefono: empActualizado.telefono,
+                  correo: userActualizado.correo,
+                  cargo: rol,
+                };
+
+                this.usuarios = [...this.usuarios];
+                this.cdr.detectChanges();
+              }
+            },
+            error: (err) => console.error('Error al editar empleado', err),
+          });
       }
-
-      const empleadoPayload = {
-        id_usuario: user.id,
-        nombre: employee.nombre,
-        appaterno: employee.appaterno,
-        apmaterno: employee.apmaterno,
-        telefono: employee.telefono
-      };
-
-      this.empleadoService.editarEmpleado(usuarioParaEditar.idEmpleado, empleadoPayload, user).subscribe({
-        next: (respuesta) => {
-          const { employee: empActualizado, user: userActualizado } = respuesta;
-
-          const rol = this.roles.find(r => r.id === userActualizado.id_rol)?.rol || 'Sin rol';
-
-          const index = this.usuarios.findIndex(u => u.idEmpleado === empActualizado.id);
-
-          if (index !== -1) {
-            this.usuarios[index] = {
-              ...this.usuarios[index],
-              nombre: empActualizado.nombre,
-              apellidoPaterno: empActualizado.appaterno,
-              apellidoMaterno: empActualizado.apmaterno,
-              telefono: empActualizado.telefono,
-              correo: userActualizado.correo,
-              cargo: rol
-            };
-
-            this.usuarios = [...this.usuarios];
-            this.cdr.detectChanges();  // <--- aquí forzamos actualización
-
-          }
-        },
-        error: err => console.error('Error al editar empleado', err)
-      });
-    }
-  });
-}
-
+    });
+  }
 
   abrirModalEliminar(usuario: any): void {
-  const dialogRef = this.dialog.open(EliminarUsuarioComponent, {
-    width: '400px',
-    data: {
-      modo: 'eliminar',
-      usuario
-    }
-  });
+    const dialogRef = this.dialog.open(EliminarUsuarioComponent, {
+      width: '400px',
+      data: {
+        modo: 'eliminar',
+        usuario,
+      },
+    });
 
-    dialogRef.afterClosed().subscribe(resultado => {
+    dialogRef.afterClosed().subscribe((resultado) => {
       if (resultado === true) {
         this.empleadoService.eliminarEmpleado(usuario.id).subscribe({
           next: () => {
             this.cargarUsuarios();
-            this.snackBar.open('Usuario eliminado exitosamente', 'Cerrar', { duration: 3000 }); // <--- NOTIFICACIÓN
+            this.snackBar.open('Usuario eliminado exitosamente', 'Cerrar', {
+              duration: 3000,
+            });
           },
-          error: err => console.error('Error al eliminar usuario', err)
+          error: (err) => console.error('Error al eliminar usuario', err),
         });
       }
     });

@@ -2,11 +2,14 @@
   <img src="/logocafeteria.jpg" alt="Logo Cafetería" class="logo" />
   <h3>Iniciar sesión</h3>
 
-<div *ngIf="mensajeError" class="alert-error-top">
-  <div class="alert alert-danger alert-dismissible fade show text-center" role="alert">
-    {{ mensajeError }}
+  <div *ngIf="mensajeError" class="alert-error-top">
+    <div
+      class="alert alert-danger alert-dismissible fade show text-center"
+      role="alert"
+    >
+      {{ mensajeError }}
+    </div>
   </div>
-</div>
 
   <form (submit)="onLogin($event)">
     <div class="input-group">

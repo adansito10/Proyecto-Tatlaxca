@@ -1,6 +1,5 @@
 import { Injectable } from '@angular/core';
-import { BehaviorSubject} from 'rxjs';
-
+import { BehaviorSubject } from 'rxjs';
 
 interface Notificacion {
   id: string;
@@ -8,7 +7,7 @@ interface Notificacion {
 }
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 export class NotificacionesService {
   private notificaciones: Map<string, Notificacion> = new Map();

@@ -7,7 +7,7 @@ import { AgregarSuministroComponent } from '../../shared-modals/modals/supplies/
 import { EliminarSuministroComponent } from '../../shared-modals/modals/supplies/eliminar-suministro/eliminar-suministro.component';
 import { InsumosService } from '../../services/supplies/supplies.service';
 import { Insumo } from '../../services/supplies/supplies.service';
-import { MatSnackBar } from '@angular/material/snack-bar';  
+import { MatSnackBar } from '@angular/material/snack-bar';
 
 @Component({
   selector: 'app-inventory',
@@ -111,7 +111,6 @@ export class InventoryComponent implements OnInit {
     });
   }
 
-
   abrirModalEditar(item: Insumo): void {
     const dialogRef = this.dialog.open(AgregarSuministroComponent, {
       width: '600px',
@@ -121,7 +120,6 @@ export class InventoryComponent implements OnInit {
       },
     });
 
- 
     dialogRef.afterClosed().subscribe((resultado) => {
       if (resultado) {
         this.insumosService.actualizarInsumo(item.id!, resultado).subscribe({
@@ -151,7 +149,7 @@ export class InventoryComponent implements OnInit {
         nombreProducto: item.nombre,
       },
     });
-   dialogRef.afterClosed().subscribe((confirmado) => {
+    dialogRef.afterClosed().subscribe((confirmado) => {
       if (confirmado) {
         this.insumosService.eliminarInsumo(item.id!).subscribe({
           next: () => {
@@ -166,7 +164,7 @@ export class InventoryComponent implements OnInit {
             this.snackBar.open('Error al eliminar insumo', 'Cerrar', {
               duration: 3000,
               panelClass: ['snackbar-error'],
-         });
+            });
           },
         });
       }

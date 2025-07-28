@@ -10,7 +10,7 @@ import * as XLSX from 'xlsx';
   selector: 'app-reports',
   standalone: false,
   templateUrl: './reports.component.html',
-  styleUrls: ['./reports.component.scss']
+  styleUrls: ['./reports.component.scss'],
 })
 export class ReportsComponent implements OnInit {
   ventasOriginal: any[] = [];
@@ -19,7 +19,7 @@ export class ReportsComponent implements OnInit {
   empleados: any[] = [];
   mesas: any[] = [];
 
-  fechaFiltro: string = ''; 
+  fechaFiltro: string = '';
   totalMostrado: number = 0;
 
   constructor(
@@ -31,10 +31,10 @@ export class ReportsComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
-    this.tablesService.obtenerMesas().subscribe(m => this.mesas = m);
-    this.employeesService.getEmpleados().subscribe(e => this.empleados = e);
+    this.tablesService.obtenerMesas().subscribe((m) => (this.mesas = m));
+    this.employeesService.getEmpleados().subscribe((e) => (this.empleados = e));
 
-    this.salesService.getAllSales().subscribe(data => {
+    this.salesService.getAllSales().subscribe((data) => {
       this.ventasOriginal = data;
       this.fechaFiltro = this.obtenerFechaLocalISO();
       this.aplicarFiltroFecha();
@@ -53,12 +53,15 @@ export class ReportsComponent implements OnInit {
     if (!this.fechaFiltro) {
       this.ventasFiltradas = [...this.ventasOriginal];
     } else {
-      this.ventasFiltradas = this.ventasOriginal.filter(v => {
+      this.ventasFiltradas = this.ventasOriginal.filter((v) => {
         const fechaSolo = v.fecha_pago.split('T')[0];
         return fechaSolo === this.fechaFiltro;
       });
     }
-    this.totalMostrado = this.ventasFiltradas.reduce((acc, v) => acc + Number(v.total_pagado), 0);
+    this.totalMostrado = this.ventasFiltradas.reduce(
+      (acc, v) => acc + Number(v.total_pagado),
+      0
+    );
   }
 
   formatearFecha(fechaISO: string): string {
@@ -82,37 +85,52 @@ export class ReportsComponent implements OnInit {
       let totalOrden = 0;
 
       try {
-        const orden = await this.ordersService.getOrderById(venta.id_orden).toPromise();
+        const orden = await this.ordersService
+          .getOrderById(venta.id_orden)
+          .toPromise();
 
         if (orden) {
           descuento = Number(orden.descuento || 0);
           totalOrden = Number(orden.total || 0);
 
-          const mesero = this.empleados.find(e => e.id === orden.id_mesero);
-          meseroNombre = mesero ? `${mesero.nombre} ${mesero.appaterno}` : 'Desconocido';
+          const mesero = this.empleados.find((e) => e.id === orden.id_mesero);
+          meseroNombre = mesero
+            ? `${mesero.nombre} ${mesero.appaterno}`
+            : 'Desconocido';
 
-          const mesa = this.mesas.find(m => m.id === orden.id_mesa);
+          const mesa = this.mesas.find((m) => m.id === orden.id_mesa);
           numeroMesa = mesa ? mesa.numero : 'N/D';
 
           tipoCliente = orden.tipo_cliente || '';
         }
 
-        const detalles = await this.orderDetailsService.getByOrderId(venta.id_orden).toPromise();
+        const detalles = await this.orderDetailsService
+          .getByOrderId(venta.id_orden)
+          .toPromise();
 
         if (detalles && detalles.length > 0) {
-          productosTexto = detalles.map(p => {
-            const nombre = p.nombre_producto || 'Producto';
-            const precio = parseFloat(p.subtotal) || 0;
-            return `${nombre} x${p.cantidad} ($${precio.toFixed(2)})`;
-          }).join(', ');
+          productosTexto = detalles
+            .map((p) => {
+              const nombre = p.nombre_producto || 'Producto';
+              const precio = parseFloat(p.subtotal) || 0;
+              return `${nombre} x${p.cantidad} ($${precio.toFixed(2)})`;
+            })
+            .join(', ');
         }
       } catch (error) {
-        console.error(`Error al obtener datos de orden ${venta.id_orden}:`, error);
+        console.error(
+          `Error al obtener datos de orden ${venta.id_orden}:`,
+          error
+        );
       }
 
-      const descuentoTexto = (descuento > 0 && totalOrden > 0)
-        ? `$${descuento.toFixed(2)} (${((descuento / totalOrden) * 100).toFixed(2)}%)`
-        : `$0.00`;
+      const descuentoTexto =
+        descuento > 0 && totalOrden > 0
+          ? `$${descuento.toFixed(2)} (${(
+              (descuento / totalOrden) *
+              100
+            ).toFixed(2)}%)`
+          : `$0.00`;
 
       data.push({
         ID_Venta: venta.id,
@@ -125,16 +143,19 @@ export class ReportsComponent implements OnInit {
         Tipo_Cliente: tipoCliente,
         Total: totalOrden,
         Descuento: descuentoTexto,
-        Total_Pagado: totalPagado
+        Total_Pagado: totalPagado,
       });
     }
 
-    const sumaTotalPagado = data.reduce((sum, r) => sum + (r.Total_Pagado || 0), 0);
+    const sumaTotalPagado = data.reduce(
+      (sum, r) => sum + (r.Total_Pagado || 0),
+      0
+    );
 
     data.push({});
     data.push({
       Tipo_Cliente: 'TOTALES:',
-      Total_Pagado: sumaTotalPagado
+      Total_Pagado: sumaTotalPagado,
     });
 
     const ws = XLSX.utils.json_to_sheet(data, {
@@ -149,8 +170,8 @@ export class ReportsComponent implements OnInit {
         'Tipo_Cliente',
         'Total',
         'Descuento',
-        'Total_Pagado'
-      ]
+        'Total_Pagado',
+      ],
     });
 
     ws['!cols'] = [
@@ -163,8 +184,8 @@ export class ReportsComponent implements OnInit {
       { wpx: 50 },
       { wpx: 100 },
       { wpx: 80 },
-      { wpx: 120 },  
-      { wpx: 80 }
+      { wpx: 120 },
+      { wpx: 80 },
     ];
 
     for (let i = 1; i <= data.length; i++) {

@@ -29,11 +29,17 @@
       </mat-error>
     </mat-form-field>
 
-<mat-label>¿Es para llevar (desechable)?</mat-label>
-<mat-radio-group formControlName="es_desechable" class="d-flex gap-3">
-  <mat-radio-button [value]="true">Sí</mat-radio-button>
-  <mat-radio-button [value]="false">No</mat-radio-button>
+<mat-label>¿El insumo es ocupado para?</mat-label>
+<mat-radio-group formControlName="es_desechable" class="d-flex gap-3 flex-wrap mt-2">
+  <mat-radio-button [value]="true">Llevar</mat-radio-button>
+  <mat-radio-button [value]="false">Comer aquí</mat-radio-button>
+  <mat-radio-button [value]="true">Ambos</mat-radio-button>
 </mat-radio-group>
+
+<mat-error *ngIf="suministroForm.get('es_desechable')?.invalid && suministroForm.get('es_desechable')?.touched">
+  Selecciona una opción
+</mat-error>
+
 
   </form>
 </mat-dialog-content>

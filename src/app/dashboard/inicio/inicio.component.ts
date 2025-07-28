@@ -5,12 +5,11 @@ import { AuthService } from '../../services/auth/auth.service';
 import { EmployeesService } from '../../services/employees/employees-service';
 import { ChartOptions } from 'chart.js';
 
-
 @Component({
   selector: 'app-inicio',
   standalone: false,
   templateUrl: './inicio.component.html',
-  styleUrls: ['./inicio.component.scss']
+  styleUrls: ['./inicio.component.scss'],
 })
 export class InicioComponent implements OnInit {
   ventas: any[] = [];
@@ -49,21 +48,23 @@ export class InicioComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
-    this.authService.getCurrentUserObservable().subscribe(user => {
+    this.authService.getCurrentUserObservable().subscribe((user) => {
       if (user && user.correo) {
         this.employeesService.getEmpleados().subscribe({
           next: (empleados) => {
-            const empleado = empleados.find(emp => emp.correo === user.correo);
+            const empleado = empleados.find(
+              (emp) => emp.correo === user.correo
+            );
             this.nombreUsuario = empleado ? empleado.nombre : '';
           },
-          error: () => this.nombreUsuario = ''
+          error: () => (this.nombreUsuario = ''),
         });
       } else {
         this.nombreUsuario = '';
       }
     });
 
-    this.dashboardService.getDashboardData().subscribe(data => {
+    this.dashboardService.getDashboardData().subscribe((data) => {
       this.ventas = data.ventas;
       this.productos = data.productos;
       this.insumos = data.insumos;
@@ -73,7 +74,7 @@ export class InicioComponent implements OnInit {
 
       this.mesActual = new Date().toLocaleDateString('es-MX', {
         month: 'long',
-        year: 'numeric'
+        year: 'numeric',
       });
 
       this.procesarDatos();
@@ -109,7 +110,7 @@ export class InicioComponent implements OnInit {
       conteo[d.id_menu] = (conteo[d.id_menu] || 0) + d.cantidad;
     }
     this.topProductos = this.productos
-      .map(p => ({ ...p, ventas: conteo[p.id] || 0 }))
+      .map((p) => ({ ...p, ventas: conteo[p.id] || 0 }))
       .sort((a, b) => b.ventas - a.ventas)
       .slice(0, 5);
   }
@@ -120,7 +121,7 @@ export class InicioComponent implements OnInit {
       conteo[d.id_menu] = (conteo[d.id_menu] || 0) + d.cantidad;
     }
     this.productosMenosVendidos = this.productos
-      .map(p => ({ ...p, ventas: conteo[p.id] || 0 }))
+      .map((p) => ({ ...p, ventas: conteo[p.id] || 0 }))
       .sort((a, b) => a.ventas - b.ventas)
       .slice(0, 5);
   }
@@ -128,7 +129,7 @@ export class InicioComponent implements OnInit {
   procesarCategorias() {
     const conteo: { [cat: string]: number } = {};
     for (const d of this.detalles) {
-      const producto = this.productos.find(p => p.id === d.id_menu);
+      const producto = this.productos.find((p) => p.id === d.id_menu);
       const categoria = producto?.categoria || 'Desconocido';
       conteo[categoria] = (conteo[categoria] || 0) + d.cantidad;
     }
@@ -139,11 +140,15 @@ export class InicioComponent implements OnInit {
 
   procesarVentasPorDia() {
     const diasSemana = ['dom', 'lun', 'mar', 'mié', 'jue', 'vie', 'sáb'];
-    const conteo: { [clave: string]: { total: number, fecha: Date } } = {};
+    const conteo: { [clave: string]: { total: number; fecha: Date } } = {};
 
     for (const v of this.ventas) {
       const partes = v.fecha_pago.slice(0, 10).split('-');
-      const fecha = new Date(Number(partes[0]), Number(partes[1]) - 1, Number(partes[2]));
+      const fecha = new Date(
+        Number(partes[0]),
+        Number(partes[1]) - 1,
+        Number(partes[2])
+      );
 
       const diaNombre = diasSemana[fecha.getDay()];
       const dia = fecha.getDate().toString().padStart(2, '0');
@@ -166,13 +171,18 @@ export class InicioComponent implements OnInit {
 
     const fechaLimite = new Date();
     fechaLimite.setDate(fechaLimite.getDate() - 7);
-    ventasPorDia = ventasPorDia.filter(v => v.fecha >= fechaLimite);
+    ventasPorDia = ventasPorDia.filter((v) => v.fecha >= fechaLimite);
 
-    this.ventasPorDia = ventasPorDia.map(({ clave, total }) => ({ clave, total }));
+    this.ventasPorDia = ventasPorDia.map(({ clave, total }) => ({
+      clave,
+      total,
+    }));
   }
 
   procesarVentasPorSemana() {
-    const semanas: { [claveVisible: string]: { total: number, semana: number, año: number } } = {};
+    const semanas: {
+      [claveVisible: string]: { total: number; semana: number; año: number };
+    } = {};
 
     for (const v of this.ventas) {
       const fecha = new Date(v.fecha_pago);
@@ -188,8 +198,9 @@ export class InicioComponent implements OnInit {
       semanas[claveInterna].total += total;
     }
 
-    let clavesOrdenadas = Object.entries(semanas)
-      .sort(([, a], [, b]) => a.año !== b.año ? a.año - b.año : a.semana - b.semana);
+    let clavesOrdenadas = Object.entries(semanas).sort(([, a], [, b]) =>
+      a.año !== b.año ? a.año - b.año : a.semana - b.semana
+    );
 
     if (clavesOrdenadas.length > 5) {
       clavesOrdenadas = clavesOrdenadas.slice(-5);
@@ -197,14 +208,16 @@ export class InicioComponent implements OnInit {
 
     this.ventasSemanaData = {
       labels: clavesOrdenadas.map(([, v]) => `Semana ${v.semana}`),
-      datasets: [{
-        label: 'Ganancias de la Semana',
-        data: clavesOrdenadas.map(([, v]) => v.total),
-        borderColor: '#ff9800',
-        backgroundColor: 'rgba(255, 152, 0, 0.3)',
-        fill: true,
-        tension: 0.3
-      }]
+      datasets: [
+        {
+          label: 'Ganancias de la Semana',
+          data: clavesOrdenadas.map(([, v]) => v.total),
+          borderColor: '#ff9800',
+          backgroundColor: 'rgba(255, 152, 0, 0.3)',
+          fill: true,
+          tension: 0.3,
+        },
+      ],
     };
   }
 
@@ -241,7 +254,9 @@ export class InicioComponent implements OnInit {
     const conteo: { [clave: string]: { cantidad: number; fecha: Date } } = {};
 
     for (const o of this.ordenes) {
-      const fechaOrden = new Date(o.fecha_creacion || o.created_at || o.fecha || '');
+      const fechaOrden = new Date(
+        o.fecha_creacion || o.created_at || o.fecha || ''
+      );
       if (isNaN(fechaOrden.getTime())) continue;
 
       const diaNombre = diasSemana[fechaOrden.getDay()];
@@ -258,157 +273,169 @@ export class InicioComponent implements OnInit {
     }
 
     let ordenesPorDia = Object.entries(conteo)
-      .map(([clave, data]) => ({ clave, cantidad: data.cantidad, fecha: data.fecha }))
+      .map(([clave, data]) => ({
+        clave,
+        cantidad: data.cantidad,
+        fecha: data.fecha,
+      }))
       .sort((a, b) => a.fecha.getTime() - b.fecha.getTime());
 
     const fechaLimite = new Date();
     fechaLimite.setDate(fechaLimite.getDate() - 7);
-    ordenesPorDia = ordenesPorDia.filter(o => o.fecha >= fechaLimite);
+    ordenesPorDia = ordenesPorDia.filter((o) => o.fecha >= fechaLimite);
 
-    this.ordenesPorDia = ordenesPorDia.map(({ clave, cantidad }) => ({ clave, cantidad }));
+    this.ordenesPorDia = ordenesPorDia.map(({ clave, cantidad }) => ({
+      clave,
+      cantidad,
+    }));
   }
 
-verificarStockBajo() {
-  this.ingredientesBajoStock = this.ingredientes
-    .filter(i => i.stock < 5 && i.deleted_at === null)
-    .sort((a, b) => a.stock - b.stock)
-    .slice(0, 5);
+  verificarStockBajo() {
+    this.ingredientesBajoStock = this.ingredientes
+      .filter((i) => i.stock < 5 && i.deleted_at === null)
+      .sort((a, b) => a.stock - b.stock)
+      .slice(0, 5);
 
-  this.insumosBajoStock = this.insumos
-    .filter(i => i.stock < 5 && i.deleted_at === null)
-    .sort((a, b) => a.stock - b.stock)
-    .slice(0, 5);
-}
-
+    this.insumosBajoStock = this.insumos
+      .filter((i) => i.stock < 5 && i.deleted_at === null)
+      .sort((a, b) => a.stock - b.stock)
+      .slice(0, 5);
+  }
 
   configurarGraficas() {
     this.ventasDiaData = {
-      labels: this.ventasPorDia.map(d => d.clave),
-      datasets: [{
-        label: 'Ganancias ($)',
-        data: this.ventasPorDia.map(d => d.total),
-        borderColor: 'rgba(75,192,192,1)',
-        fill: true,
-        backgroundColor: 'rgba(75,192,192,0.2)',
-        tension: 0.4,
-        
-      }]
+      labels: this.ventasPorDia.map((d) => d.clave),
+      datasets: [
+        {
+          label: 'Ganancias ($)',
+          data: this.ventasPorDia.map((d) => d.total),
+          borderColor: 'rgba(75,192,192,1)',
+          fill: true,
+          backgroundColor: 'rgba(75,192,192,0.2)',
+          tension: 0.4,
+        },
+      ],
     };
 
     this.ventasHoraData = {
-      labels: this.horasPico.map(h => h.hora),
-      datasets: [{
-        label: 'Ventas por hora',
-        data: this.horasPico.map(h => h.cantidad),
-        backgroundColor: 'rgba(153,102,255,0.6)'
-      }]
+      labels: this.horasPico.map((h) => h.hora),
+      datasets: [
+        {
+          label: 'Ventas por hora',
+          data: this.horasPico.map((h) => h.cantidad),
+          backgroundColor: 'rgba(153,102,255,0.6)',
+        },
+      ],
     };
 
     this.ventasMeseroData = {
-      labels: this.ventasPorMesero.map(m => m.mesero),
-      datasets: [{
-        data: this.ventasPorMesero.map(m => m.total),
-backgroundColor: [
-  '#FF6384',  
-  '#36A2EB', 
-  '#FFCE56',
-  '#b53f88ff', 
-  '#4BC0C0', 
-  '#9966FF',  
-  '#FF9F40',  
-  '#8BC34A', 
-  '#C2185B',  
-  '#00BCD4', 
-  '#F44336', 
-  '#CDDC39', 
-  '#3F51B5',  
-  '#FFEB3B', 
-  '#009688',
-  '#E91E63',  
-  '#795548', 
-  '#9C27B0',  
-  '#607D8B',  
-  '#00E676'  
-]
-      }]
+      labels: this.ventasPorMesero.map((m) => m.mesero),
+      datasets: [
+        {
+          data: this.ventasPorMesero.map((m) => m.total),
+          backgroundColor: [
+            '#FF6384',
+            '#36A2EB',
+            '#FFCE56',
+            '#b53f88ff',
+            '#4BC0C0',
+            '#9966FF',
+            '#FF9F40',
+            '#8BC34A',
+            '#C2185B',
+            '#00BCD4',
+            '#F44336',
+            '#CDDC39',
+            '#3F51B5',
+            '#FFEB3B',
+            '#009688',
+            '#E91E63',
+            '#795548',
+            '#9C27B0',
+            '#607D8B',
+            '#00E676',
+          ],
+        },
+      ],
     };
 
     this.categoriasData = {
-      labels: this.categoriasMasVendidas.map(c => c.nombre),
-      datasets: [{
-        data: this.categoriasMasVendidas.map(c => c.cantidad),
-backgroundColor: [
-  '#00ae06ff',  
-  '#2196f3',    
-  '#ff9800',    
-  '#9027b0ff',  
-  '#f44336',   
-  '#00ffd9ff',  
-  '#f7ff11ff', 
-  '#e91e63',    
-  '#ffc107',    
-  '#3f51b5',    
-  '#795548ff', 
-  '#607d8bff',  
-  '#8bc34aff',  
-  '#ff5722ff',  
-  '#673ab7ff',  
-  '#cddc39ff', 
-  '#009688ff',  
-  '#d32f2fff',  
-  '#00bcd4ff',  
-  '#9e9e9eff'   
-]
-
-
-      }]
+      labels: this.categoriasMasVendidas.map((c) => c.nombre),
+      datasets: [
+        {
+          data: this.categoriasMasVendidas.map((c) => c.cantidad),
+          backgroundColor: [
+            '#00ae06ff',
+            '#2196f3',
+            '#ff9800',
+            '#9027b0ff',
+            '#f44336',
+            '#00ffd9ff',
+            '#f7ff11ff',
+            '#e91e63',
+            '#ffc107',
+            '#3f51b5',
+            '#795548ff',
+            '#607d8bff',
+            '#8bc34aff',
+            '#ff5722ff',
+            '#673ab7ff',
+            '#cddc39ff',
+            '#009688ff',
+            '#d32f2fff',
+            '#00bcd4ff',
+            '#9e9e9eff',
+          ],
+        },
+      ],
     };
 
     this.ordenesDiaData = {
-      labels: this.ordenesPorDia.map(o => o.clave),
-      datasets: [{
-        label: 'Órdenes atendidas',
-        data: this.ordenesPorDia.map(o => o.cantidad),
-        backgroundColor: 'rgba(54, 162, 235, 0.6)'
-      }]
+      labels: this.ordenesPorDia.map((o) => o.clave),
+      datasets: [
+        {
+          label: 'Órdenes atendidas',
+          data: this.ordenesPorDia.map((o) => o.cantidad),
+          backgroundColor: 'rgba(54, 162, 235, 0.6)',
+        },
+      ],
     };
   }
 
-
   public chartOptions: ChartOptions = {
-  responsive: true,
-  maintainAspectRatio: false, 
-  plugins: {
-    legend: {
-      labels: {
-        color: 'white' 
-      }
-    }
-  },
-  scales: {
-    x: {
-      ticks: {
-        color: 'white'
+    responsive: true,
+    maintainAspectRatio: false,
+    plugins: {
+      legend: {
+        labels: {
+          color: 'white',
+        },
       },
-      grid: {
-        color: 'rgba(255,255,255,0.1)'
-      }
     },
-    y: {
-      ticks: {
-        color: 'white'
+    scales: {
+      x: {
+        ticks: {
+          color: 'white',
+        },
+        grid: {
+          color: 'rgba(255,255,255,0.1)',
+        },
       },
-      grid: {
-        color: 'rgba(255,255,255,0.1)'
-      }
-    }
-  }
-};
+      y: {
+        ticks: {
+          color: 'white',
+        },
+        grid: {
+          color: 'rgba(255,255,255,0.1)',
+        },
+      },
+    },
+  };
 
   getNumeroSemana(fecha: Date): number {
     const temp = new Date(fecha.getFullYear(), 0, 1);
     const diff = fecha.getTime() - temp.getTime();
-    return Math.ceil(((diff / (1000 * 60 * 60 * 24)) + temp.getDay() + 1) / 7);
+    return Math.ceil((diff / (1000 * 60 * 60 * 24) + temp.getDay() + 1) / 7);
   }
 
   getColorPorStock(stock: number): string {

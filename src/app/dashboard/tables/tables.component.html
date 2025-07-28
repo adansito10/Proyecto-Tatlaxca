@@ -2,8 +2,13 @@
   <div class="d-flex justify-content-between align-items-center mb-3 flex-wrap">
     <h2 class="fw-bold mb-2 ms-2 text-dark">Gestión de Mesas</h2>
 
-    <input type="text" class="form-control me-2 mb-2 buscador-custom"
-           placeholder="Buscar Mesa..." [(ngModel)]="filtro" style="width: 300px">
+    <input
+      type="text"
+      class="form-control me-2 mb-2 buscador-custom"
+      placeholder="Buscar Mesa..."
+      [(ngModel)]="filtro"
+      style="width: 300px"
+    />
 
     <button class="btn custom-agregar-btn mb-2" (click)="abrirModalAgregar()">
       <mat-icon>add</mat-icon> Agregar
@@ -11,8 +16,10 @@
   </div>
 
   <div class="table-responsive">
-<table class="table table-bordered table-hover text-center align-middle w-100">
-  <thead class="custom-header">
+    <table
+      class="table table-bordered table-hover text-center align-middle w-100"
+    >
+      <thead class="custom-header">
         <tr>
           <th>Número</th>
           <th>Ubicación</th>
@@ -26,26 +33,41 @@
           <td>{{ mesa.numero }}</td>
           <td>{{ mesa.ubicacion }}</td>
           <td>{{ mesa.estado }}</td>
-            <td>
-      <span [ngClass]="{'text-success': !mesa.deleted_at, 'text-danger': mesa.deleted_at}">
-        {{ mesa.deleted_at ? 'Inactiva' : 'Activa' }}
-      </span>
-    </td>
           <td>
-          <div class="d-flex justify-content-center gap-2">
-          <button class="btn btn-sm btn-success" (click)="abrirModalEditar(mesa)" *ngIf="!mesa.deleted_at">
-          <i class="bi bi-pencil"></i>
-          </button>
+            <span
+              [ngClass]="{
+                'text-success': !mesa.deleted_at,
+                'text-danger': mesa.deleted_at
+              }"
+            >
+              {{ mesa.deleted_at ? "Inactiva" : "Activa" }}
+            </span>
+          </td>
+          <td>
+            <div class="d-flex justify-content-center gap-2">
+              <button
+                class="btn btn-sm btn-success"
+                (click)="abrirModalEditar(mesa)"
+                *ngIf="!mesa.deleted_at"
+              >
+                <i class="bi bi-pencil"></i>
+              </button>
 
-           <button class="btn btn-sm" 
-            [ngClass]="mesa.deleted_at ? 'btn-warning' : 'btn-danger'"
-            (click)="alternarEstadoMesa(mesa)"><i class="bi" 
-         [ngClass]="mesa.deleted_at ? 'bi-arrow-clockwise' : 'bi-trash'">
-      </i>
-    </button>
-  </div>
-</td>
-
+              <button
+                class="btn btn-sm"
+                [ngClass]="mesa.deleted_at ? 'btn-warning' : 'btn-danger'"
+                (click)="alternarEstadoMesa(mesa)"
+              >
+                <i
+                  class="bi"
+                  [ngClass]="
+                    mesa.deleted_at ? 'bi-arrow-clockwise' : 'bi-trash'
+                  "
+                >
+                </i>
+              </button>
+            </div>
+          </td>
         </tr>
       </tbody>
     </table>

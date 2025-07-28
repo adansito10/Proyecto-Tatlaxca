@@ -1,16 +1,12 @@
-
 .custom-agregar-btn {
-  background-color: #fe8f26; 
+  background-color: #fe8f26;
   border-color: #fe8f26;
   color: white;
   padding: 10px 19px;
   font-size: 1rem;
   border-radius: 8px;
-  font-weight: 1000;      
+  font-weight: 1000;
 }
-
-
-
 
 .buscador-con-icono {
   position: relative;
@@ -21,29 +17,28 @@
     position: absolute;
     left: 10px;
     margin-top: 3px;
-    color: black; 
-    pointer-events: none; 
+    color: black;
+    pointer-events: none;
     font-size: 20px;
     z-index: 2;
   }
 
   input.buscador-custom {
-    padding-left: 35px !important; 
+    padding-left: 35px !important;
   }
 }
 
 .buscador-custom {
-  background-color: #f9f9f9; 
-  color: #3e2c1c;           
-  border: 1px solid #000000;  
+  background-color: #f9f9f9;
+  color: #3e2c1c;
+  border: 1px solid #000000;
   font-weight: 500;
 }
 
 .buscador-custom::placeholder {
-  color: #5b5b5b; 
+  color: #5b5b5b;
   opacity: 1;
 }
-
 
 .icono-busqueda {
   position: absolute;
@@ -54,19 +49,6 @@
   pointer-events: none;
 }
 
-
-
-
-
-
-
-
-
-
-
-
-
-
 .custom-header {
   color: white;
 
@@ -76,12 +58,10 @@
   }
 }
 
-
-
-.table, 
-.table th, 
+.table,
+.table th,
 .table td {
-  border-width: 1px; 
-  border-style: solid; 
-  border-color: rgb(128, 128, 128); 
+  border-width: 1px;
+  border-style: solid;
+  border-color: rgb(128, 128, 128);
 }

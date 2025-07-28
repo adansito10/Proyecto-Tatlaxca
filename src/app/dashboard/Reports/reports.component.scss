@@ -1,14 +1,12 @@
-
 .table {
   border-collapse: collapse;
 
-  th, td {
+  th,
+  td {
     border: 0.1px solid #000 !important;
     padding: 8px;
   }
 }
-
-
 
 .custom-agregar-btn {
   background-color: #fe8f26;
@@ -20,13 +18,9 @@
   font-weight: 1000;
 }
 
-.form-label{
+.form-label {
   font-weight: 600;
 }
-
-
-
-
 
 .custom-header {
   color: white;

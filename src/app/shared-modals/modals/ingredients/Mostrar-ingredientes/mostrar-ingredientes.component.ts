@@ -140,13 +140,11 @@ mostrarError(mensaje: string): void {
     const cantidadRaw = values[name + '_cantidad'];
     const cantidad = Number(cantidadRaw);
 
-    // 🛑 Ignorar campos vacíos
     if (!ing && (!cantidad || cantidad <= 0)) {
       cantidadControl?.setErrors(null);
       return;
     }
 
-    // 🛑 Ceros iniciales (01, 002)
     if (/^0[0-9]+/.test(cantidadRaw)) {
       cantidadControl?.setErrors({ leadingZero: true });
       hayError = true;
@@ -154,7 +152,6 @@ mostrarError(mensaje: string): void {
       return;
     }
 
-    // 🛑 Valor inválido
     if (ing && (cantidad <= 0 || isNaN(cantidad))) {
       cantidadControl?.setErrors({ required: true });
       hayError = true;
@@ -162,7 +159,6 @@ mostrarError(mensaje: string): void {
       return;
     }
 
-    // 🛑 Excede stock
     if (cantidad > ing.stock) {
       cantidadControl?.setErrors({ excedeStock: true });
       hayError = true;
@@ -171,10 +167,8 @@ mostrarError(mensaje: string): void {
       return;
     }
 
-    // ✅ Sin errores → limpiar
     cantidadControl?.setErrors(null);
 
-    // ✅ Agregar a seleccionados
     seleccionados.push({
       id: ing.id,
       nombre: ing.nombre,

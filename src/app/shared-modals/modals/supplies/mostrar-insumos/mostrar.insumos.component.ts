@@ -107,7 +107,6 @@ export class MostrarInsumosComponent implements OnInit {
     const cantidadRaw = values[name + '_cantidad'];
     const cantidad = Number(cantidadRaw);
 
-    // ✅ Limpiar ceros iniciales
     if (/^0[0-9]+/.test(cantidadRaw)) {
       cantidadControl?.setErrors({ leadingZero: true });
       hayError = true;
