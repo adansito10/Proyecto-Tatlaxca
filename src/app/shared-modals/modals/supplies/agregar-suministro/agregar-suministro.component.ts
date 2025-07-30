@@ -12,7 +12,7 @@ import { Insumo } from '../../../../services/supplies/supplies.service';
 export class AgregarSuministroComponent implements OnInit {
   suministroForm!: FormGroup;
   modo: 'agregar' | 'editar' = 'agregar';
-  unidades: string[] = ['Unidades', 'Paquete'];
+  unidades: string[] = ['unidades', 'paquete'];
 
   constructor(
     private fb: FormBuilder,
