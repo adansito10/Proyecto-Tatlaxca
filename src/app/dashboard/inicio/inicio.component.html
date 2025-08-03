@@ -6,6 +6,11 @@
     Datos del mes actual: {{ mesActual | titlecase }}
   </h5>
 
+<p>Ganancia del mes de {{ nombreMesPasado }}: 
+   {{ gananciaMesPasado | currency:'MXN':'symbol':'1.2-2' }}
+</p>
+
+
   <div class="row mb-4">
     <div class="grafica-col">
       <mat-card>

@@ -31,6 +31,9 @@ export class InicioComponent implements OnInit {
   nombreUsuario: string = '';
   ingredientesBajoStock: any[] = [];
   insumosBajoStock: any[] = [];
+  gananciaMesPasado: number = 0;
+  nombreMesPasado: string = '';
+
 
   public ventasDiaData: ChartData<'line'> = { labels: [], datasets: [] };
   public ventasSemanaData: ChartData<'line'> = { labels: [], datasets: [] };
@@ -90,7 +93,10 @@ export class InicioComponent implements OnInit {
       this.categoriasMasVendidas = [];
       this.ventasPorMesero = [];
       this.mesAnterior = mesActual;
+
     }
+          this.gananciaMesPasado = this.obtenerGananciaMesPasado();
+
 
     this.procesarTopProductos();
     this.procesarProductosMenosVendidos();
@@ -102,41 +108,106 @@ export class InicioComponent implements OnInit {
     this.procesarOrdenesPorDia();
     this.verificarStockBajo();
     this.configurarGraficas();
+    
   }
 
-  procesarTopProductos() {
-    const conteo: { [id: number]: number } = {};
-    for (const d of this.detalles) {
-      conteo[d.id_menu] = (conteo[d.id_menu] || 0) + d.cantidad;
-    }
-    this.topProductos = this.productos
-      .map((p) => ({ ...p, ventas: conteo[p.id] || 0 }))
-      .sort((a, b) => b.ventas - a.ventas)
-      .slice(0, 5);
+ procesarTopProductos() {
+  const mesActual = new Date().getMonth();
+  const conteo: { [id: number]: number } = {};
+
+  for (const d of this.detalles) {
+    const orden = this.ordenes.find((o) => o.id === d.id_orden);
+    if (!orden) continue;
+
+    const fecha = new Date(orden.fecha || orden.created_at || '');
+    if (isNaN(fecha.getTime()) || fecha.getMonth() !== mesActual) continue;
+
+    conteo[d.id_menu] = (conteo[d.id_menu] || 0) + d.cantidad;
   }
 
-  procesarProductosMenosVendidos() {
-    const conteo: { [id: number]: number } = {};
-    for (const d of this.detalles) {
-      conteo[d.id_menu] = (conteo[d.id_menu] || 0) + d.cantidad;
-    }
-    this.productosMenosVendidos = this.productos
-      .map((p) => ({ ...p, ventas: conteo[p.id] || 0 }))
-      .sort((a, b) => a.ventas - b.ventas)
-      .slice(0, 5);
+  this.topProductos = this.productos
+    .map((p) => ({ ...p, ventas: conteo[p.id] || 0 }))
+    .sort((a, b) => b.ventas - a.ventas)
+    .slice(0, 5);
+}
+
+obtenerGananciaMesPasado(): number {
+  const hoy = new Date();
+  let mesPasado = hoy.getMonth() - 1;
+  let anio = hoy.getFullYear();
+
+  if (mesPasado < 0) {
+    mesPasado = 11; 
+    anio--;
   }
 
-  procesarCategorias() {
-    const conteo: { [cat: string]: number } = {};
-    for (const d of this.detalles) {
-      const producto = this.productos.find((p) => p.id === d.id_menu);
-      const categoria = producto?.categoria || 'Desconocido';
-      conteo[categoria] = (conteo[categoria] || 0) + d.cantidad;
+  this.nombreMesPasado = new Date(anio, mesPasado).toLocaleDateString('es-MX', {
+    month: 'long',
+    year: 'numeric'
+  });
+
+  let total = 0;
+  for (const v of this.ventas) {
+    const fecha = new Date(v.fecha_pago || v.created_at || '');
+    if (
+      !isNaN(fecha.getTime()) &&
+      fecha.getMonth() === mesPasado &&
+      fecha.getFullYear() === anio
+    ) {
+      total += parseFloat(v.total_pagado) || 0;
     }
-    this.categoriasMasVendidas = Object.entries(conteo)
-      .map(([nombre, cantidad]) => ({ nombre, cantidad }))
-      .sort((a, b) => b.cantidad - a.cantidad);
   }
+  return total;
+}
+
+procesarProductosMenosVendidos() {
+  const mesActual = new Date().getMonth();
+  const conteo: { [id: number]: number } = {};
+
+  for (const d of this.detalles) {
+    const orden = this.ordenes.find((o) => o.id === d.id_orden);
+    if (!orden) continue;
+
+    const fecha = new Date(orden.fecha || orden.created_at || '');
+    if (isNaN(fecha.getTime()) || fecha.getMonth() !== mesActual) continue;
+
+    conteo[d.id_menu] = (conteo[d.id_menu] || 0) + d.cantidad;
+  }
+
+  this.productosMenosVendidos = this.productos
+    .map((p) => ({ ...p, ventas: conteo[p.id] || 0 }))
+    .sort((a, b) => a.ventas - b.ventas)
+    .slice(0, 5);
+}
+
+
+ procesarCategorias() {
+  const hoy = new Date();
+  const mesActual = hoy.getMonth();
+  const anioActual = hoy.getFullYear();
+
+  const conteo: { [cat: string]: number } = {};
+
+  for (const d of this.detalles) {
+    const orden = this.ordenes.find(o => o.id === d.id_orden);
+    if (!orden) continue;
+
+    const fechaOrden = new Date(orden.fecha || orden.created_at || '');
+    if (isNaN(fechaOrden.getTime())) continue;
+
+    if (fechaOrden.getMonth() !== mesActual || fechaOrden.getFullYear() !== anioActual) continue;
+
+    const producto = this.productos.find(p => p.id === d.id_menu);
+    const categoria = producto?.categoria || 'Desconocido';
+
+    conteo[categoria] = (conteo[categoria] || 0) + d.cantidad;
+  }
+
+  this.categoriasMasVendidas = Object.entries(conteo)
+    .map(([nombre, cantidad]) => ({ nombre, cantidad }))
+    .sort((a, b) => b.cantidad - a.cantidad);
+}
+
 
   procesarVentasPorDia() {
     const diasSemana = ['dom', 'lun', 'mar', 'mié', 'jue', 'vie', 'sáb'];
@@ -222,16 +293,30 @@ export class InicioComponent implements OnInit {
   }
 
   procesarVentasPorMesero() {
-    const conteo: { [mesero: string]: number } = {};
-    for (const o of this.ordenes) {
-      const mesero = o.waiter_name || 'Sin asignar';
-      const total = parseFloat(o.total) || 0;
-      conteo[mesero] = (conteo[mesero] || 0) + total;
+  const hoy = new Date();
+  const mesActual = hoy.getMonth();
+  const anioActual = hoy.getFullYear();
+
+  const conteo: { [mesero: string]: number } = {};
+
+  for (const o of this.ordenes) {
+    const fecha = new Date(o.fecha || o.created_at || '');
+    if (isNaN(fecha.getTime())) continue;
+
+    if (fecha.getMonth() !== mesActual || fecha.getFullYear() !== anioActual) {
+      continue;
     }
-    this.ventasPorMesero = Object.entries(conteo)
-      .map(([mesero, total]) => ({ mesero, total }))
-      .sort((a, b) => b.total - a.total);
+
+    const mesero = o.waiter_name || 'Sin asignar';
+    const total = parseFloat(o.total) || 0;
+    conteo[mesero] = (conteo[mesero] || 0) + total;
   }
+
+  this.ventasPorMesero = Object.entries(conteo)
+    .map(([mesero, total]) => ({ mesero, total }))
+    .sort((a, b) => b.total - a.total);
+}
+
 
   procesarHorasPico() {
     const conteo: { [hora: string]: number } = {};
