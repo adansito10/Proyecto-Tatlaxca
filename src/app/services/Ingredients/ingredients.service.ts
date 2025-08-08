@@ -12,12 +12,11 @@ export interface Ingrediente {
   updated_at?: string;
   deleted_at?: string;
 }
-
 @Injectable({
   providedIn: 'root'
 })
 export class IngredientsService {
-  private apiUrl = 'http://194.163.44.12:3010/api/ingredients';
+  private apiUrl = 'http://144.202.72.236:3010/api/ingredients';
 
   constructor(private http: HttpClient) {}
 

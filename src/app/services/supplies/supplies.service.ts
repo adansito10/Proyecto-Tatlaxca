@@ -22,7 +22,7 @@ export interface InsumoSeleccionado extends Insumo {
   providedIn: 'root'
 })
 export class InsumosService {
-   private apiUrl = 'http://194.163.44.12:3010/api/supplies'; 
+   private apiUrl = 'http://144.202.72.236:3010/api/supplies'; 
 
   constructor(private http: HttpClient) {}
 

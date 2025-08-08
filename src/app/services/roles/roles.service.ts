@@ -17,7 +17,7 @@ export interface Role {
 
 
 export class RolesService {
-  private apiUrl = 'http://194.163.44.12:3010/api/roles';
+  private apiUrl = 'http://144.202.72.236:3010/api/roles';
 
   constructor(private http: HttpClient) {}
 

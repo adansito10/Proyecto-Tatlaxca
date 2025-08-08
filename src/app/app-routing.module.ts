@@ -7,11 +7,9 @@ const routes: Routes = [
   {
     path: 'auth/login',
     loadChildren: () => import('./auth/auth.module').then(m => m.AuthModule),
-    canActivate: [PublicGuard]
   },
   {
     path: 'dashboard',
-    canMatch: [AuthGuard], 
     loadChildren: () => import('./dashboard/dashboard.module').then(m => m.DashboardModule)
   },
   {

@@ -15,7 +15,7 @@ export interface Status {
   providedIn: 'root'
 })
 export class StatusService {
-   private apiUrl = 'http://194.163.44.12:3010/api/status'; 
+   private apiUrl = 'http://144.202.72.236:3010/api/status'; 
 
   constructor(private http: HttpClient) {}
 

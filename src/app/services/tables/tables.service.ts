@@ -15,7 +15,7 @@ export interface Table {
 
 @Injectable({ providedIn: 'root' })
 export class TablesService {
-   private apiUrl = 'http://194.163.44.12:3010/api/tables'; 
+   private apiUrl = 'http://144.202.72.236:3010/api/tables'; 
 
   constructor(private http: HttpClient) {}
 

@@ -7,7 +7,7 @@ import { forkJoin, Observable } from 'rxjs';
   providedIn: 'root'
 })
 export class DashboardService {
-  private baseUrl = 'http://194.163.44.12:3010/api';
+  private baseUrl = 'http://144.202.72.236:3010/api';
 
   constructor(private http: HttpClient) {}
 
