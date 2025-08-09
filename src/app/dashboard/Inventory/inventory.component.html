@@ -47,7 +47,7 @@
               'text-success fw-semibold': item.stock >= 10
             }"
           >
-            {{ item.stock }}
+            {{ item.stock < 0 ? 0 : item.stock }}
           </td>
 
           <td>

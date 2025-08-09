@@ -48,8 +48,9 @@
               'text-success fw-semibold': !esStockBajo(ingrediente)
             }"
           >
-            {{ ingrediente.stock }}
+            {{ ingrediente.stock < 0 ? 0 : ingrediente.stock }}
           </td>
+
           <td>
             {{
               ingrediente.updated_at || ingrediente.created_at | date : "short"

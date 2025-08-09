@@ -6,9 +6,7 @@ import { ElementRef } from '@angular/core';
 import { AgregarIngredienteComponent } from '../../shared-modals/modals/ingredients/agregar-ingrediente/agregar-ingrediente.component';
 import { EditarIngredienteComponent } from '../../shared-modals/modals/ingredients/editar-ingrediente/editar-ingrediente.component';
 import { EliminarIngredienteComponent } from '../../shared-modals/modals/ingredients/eliminar-ingrediente/eliminar-ingrediente.component';
-import {
-  IngredientsService,
-  Ingrediente,
+import {  IngredientsService,  Ingrediente,
 } from '../../services/Ingredients/ingredients.service';
 import { MatSnackBar } from '@angular/material/snack-bar';
 

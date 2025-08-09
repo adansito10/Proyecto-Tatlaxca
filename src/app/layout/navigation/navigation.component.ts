@@ -68,61 +68,54 @@ export class NavigationComponent {
     this.notificacionesService.limpiarNotificaciones();
   }
 
-  revisarStockBajo() {
-    const UMBRALES_POR_UNIDAD: Record<string, number> = {
-      g: 100,
-      ml: 500,
-      u: 10,
-    };
+revisarStockBajo() {
+  const UMBRALES_POR_UNIDAD: Record<string, number> = {
+    g: 100,
+    ml: 500,
+    u: 10,
+  };
 
-    forkJoin({
-      insumos: this.insumosService.obtenerInsumos(),
-      ingredientes: this.ingredientsService.obtenerIngredientes(),
-    }).subscribe({
-      next: ({ insumos, ingredientes }) => {
-        insumos.forEach((i) => {
-          const id = `insumo_${i.id}`;
+  forkJoin({
+    insumos: this.insumosService.obtenerInsumos(),
+    ingredientes: this.ingredientsService.obtenerIngredientes(),
+  }).subscribe({
+    next: ({ insumos, ingredientes }) => {
 
-          if (i.deleted_at) {
-            this.notificacionesService.agregarNotificacion(
-              id,
-              `Insumo inactivo: ${i.nombre}\nMotivo: Stock bajo`
-            );
-          } else if (i.stock < 10) {
-            this.notificacionesService.agregarNotificacion(
-              id,
-              `Insumo: ${i.nombre}\nStock bajo: ${i.stock} unidades`
-            );
-          } else {
-            this.notificacionesService.eliminarNotificacionPorId(id);
-          }
-        });
+      insumos.forEach((i) => {
+        const id = `insumo_${i.id}`;
+        const umbral = 10; 
 
-        ingredientes.forEach((i) => {
-          const unidad = i.unidad?.toLowerCase();
-          const umbral = UMBRALES_POR_UNIDAD[unidad] ?? 10;
-          const id = `ingrediente_${i.id}`;
+        if (i.stock >= 0 && i.stock < umbral) {
+          this.notificacionesService.agregarNotificacion(
+            id,
+            `Insumo: ${i.nombre}\nStock bajo: ${i.stock} unidades`
+          );
+        } else {
+          this.notificacionesService.eliminarNotificacionPorId(id);
+        }
+      });
 
-          if (i.deleted_at) {
-            this.notificacionesService.agregarNotificacion(
-              id,
-              `Ingrediente inactivo: ${i.nombre}\nMotivo: Stock bajo`
-            );
-          } else if (i.stock < umbral) {
-            this.notificacionesService.agregarNotificacion(
-              id,
-              `Ingrediente: ${i.nombre}\nStock bajo: ${i.stock} ${i.unidad}`
-            );
-          } else {
-            this.notificacionesService.eliminarNotificacionPorId(id);
-          }
-        });
-      },
-      error: (err) => {
-        console.error('Error al obtener datos para notificaciones:', err);
-      },
-    });
-  }
+      ingredientes.forEach((i) => {
+        const unidad = i.unidad?.toLowerCase();
+        const umbral = UMBRALES_POR_UNIDAD[unidad] ?? 10;
+        const id = `ingrediente_${i.id}`;
+
+        if (i.stock >= 0 && i.stock < umbral) {
+          this.notificacionesService.agregarNotificacion(
+            id,
+            `Ingrediente: ${i.nombre}\nStock bajo: ${i.stock} ${i.unidad}`
+          );
+        } else {
+          this.notificacionesService.eliminarNotificacionPorId(id);
+        }
+      });
+    },
+    error: (err) => {
+      console.error('Error al obtener datos para notificaciones:', err);
+    },
+  });
+}
+
 
   navegarAProducto(mensaje: string) {
     const esIngrediente = mensaje.includes('Ingrediente:');
