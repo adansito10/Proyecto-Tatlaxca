@@ -5,6 +5,8 @@ services:
     build:
       context: .
       dockerfile: Dockerfile
+      args:
+        NODE_OPTIONS: --max-old-space-size=4096
     ports:
       - "8080:80"
     container_name: cafeteria-tatlaxca
