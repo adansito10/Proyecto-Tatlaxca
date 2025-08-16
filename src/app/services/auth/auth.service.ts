@@ -7,7 +7,7 @@ import { map } from 'rxjs/operators';
   providedIn: 'root'
 })
 export class AuthService {
-  private apiUrl = 'http://194.163.44.12:3010/api/users/login';
+  private apiUrl = 'http://144.202.72.236:3010/api/users/login';
 
   private currentUserSubject = new BehaviorSubject<any>(this.getCurrentUser());
 
